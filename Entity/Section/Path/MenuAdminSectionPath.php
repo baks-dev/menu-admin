@@ -27,7 +27,7 @@ namespace BaksDev\Menu\Admin\Entity\Section\Path;
 
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use BaksDev\Menu\Admin\Type\Path\MenuAdminSectionPathUid;
-use App\Module\Users\Groups\Role\Type\RolePrefix\RolePrefix;
+use BaksDev\Users\Groups\Type\RolePrefix\RolePrefix;
 use BaksDev\Core\Entity\EntityEvent;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;

@@ -26,7 +26,7 @@
 namespace BaksDev\Menu\Admin\DataFixtures\Menu\MenuAdminSection\Section\Path;
 
 use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPathInterface;
-use App\Module\Users\Groups\Role\Type\RolePrefix\RolePrefix;
+use BaksDev\Users\Groups\Type\RolePrefix\RolePrefix;
 use BaksDev\Core\Type\Locale\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
