@@ -6,8 +6,8 @@ return function (RoutingConfigurator $routes)
 {
 
     /* Контроллер по умолчанию */
-    $routes->import('../../Controller', 'annotation')
-      ->prefix(\BaksDev\Core\Type\Locale\Locale::routes())
-      ->namePrefix('MenuAdmin:');
-    
+//    $routes->import('../../Controller', 'annotation')
+//      ->prefix(\BaksDev\Core\Type\Locale\Locale::routes())
+//      ->namePrefix('MenuAdmin:');
+//
 };

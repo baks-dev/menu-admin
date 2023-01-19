@@ -9,10 +9,11 @@ return static function (ContainerConfigurator $configurator, TwigConfig $config)
 {
 	$services = $configurator->services()
 		->defaults()
-		->autowire()      // Automatically injects dependencies in your services.
-		->autoconfigure() // Automatically registers your services as commands, event subscribers, etc.
+		->autowire()
+		->autoconfigure()
 	;
 	
+
 	$config->path(__DIR__.'/../view', 'MenuAdmin');
 	
 	/** Twig Extension */
