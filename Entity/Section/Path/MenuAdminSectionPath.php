@@ -79,7 +79,6 @@ class MenuAdminSectionPath extends EntityEvent
 		$this->role = new RolePrefix('ROLE_ADMIN');
 		$this->path = 'Pages:admin.index';
 		$this->sort = 500;
-		
 	}
 	
 	public function __clone() : void
