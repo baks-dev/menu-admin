@@ -48,6 +48,13 @@ final class MenuAdminExtension extends AbstractExtension
 	
 	public function renderMenuAdmin(Environment $twig): string
     {
-        return $twig->render('@MenuAdmin/twig/menu.admin.html.twig', ['data' => $this->MenuAdmin->fetchAllAssociativeIndexed()]);
+		try
+		{
+			return $twig->render('@Template/MenuAdmin/twig/menu.admin.html.twig', ['data' => $this->MenuAdmin->fetchAllAssociativeIndexed()]);
+			
+		} catch(\Exception $exception)
+		{
+			return $twig->render('@MenuAdmin/twig/menu.admin.html.twig', ['data' => $this->MenuAdmin->fetchAllAssociativeIndexed()]);
+		}
 	}
 }
