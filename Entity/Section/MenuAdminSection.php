@@ -25,20 +25,12 @@
 
 namespace BaksDev\Menu\Admin\Entity\Section;
 
-
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPath;
 use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTrans;
 use BaksDev\Menu\Admin\Type\Section\MenuAdminSectionUid;
 use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroup;
-use App\Module\Users\Profile\TypeProfile\Entity\Event\TypeProfileEvent;
-use App\Module\Users\Profile\TypeProfile\Entity\Section\Fields\TypeProfileSectionField;
-use App\Module\Users\Profile\TypeProfile\Entity\Section\Trans\TypeProfileSectionTrans;
-use App\Module\Users\Profile\TypeProfile\Type\Section\Id\TypeProfileSectionUid;
-use App\Module\Users\Profile\TypeProfile\Entity\Section\TypeProfileSectionInterface;
 use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Core\Type\Locale\Locale;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
