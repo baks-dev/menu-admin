@@ -25,7 +25,6 @@
 
 namespace BaksDev\Menu\Admin\Entity\Modify;
 
-
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Users\User\Entity\User;
 use BaksDev\Users\User\Type\Id\UserUid;
@@ -41,6 +40,7 @@ use Exception;
 use InvalidArgumentException;
 
 /* Модификаторы событий MenuAdminModify */
+
 
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_modify')]
@@ -85,6 +85,7 @@ class MenuAdminModify extends EntityEvent
 		$this->action = new ModifyAction(ModifyActionEnum::NEW);
 	}
 	
+	
 	public function __clone() : void
 	{
 		$this->modDate = new DateTimeImmutable();
@@ -104,6 +105,7 @@ class MenuAdminModify extends EntityEvent
 		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
 	}
 	
+	
 	public function setEntity($dto) : mixed
 	{
 		if($dto instanceof MenuAdminModifyInterface)
@@ -122,13 +124,16 @@ class MenuAdminModify extends EntityEvent
 		$this->modDate = new DateTimeImmutable();
 	}
 	
+	
 	public function setUser(UserUid|User|null $user) : void
 	{
 		$this->user = $user instanceof User ? $user->getId() : $user;
 	}
 	
+	
 	public function equals(ModifyActionEnum $action) : bool
 	{
 		return $this->action->equals($action);
 	}
+	
 }

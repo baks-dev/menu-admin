@@ -14,30 +14,33 @@
  *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
- *
- *
  */
 
 namespace BaksDev\Menu\Admin\DataFixtures\Menu;
 
+use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Menu\Admin\Entity as EntityMenuAdmin;
 use BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin\ActiveMenuAdminEventRepositoryInterface;
+use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-
-final class MenuAdminFixtures extends Fixture
+final class MenuAdminSectionFixtures extends Fixture
 {
 	
 	private MenuAdminFixturesHandler $handler;
+	
 	private EntityManagerInterface $entityManager;
+	
 	private ActiveMenuAdminEventRepositoryInterface $menuAdminEventRepository;
+	
 	
 	public function __construct(
 		MenuAdminFixturesHandler $handler,
@@ -50,9 +53,17 @@ final class MenuAdminFixtures extends Fixture
 		$this->menuAdminEventRepository = $menuAdminEventRepository;
 	}
 	
+	
 	public function load(ObjectManager $manager)
 	{
 		# php bin/console doctrine:fixtures:load --append
+		
+		/* Сбрасываем кеш меню */
+		$cache = new FilesystemAdapter('CacheMenuAdmin');
+		foreach(Locale::cases() as $locale)
+		{
+			$cache->delete(MenuAdminIdentificator::TYPE.$locale);
+		}
 		
 		/** @var EntityMenuAdmin\Event\MenuAdminEvent $Event */
 		$Event = $this->menuAdminEventRepository->getEventOrNullResult();
@@ -72,7 +83,6 @@ final class MenuAdminFixtures extends Fixture
 		{
 			return;
 		}
-		
 		
 		/* Файл переводов секций */
 		$sectionTrans = require __DIR__.'/MenuAdminSection/Section/Trans/translate.php';
@@ -97,9 +107,7 @@ final class MenuAdminFixtures extends Fixture
 			}
 		}
 		
-		
 		$this->handler->handle($MenuAdminDTO);
 	}
-	
 	
 }

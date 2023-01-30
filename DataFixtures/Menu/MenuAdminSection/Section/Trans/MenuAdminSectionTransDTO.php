@@ -31,51 +31,51 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /* Перевод MenuAdminSectionTrans */
 
+
 class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
 {
 	
-//	public const NAME = [
-//		'products' =>
-//			[
-//				'ru' => 'Типы профилей',
-//				'en' => 'Profile types',
-//			],
-//		'user' =>
-//			[
-//				'ru' => 'Типы профилей',
-//				'en' => 'Profile types',
-//			],
-//
-//		'marketing' =>
-//			[
-//				'ru' => 'Типы профилей',
-//				'en' => 'Profile types',
-//			],
-//
-//		'analytics' =>
-//			[
-//				'ru' => 'Типы профилей',
-//				'en' => 'Profile types',
-//			],
-//
-//		'settings' =>
-//			[
-//				'ru' => 'Типы профилей',
-//				'en' => 'Profile types',
-//			],
-//	];
-//
-//	private const DESC = [
-//		'ru' => 'Типы профилей пользователей',
-//		'en' => 'User profile types',
-//	];
+	//	public const NAME = [
+	//		'products' =>
+	//			[
+	//				'ru' => 'Типы профилей',
+	//				'en' => 'Profile types',
+	//			],
+	//		'user' =>
+	//			[
+	//				'ru' => 'Типы профилей',
+	//				'en' => 'Profile types',
+	//			],
+	//
+	//		'marketing' =>
+	//			[
+	//				'ru' => 'Типы профилей',
+	//				'en' => 'Profile types',
+	//			],
+	//
+	//		'analytics' =>
+	//			[
+	//				'ru' => 'Типы профилей',
+	//				'en' => 'Profile types',
+	//			],
+	//
+	//		'settings' =>
+	//			[
+	//				'ru' => 'Типы профилей',
+	//				'en' => 'Profile types',
+	//			],
+	//	];
+	//
+	//	private const DESC = [
+	//		'ru' => 'Типы профилей пользователей',
+	//		'en' => 'User profile types',
+	//	];
 	
 	//		case PRODUCTS = 'products'; // Продукция
 	//	case USER = 'user'; // Пользователи
 	//	case MARKETING = 'marketing'; // Пользователи
 	//	case ANALYTICS = 'analytics'; // Аналитика
 	//	case SETTINGS = 'settings'; // Натсройки
-	
 	
 	/** Локаль */
 	#[Assert\NotBlank]
@@ -105,6 +105,7 @@ class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
 		return $this->local;
 	}
 	
+	
 	/** Название */
 	
 	public function getName() : string
@@ -112,10 +113,12 @@ class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
 		return $this->name;
 	}
 	
+	
 	public function setName(string $name) : void
 	{
 		$this->name = $name;
 	}
+	
 	
 	/** Описание */
 	
@@ -123,6 +126,7 @@ class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
 	{
 		return $this->description;
 	}
+	
 	
 	public function setDescription(?string $description) : void
 	{

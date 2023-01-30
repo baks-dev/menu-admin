@@ -14,13 +14,11 @@
  *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
- *
- *
  */
 
 namespace BaksDev\Menu\Admin\DataFixtures\Menu;
@@ -34,8 +32,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class MenuAdminFixturesHandler
 {
 	private EntityManagerInterface $entityManager;
+	
 	private ValidatorInterface $validator;
+	
 	private LoggerInterface $logger;
+	
 	
 	public function __construct(
 		EntityManagerInterface $entityManager,
@@ -47,6 +48,7 @@ final class MenuAdminFixturesHandler
 		$this->validator = $validator;
 		$this->logger = $logger;
 	}
+	
 	
 	public function handle(
 		MenuAdminEventInterface $command,
@@ -60,9 +62,9 @@ final class MenuAdminFixturesHandler
 			$uniqid = uniqid('', false);
 			$errorsString = (string) $errors;
 			$this->logger->error($uniqid.': '.$errorsString);
+			
 			return $uniqid;
 		}
-		
 		
 		if($command->getEvent())
 		{
@@ -86,18 +88,14 @@ final class MenuAdminFixturesHandler
 			
 			$Event = $EventRepo->cloneEntity();
 			
-		
-			
-		} else
+		}
+		else
 		{
 			$Event = new Entity\Event\MenuAdminEvent();
 			$this->entityManager->persist($Event);
 		}
-
+		
 		$this->entityManager->clear();
-		
-		
-		
 		
 		/** @var Entity\MenuAdmin $Main */
 		if($Event->getMain())
@@ -119,15 +117,14 @@ final class MenuAdminFixturesHandler
 				return $uniqid;
 			}
 			
-		} else
+		}
+		else
 		{
 			
 			$Main = new Entity\MenuAdmin();
 			$this->entityManager->persist($Main);
 			$Event->setMain($Main);
 		}
-		
-		
 		
 		$Event->setEntity($command);
 		$this->entityManager->persist($Event);
@@ -139,4 +136,5 @@ final class MenuAdminFixturesHandler
 		
 		return $Main;
 	}
+	
 }

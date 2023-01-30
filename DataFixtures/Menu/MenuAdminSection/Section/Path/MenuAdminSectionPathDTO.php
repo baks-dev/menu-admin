@@ -33,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /* Перевод MenuAdminSectionPath */
 
+
 class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
 {
 	/** Перевод раздела */
@@ -51,6 +52,7 @@ class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
 	#[Assert\NotBlank]
 	#[Assert\Range(min: 1, max: 999)]
 	private int $sort = 500;
+	
 	
 	public function __construct()
 	{
@@ -71,6 +73,7 @@ class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
 		return $this->translate;
 	}
 	
+	
 	public function addTranslate(Trans\MenuAdminSectionPathTransDTO $trans) : void
 	{
 		if(!$this->translate->contains($trans))
@@ -79,21 +82,21 @@ class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
 		}
 	}
 	
+	
 	public function removeTranslate(Trans\MenuAdminSectionPathTransDTO $trans) : void
 	{
 		$this->translate->removeElement($trans);
 	}
 	
 	
-	
 	/** Роль доступа */
-	
 	
 	public function getRole() : RolePrefix
 	{
 		return $this->role;
 	}
-
+	
+	
 	public function setRole(RolePrefix $role) : void
 	{
 		$this->role = $role;
@@ -102,31 +105,29 @@ class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
 	
 	/** Path вида User:admin.index  */
 	
-	
 	public function getPath() : string
 	{
 		return $this->path;
 	}
-
+	
+	
 	public function setPath(string $path) : void
 	{
 		$this->path = $path;
 	}
 	
-	/** Сортировка */
 	
+	/** Сортировка */
 	
 	public function getSort() : int
 	{
 		return $this->sort;
 	}
 	
+	
 	public function setSort(int $sort) : void
 	{
 		$this->sort = $sort;
 	}
-	
-	
-	
 	
 }

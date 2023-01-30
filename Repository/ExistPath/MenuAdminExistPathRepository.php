@@ -32,9 +32,12 @@ final class MenuAdminExistPathRepository implements MenuAdminExistPathRepository
 {
 	private Connection $connection;
 	
-	public function __construct(Connection $connection){
+	
+	public function __construct(Connection $connection)
+	{
 		$this->connection = $connection;
 	}
+	
 	
 	public function isExist(string $path) : bool
 	{
@@ -51,4 +54,5 @@ final class MenuAdminExistPathRepository implements MenuAdminExistPathRepository
 		return (bool) $exist->fetchOne();
 		
 	}
+	
 }

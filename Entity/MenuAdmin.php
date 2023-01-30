@@ -31,8 +31,8 @@ use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
-
 /* MenuAdmin */
+
 
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin')]
@@ -49,23 +49,28 @@ class MenuAdmin
 	#[ORM\Column(type: MenuAdminEventUid::TYPE, unique: true)]
 	private MenuAdminEventUid $event;
 	
+	
 	public function __construct()
 	{
 		$this->id = new MenuAdminIdentificator();
 	}
+	
 	
 	public function getId() : MenuAdminIdentificator
 	{
 		return $this->id;
 	}
 	
+	
 	public function getEvent() : MenuAdminEventUid
 	{
 		return $this->event;
 	}
 	
+	
 	public function setEvent(MenuAdminEventUid|MenuAdminEvent $event) : void
 	{
 		$this->event = $event instanceof MenuAdminEvent ? $event->getId() : $event;
 	}
+	
 }

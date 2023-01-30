@@ -23,12 +23,52 @@
  *
  */
 
-namespace BaksDev\Menu\Admin\Type\Section;
+namespace BaksDev\Menu\Admin\DataFixtures\Menu\MenuAdminPath\Section\Trans;
 
-use BaksDev\Core\Type\UidType\Uid;
+use BaksDev\Core\Type\Locale\Locale;
+use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTransInterface;
 
-final class MenuAdminSectionUid extends Uid
+use Symfony\Component\Validator\Constraints as Assert;
+
+/* Перевод MenuAdminSectionTrans */
+
+
+class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
 {
-	public const TYPE = 'menu_admin_section_uid';
+	
+	/** Локаль */
+	#[Assert\NotBlank]
+	private readonly Locale $local;
+	
+	/** Название */
+	#[Assert\NotBlank]
+	private readonly string $name;
+	
+	/** Описание */
+	private readonly ?string $description;
+	
+	
+	/** Локаль */
+	
+	public function getLocal() : Locale
+	{
+		return $this->local;
+	}
+	
+	
+	/** Название */
+	
+	public function getName() : string
+	{
+		return $this->name;
+	}
+	
+	
+	/** Описание */
+	
+	public function getDescription() : ?string
+	{
+		return $this->description;
+	}
 	
 }

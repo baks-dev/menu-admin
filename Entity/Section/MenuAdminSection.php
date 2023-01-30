@@ -38,76 +38,79 @@ use InvalidArgumentException;
 
 /* Section */
 
+
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_section')]
 class MenuAdminSection extends EntityEvent
 {
-    const TABLE = 'menu_admin_section';
-    
-    /** ID */
-    #[ORM\Id]
-    #[ORM\Column(type: MenuAdminSectionUid::TYPE)]
-    private MenuAdminSectionUid $id;
-    
-    /** Связь на событие Event */
-    #[ORM\ManyToOne(targetEntity: MenuAdminEvent::class, inversedBy: "section")]
-    #[ORM\JoinColumn(name: 'event', referencedColumnName: "id", nullable: true)]
-    private ?MenuAdminEvent $event;
+	const TABLE = 'menu_admin_section';
+	
+	/** ID */
+	#[ORM\Id]
+	#[ORM\Column(type: MenuAdminSectionUid::TYPE)]
+	private MenuAdminSectionUid $id;
+	
+	/** Связь на событие Event */
+	#[ORM\ManyToOne(targetEntity: MenuAdminEvent::class, inversedBy: "section")]
+	#[ORM\JoinColumn(name: 'event', referencedColumnName: "id", nullable: true)]
+	private ?MenuAdminEvent $event;
 	
 	#[ORM\Column(name: 'groups', type: MenuAdminSectionGroup::TYPE, length: 10)]
 	private MenuAdminSectionGroup $group;
-    
-    /** Перевод екции */
-    #[ORM\OneToMany(mappedBy: 'section', targetEntity: MenuAdminSectionTrans::class, cascade: ['all'])]
-    private Collection $translate;
-    
-    /** Разделы */
-    #[ORM\OneToMany(mappedBy: 'section', targetEntity: MenuAdminSectionPath::class, cascade: ['all'])]
-    #[ORM\OrderBy(['sort' => 'ASC'])]
-    private Collection $path;
-    
-    /** Сортировка */
-    #[ORM\Column(name: 'sort', type: Types::SMALLINT, length: 3, nullable: false, options: ['default' => 500])]
-    private int $sort = 500;
-    
-    
-    public function __construct(MenuAdminEvent $event)
-    {
-        $this->id = new MenuAdminSectionUid();
-        $this->event = $event;
-    }
+	
+	/** Перевод екции */
+	#[ORM\OneToMany(mappedBy: 'section', targetEntity: MenuAdminSectionTrans::class, cascade: ['all'])]
+	private Collection $translate;
+	
+	/** Разделы */
+	#[ORM\OneToMany(mappedBy: 'section', targetEntity: MenuAdminSectionPath::class, cascade: ['all'])]
+	#[ORM\OrderBy(['sort' => 'ASC'])]
+	private Collection $path;
+	
+	/** Сортировка */
+	#[ORM\Column(name: 'sort', type: Types::SMALLINT, length: 3, nullable: false, options: ['default' => 500])]
+	private int $sort = 500;
+	
+	
+	public function __construct(MenuAdminEvent $event)
+	{
+		$this->id = new MenuAdminSectionUid();
+		$this->event = $event;
+	}
+	
 	
 	public function __clone() : void
 	{
 		$this->id = new MenuAdminSectionUid();
 	}
 	
-	public function getId() : MenuAdminSectionUid
-    {
-        return $this->id;
-    }
-    
-
-    public function getDto($dto) : mixed
-    {
-        if($dto instanceof MenuAdminSectionInterface)
-        {
-            return parent::getDto($dto);
-        }
-        
-        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
-    }
-
-    public function setEntity($dto) : mixed
-    {
-        
-        if($dto instanceof MenuAdminSectionInterface)
-        {
-            return parent::setEntity($dto);
-        }
-        
-        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
-    }
 	
+	public function getId() : MenuAdminSectionUid
+	{
+		return $this->id;
+	}
+	
+	
+	public function getDto($dto) : mixed
+	{
+		if($dto instanceof MenuAdminSectionInterface)
+		{
+			return parent::getDto($dto);
+		}
+		
+		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+	}
+	
+	
+	public function setEntity($dto) : mixed
+	{
+		
+		if($dto instanceof MenuAdminSectionInterface)
+		{
+			return parent::setEntity($dto);
+		}
+		
+		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+	}
 	
 }

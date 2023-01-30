@@ -25,8 +25,6 @@
 
 namespace BaksDev\Menu\Admin\Type\Path;
 
-
-
 use BaksDev\Core\Type\UidType\Uid;
 
 final class MenuAdminSectionPathUid extends Uid

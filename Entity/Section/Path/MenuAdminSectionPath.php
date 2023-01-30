@@ -34,9 +34,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
-
 /** Пунты меню MenuAdminSectionPath */
-
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_section_path')]
 class MenuAdminSectionPath extends EntityEvent
@@ -65,7 +63,6 @@ class MenuAdminSectionPath extends EntityEvent
 	#[ORM\Column(type: Types::STRING, length: 255, options: ['default' => 'Pages:admin.index'])]
 	private string $path;
 	
-	
 	/** Сортировка */
 	#[ORM\Column(type: Types::SMALLINT, length: 3, options: ['default' => 500])]
 	private int $sort;
@@ -81,10 +78,12 @@ class MenuAdminSectionPath extends EntityEvent
 		$this->sort = 500;
 	}
 	
+	
 	public function __clone() : void
 	{
 		$this->id = new MenuAdminSectionPathUid();
 	}
+	
 	
 	public function getDto($dto) : mixed
 	{
@@ -95,6 +94,7 @@ class MenuAdminSectionPath extends EntityEvent
 		
 		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
 	}
+	
 	
 	public function setEntity($dto) : mixed
 	{

@@ -37,9 +37,12 @@ final class ActiveMenuAdminEventRepository implements ActiveMenuAdminEventReposi
 {
 	private EntityManagerInterface $entityManager;
 	
-	public function __construct(EntityManagerInterface $entityManager){
+	
+	public function __construct(EntityManagerInterface $entityManager)
+	{
 		$this->entityManager = $entityManager;
 	}
+	
 	
 	/** Метод возвращает активное событие MenuAdminEvent  */
 	public function getEventOrNullResult() : ?MenuAdminEvent
@@ -54,4 +57,5 @@ final class ActiveMenuAdminEventRepository implements ActiveMenuAdminEventReposi
 		
 		return $qb->getQuery()->getOneOrNullResult();
 	}
+	
 }

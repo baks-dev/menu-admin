@@ -25,7 +25,7 @@
 
 namespace BaksDev\Menu\Admin\Type\SectionGroup;
 
-enum MenuAdminSectionGroupEnum: string
+enum MenuAdminSectionGroupEnum : string
 {
 	
 	case PRODUCTS = 'products'; // Продукция
@@ -33,4 +33,5 @@ enum MenuAdminSectionGroupEnum: string
 	case MARKETING = 'marketing'; // Пользователи
 	case ANALYTICS = 'analytics'; // Аналитика
 	case SETTINGS = 'settings'; // Натсройки
+	
 }

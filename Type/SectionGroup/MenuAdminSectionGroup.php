@@ -33,6 +33,7 @@ final class MenuAdminSectionGroup
 	
 	private MenuAdminSectionGroupEnum $type;
 	
+	
 	public function __construct(string|MenuAdminSectionGroupEnum $type)
 	{
 		if($type instanceof MenuAdminSectionGroupEnum)
@@ -51,11 +52,13 @@ final class MenuAdminSectionGroup
 		return $this->type->value;
 	}
 	
+	
 	/** Возвращает Enum   */
 	public function getType() : MenuAdminSectionGroupEnum
 	{
 		return $this->type;
 	}
+	
 	
 	/** Возвращает значение (value) String */
 	public function getValue() : string
@@ -63,11 +66,13 @@ final class MenuAdminSectionGroup
 		return $this->type->value;
 	}
 	
+	
 	/** Возвращает ключ (name) Enum */
 	public function getName() : string
 	{
 		return $this->type->name;
 	}
+	
 	
 	/** Возвращает массив из значнией ColorEnum */
 	public static function cases() : array
@@ -93,6 +98,8 @@ final class MenuAdminSectionGroup
 		}
 		
 		/* Вычисляем расхождение массивов */
+		
 		return array_diff(self::cases(), $search);
 	}
+	
 }

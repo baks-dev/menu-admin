@@ -11,12 +11,12 @@ return [
 			'ru' =>
 				[
 					'name' => 'Продукция',
-					'desc' => 'Продукция'
+					'desc' => 'Продукция',
 				],
 			'en' =>
 				[
 					'name' => 'Products',
-					'desc' => 'Products'
+					'desc' => 'Products',
 				],
 		],
 	
@@ -29,12 +29,12 @@ return [
 			'ru' =>
 				[
 					'name' => 'Пользователи',
-					'desc' => 'Пользователи'
+					'desc' => 'Пользователи',
 				],
 			'en' =>
 				[
 					'name' => 'Users',
-					'desc' => 'Users'
+					'desc' => 'Users',
 				],
 		],
 	
@@ -46,12 +46,12 @@ return [
 			'ru' =>
 				[
 					'name' => 'Маркетинг',
-					'desc' => 'Маркетинг'
+					'desc' => 'Маркетинг',
 				],
 			'en' =>
 				[
 					'name' => 'Marketing',
-					'desc' => 'Marketing'
+					'desc' => 'Marketing',
 				],
 		],
 	
@@ -63,12 +63,12 @@ return [
 			'ru' =>
 				[
 					'name' => 'Аналитика',
-					'desc' => 'Аналитика'
+					'desc' => 'Аналитика',
 				],
 			'en' =>
 				[
 					'name' => 'Analytics',
-					'desc' => 'Analytics'
+					'desc' => 'Analytics',
 				],
 		],
 	
@@ -80,12 +80,12 @@ return [
 			'ru' =>
 				[
 					'name' => 'Натсройки',
-					'desc' => 'Натсройки'
+					'desc' => 'Натсройки',
 				],
 			'en' =>
 				[
 					'name' => 'Settings',
-					'desc' => 'Settings'
+					'desc' => 'Settings',
 				],
 		],
 ];

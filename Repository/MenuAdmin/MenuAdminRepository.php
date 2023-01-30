@@ -5,8 +5,10 @@ namespace BaksDev\Menu\Admin\Repository\MenuAdmin;
 use BaksDev\Menu\Admin\Entity as EntityMenuAdmin;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use BaksDev\Core\Type\Locale\Locale;
+use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class MenuAdminRepository implements MenuAdminRepositoryInterface
@@ -15,25 +17,36 @@ final class MenuAdminRepository implements MenuAdminRepositoryInterface
 	
 	private Locale $locale;
 	
+	
 	public function __construct(Connection $connection, TranslatorInterface $translator)
 	{
 		$this->connection = $connection;
 		$this->locale = new Locale($translator->getLocale());
 	}
 	
+	
+	/**
+	 * Метод возвращает массив меню администратора с группировкой
+	 *
+	 *
+	 *
+	 */
+	
 	public function fetchAllAssociativeIndexed() : array
 	{
 		$qb = $this->connection->createQueryBuilder();
 		
-		$qb->select('section.groups');
+		$qb->addSelect('section.groups');
+		$qb->addSelect('section.sort')->addGroupBy('section.sort');
 		$qb->addSelect('section_trans.name')->addGroupBy('section_trans.name');
 		
-		
-		$qb->addSelect('ARRAY_TO_JSON(ARRAY_AGG(ARRAY[path.role, path.path, path_trans.name])) AS path');
+		$qb->addSelect('ARRAY_TO_JSON(ARRAY_AGG(ARRAY[path.role, path.path, path_trans.name] ORDER BY path.sort)) AS path'
+		);
 		
 		$qb->from(EntityMenuAdmin\MenuAdmin::TABLE, 'menu');
 		
-		$qb->join('menu',
+		$qb->join(
+			'menu',
 			EntityMenuAdmin\Section\MenuAdminSection::TABLE,
 			'section',
 			'section.event = menu.event'
@@ -67,21 +80,27 @@ final class MenuAdminRepository implements MenuAdminRepositoryInterface
 		$qb->setParameter('menu', MenuAdminIdentificator::TYPE);
 		$qb->setParameter('locale', $this->locale, Locale::TYPE);
 		
+		$qb->orderBy('section.sort', 'ASC');
 		
-//		dd(json_decode($qb->fetchAllAssociativeIndexed()['settings']['agg_path_trans']));
-//
-//		$arrAgg = $qb->fetchAllAssociative()[0]['agg_path'];
-//		dd(json_decode($arrAgg));
-//
-//		dd($qb->fetchAllAssociative()[0]['agg_path']);
+		$cacheFilesystem = new FilesystemAdapter('CacheMenuAdmin');
 		
+		$config = $this->connection->getConfiguration();
+		$config?->setResultCache($cacheFilesystem);
 		
-		return $qb->fetchAllAssociativeIndexed();
+		//dump($qb->fetchAllAssociativeIndexed());
+		
+		return $this->connection->executeCacheQuery(
+			$qb->getSQL(),
+			$qb->getParameters(),
+			$qb->getParameterTypes(),
+			new QueryCacheProfile((60 * 60 * 365), MenuAdminIdentificator::TYPE.$this->locale)
+		)->fetchAllAssociativeIndexed();
+		
+		//return $qb->fetchAllAssociativeIndexed();
 	}
 	
-	
-	public function getPath() : array
+	/*public function getPath() : array
 	{
 		return [];
-	}
+	}*/
 }

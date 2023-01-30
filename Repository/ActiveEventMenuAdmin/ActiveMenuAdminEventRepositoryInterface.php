@@ -31,4 +31,5 @@ use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroupEnum;
 interface ActiveMenuAdminEventRepositoryInterface
 {
 	public function getEventOrNullResult() : ?MenuAdminEvent;
+	
 }

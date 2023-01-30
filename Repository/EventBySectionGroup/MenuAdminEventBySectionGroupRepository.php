@@ -36,10 +36,12 @@ final class MenuAdminEventBySectionGroupRepository implements MenuAdminEventBySe
 {
 	private EntityManagerInterface $entityManager;
 	
+	
 	public function __construct(EntityManagerInterface $entityManager)
 	{
 		$this->entityManager = $entityManager;
 	}
+	
 	
 	/** Метод возвращает активное событие MenuAdminEvent  */
 	public function getOneOrNullResult(MenuAdminSectionGroupEnum $group) : ?MenuAdminEvent
@@ -53,4 +55,5 @@ final class MenuAdminEventBySectionGroupRepository implements MenuAdminEventBySe
 		
 		return $qb->getQuery()->getOneOrNullResult();
 	}
+	
 }

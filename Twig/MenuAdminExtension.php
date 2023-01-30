@@ -34,27 +34,38 @@ final class MenuAdminExtension extends AbstractExtension
 {
 	private MenuAdminRepositoryInterface $MenuAdmin;
 	
-	public function __construct(MenuAdminRepositoryInterface $repository){
+	
+	public function __construct(MenuAdminRepositoryInterface $repository)
+	{
 		
 		$this->MenuAdmin = $repository;
 	}
 	
-	public function getFunctions(): array
+	
+	public function getFunctions() : array
 	{
 		return [
-			new TwigFunction('render_menu_admin', [$this, 'renderMenuAdmin'], ['needs_environment' => true, 'is_safe' => ['html']]),
+			new TwigFunction('render_menu_admin',
+				[$this, 'renderMenuAdmin'],
+				['needs_environment' => true, 'is_safe' => ['html']]
+			),
 		];
 	}
 	
-	public function renderMenuAdmin(Environment $twig): string
-    {
+	
+	public function renderMenuAdmin(Environment $twig) : string
+	{
+		$menu = $this->MenuAdmin->fetchAllAssociativeIndexed();
+		
 		try
 		{
-			return $twig->render('@Template/MenuAdmin/twig/menu.admin.html.twig', ['data' => $this->MenuAdmin->fetchAllAssociativeIndexed()]);
+			return $twig->render('@Template/MenuAdmin/twig/menu.admin.html.twig', ['data' => $menu]);
 			
-		} catch(\Exception $exception)
+		}
+		catch(\Exception $exception)
 		{
-			return $twig->render('@MenuAdmin/twig/menu.admin.html.twig', ['data' => $this->MenuAdmin->fetchAllAssociativeIndexed()]);
+			return $twig->render('@MenuAdmin/twig/menu.admin.html.twig', ['data' => $menu]);
 		}
 	}
+	
 }

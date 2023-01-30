@@ -23,12 +23,10 @@
  *
  */
 
-namespace BaksDev\Menu\Admin\DataFixtures\Menu\MenuAdminSection\Section;
+namespace BaksDev\Menu\Admin\DataFixtures\Menu\MenuAdminPath\Section;
 
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSectionInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroup;
-use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroupEnum;
-use BaksDev\Core\Type\Locale\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -39,11 +37,10 @@ class MenuAdminSectionDTO implements MenuAdminSectionInterface
 {
 	/** Группа секции */
 	#[Assert\NotBlank]
-	private MenuAdminSectionGroup $group;
+	private readonly MenuAdminSectionGroup $group;
 	
 	/** Перевод секции */
-	#[Assert\Valid]
-	private ArrayCollection $translate;
+	private readonly ArrayCollection $translate;
 	
 	/** Разделы */
 	#[Assert\Valid]
@@ -51,7 +48,7 @@ class MenuAdminSectionDTO implements MenuAdminSectionInterface
 	
 	/** Сортировка */
 	#[Assert\Range(min: 1, max: 999)]
-	private int $sort = 500;
+	private readonly int $sort;
 	
 	
 	public function __construct()
@@ -69,24 +66,10 @@ class MenuAdminSectionDTO implements MenuAdminSectionInterface
 	}
 	
 	
-	public function setGroup(MenuAdminSectionGroup|MenuAdminSectionGroupEnum $group) : void
-	{
-		$this->group = $group instanceof MenuAdminSectionGroupEnum ? new MenuAdminSectionGroup($group) : $group;
-	}
-	
-	
-	/** Перевод екции */
+	/** Перевод секции */
 	
 	public function getTranslate() : ArrayCollection
 	{
-		/* Вычисляем расхождение и добавляем неопределенные локали */
-		foreach(Locale::diffLocale($this->translate) as $locale)
-		{
-			$TransFormDTO = new Trans\MenuAdminSectionTransDTO();
-			$TransFormDTO->setLocal($locale);
-			$this->addTranslate($TransFormDTO);
-		}
-		
 		return $this->translate;
 	}
 	
@@ -100,12 +83,6 @@ class MenuAdminSectionDTO implements MenuAdminSectionInterface
 	}
 	
 	
-	public function removeTranslate(Trans\MenuAdminSectionTransDTO $trans) : void
-	{
-		$this->translate->removeElement($trans);
-	}
-	
-	
 	/** Разделы */
 	
 	public function getPath() : ArrayCollection
@@ -114,23 +91,21 @@ class MenuAdminSectionDTO implements MenuAdminSectionInterface
 	}
 	
 	
-	public function setPath(ArrayCollection $path) : void
+	public function addPath(Path\MenuAdminSectionPathDTO $path) : void
 	{
-		$this->path = $path;
+		if(!$this->path->contains($path))
+		{
+			$this->path->add($path);
+		}
 	}
 	
 	
-	/** Сортировка */
-	
-	public function getSort() : int
+	/**
+	 * @return mixed
+	 */
+	public function getSort()
 	{
 		return $this->sort;
-	}
-	
-	
-	public function setSort(int $sort) : void
-	{
-		$this->sort = $sort;
 	}
 	
 }

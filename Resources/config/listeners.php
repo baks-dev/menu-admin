@@ -21,19 +21,20 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use BaksDev\Menu\Admin\Entity\Modify\MenuAdminModify;
 use BaksDev\Menu\Admin\EntityListeners\MenuAdminModifyListener;
 
-return static function (ContainerConfigurator $configurator)
-{
-    $services = $configurator->services()
-      ->defaults()
-      ->autowire()
-      ->autoconfigure();
-    
-    /** EntityListeners */
-    $services->set(MenuAdminModifyListener::class)
-      ->class(MenuAdminModifyListener::class)
-      ->tag(
-        'doctrine.orm.entity_listener',
-        ['event' => 'prePersist', 'lazy' => true, 'entity' => MenuAdminModify::class]);
-    
-    
+return static function(ContainerConfigurator $configurator) {
+	$services = $configurator->services()
+		->defaults()
+		->autowire()
+		->autoconfigure()
+	;
+	
+	/** EntityListeners */
+	$services->set(MenuAdminModifyListener::class)
+		->class(MenuAdminModifyListener::class)
+		->tag(
+			'doctrine.orm.entity_listener',
+			['event' => 'prePersist', 'lazy' => true, 'entity' => MenuAdminModify::class]
+		)
+	;
+	
 };

@@ -23,12 +23,53 @@
  *
  */
 
-namespace BaksDev\Menu\Admin\Type\Section;
+namespace BaksDev\Menu\Admin\DataFixtures\Menu\MenuAdminPath;
 
-use BaksDev\Core\Type\UidType\Uid;
+use BaksDev\Menu\Admin\Entity\Event\MenuAdminEventInterface;
+use BaksDev\Menu\Admin\Type\Event\MenuAdminEventUid;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
-final class MenuAdminSectionUid extends Uid
+final class MenuAdminDTO implements MenuAdminEventInterface
 {
-	public const TYPE = 'menu_admin_section_uid';
+	
+	/** Идентификатор события */
+	#[Assert\Uuid]
+	private ?MenuAdminEventUid $id = null;
+	
+	/** Секции меню */
+	#[Assert\Valid]
+	private ArrayCollection $section;
+	
+	
+	public function __construct()
+	{
+		$this->section = new ArrayCollection();
+	}
+	
+	
+	/** Идентификатор события */
+	
+	public function getEvent() : ?MenuAdminEventUid
+	{
+		return $this->id;
+	}
+	
+	
+	/** Секции меню */
+	
+	public function getSection() : ArrayCollection
+	{
+		return $this->section;
+	}
+	
+	
+	public function addSection(Section\MenuAdminSectionDTO $section) : void
+	{
+		if(!$this->section->contains($section))
+		{
+			$this->section->add($section);
+		}
+	}
 	
 }

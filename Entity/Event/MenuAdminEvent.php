@@ -44,6 +44,7 @@ use InvalidArgumentException;
 
 /* MenuAdminEvent */
 
+
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_event')]
 class MenuAdminEvent extends EntityEvent
@@ -59,7 +60,6 @@ class MenuAdminEvent extends EntityEvent
 	#[ORM\Column(type: MenuAdminIdentificator::TYPE, length: 10, nullable: false)]
 	private ?MenuAdminIdentificator $main = null;
 	
-	
 	/** One To One */
 	//#[ORM\OneToOne(mappedBy: 'event', targetEntity: MenuAdminLogo::class, cascade: ['all'])]
 	//private ?MenuAdminOne $one = null;
@@ -72,10 +72,12 @@ class MenuAdminEvent extends EntityEvent
 	#[ORM\OneToMany(mappedBy: 'event', targetEntity: MenuAdminSection::class, cascade: ['all'])]
 	private Collection $section;
 	
+	
 	public function __toString() : string
 	{
 		return $this->id;
 	}
+	
 	
 	public function __construct()
 	{
@@ -83,6 +85,7 @@ class MenuAdminEvent extends EntityEvent
 		$this->modify = new MenuAdminModify($this);
 		
 	}
+	
 	
 	public function __clone()
 	{
@@ -95,6 +98,7 @@ class MenuAdminEvent extends EntityEvent
 		return $this->id;
 	}
 	
+	
 	public function setMain(MenuAdminIdentificator|MenuAdmin $main) : void
 	{
 		$this->main = $main instanceof MenuAdmin ? $main->getId() : $main;
@@ -106,6 +110,7 @@ class MenuAdminEvent extends EntityEvent
 		return $this->main;
 	}
 	
+	
 	public function getDto($dto) : mixed
 	{
 		if($dto instanceof MenuAdminEventInterface)
@@ -115,6 +120,7 @@ class MenuAdminEvent extends EntityEvent
 		
 		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
 	}
+	
 	
 	public function setEntity($dto) : mixed
 	{

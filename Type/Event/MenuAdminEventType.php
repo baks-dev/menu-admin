@@ -25,7 +25,6 @@
 
 namespace BaksDev\Menu\Admin\Type\Event;
 
-
 use BaksDev\Core\Type\UidType\UidType;
 
 final class MenuAdminEventType extends UidType
@@ -35,8 +34,10 @@ final class MenuAdminEventType extends UidType
 		return MenuAdminEventUid::class;
 	}
 	
+	
 	public function getName() : string
 	{
 		return MenuAdminEventUid::TYPE;
 	}
+	
 }

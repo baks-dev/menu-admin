@@ -23,21 +23,71 @@
  *
  */
 
-namespace BaksDev\Menu\Admin\Type\Section;
+namespace BaksDev\Menu\Admin\DataFixtures\Menu\MenuAdminPath\Section\Path\Trans;
 
-use BaksDev\Core\Type\UidType\UidType;
+use BaksDev\Core\Type\Locale\Locale;
+use BaksDev\Menu\Admin\Entity\Section\Path\Trans\MenuAdminSectionPathTransInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
-final class MenuAdminSectionType extends UidType
+/* Перевод MenuAdminSectionPathTrans */
+
+
+class MenuAdminSectionPathTransDTO implements MenuAdminSectionPathTransInterface
 {
-	public function getClassType() : string
+	/** Локаль */
+	#[Assert\NotBlank]
+	private readonly Locale $local;
+	
+	/** Название */
+	#[Assert\NotBlank]
+	private string $name;
+	
+	/** Описание */
+	private ?string $description;
+	
+	
+	/** Локаль */
+	
+	public function setLocal(string $local) : void
 	{
-		return MenuAdminSectionUid::class;
+		if(!(new \ReflectionProperty($this::class, 'local'))->isInitialized($this))
+		{
+			$this->local = new Locale($local);
+		}
 	}
 	
 	
+	public function getLocal() : Locale
+	{
+		return $this->local;
+	}
+	
+	
+	/** Название */
+	
 	public function getName() : string
 	{
-		return MenuAdminSectionUid::TYPE;
+		return $this->name;
+	}
+	
+	
+	public function setName(string $name) : void
+	{
+		$this->name = $name;
+	}
+	
+	
+	/** Описание */
+	
+	public function getDescription() : ?string
+	{
+		return $this->description;
+	}
+	
+	
+	public function setDescription(?string $description) : void
+	{
+		$this->description = $description;
 	}
 	
 }

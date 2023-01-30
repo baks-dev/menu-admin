@@ -35,6 +35,7 @@ use InvalidArgumentException;
 
 /* Перевод MenuAdminSectionPathTrans */
 
+
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_section_path_trans')]
 #[ORM\Index(columns: ['name'])]
@@ -61,10 +62,12 @@ class MenuAdminSectionPathTrans extends EntityEvent
 	#[ORM\Column(type: Types::TEXT, nullable: true)]
 	private ?string $description;
 	
+	
 	public function __construct(MenuAdminSectionPath $path)
 	{
 		$this->path = $path;
 	}
+	
 	
 	public function getDto($dto) : mixed
 	{
@@ -75,6 +78,7 @@ class MenuAdminSectionPathTrans extends EntityEvent
 		
 		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
 	}
+	
 	
 	public function setEntity($dto) : mixed
 	{
@@ -87,6 +91,7 @@ class MenuAdminSectionPathTrans extends EntityEvent
 		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
 	}
 	
+	
 	public function name(Locale $locale) : ?string
 	{
 		if($this->local->getValue() === $locale->getValue())
@@ -96,4 +101,5 @@ class MenuAdminSectionPathTrans extends EntityEvent
 		
 		return null;
 	}
+	
 }

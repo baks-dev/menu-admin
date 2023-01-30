@@ -42,9 +42,9 @@ final class MenuAdminDTO implements MenuAdminEventInterface
 	#[Assert\Valid]
 	private ArrayCollection $section;
 	
-	
 	private bool $update = false;
-
+	
+	
 	public function __construct()
 	{
 		$this->section = new ArrayCollection();
@@ -53,7 +53,6 @@ final class MenuAdminDTO implements MenuAdminEventInterface
 	
 	/** Идентификатор события */
 	
-	
 	public function getEvent() : ?MenuAdminEventUid
 	{
 		return $this->id;
@@ -61,7 +60,6 @@ final class MenuAdminDTO implements MenuAdminEventInterface
 	
 	
 	/** Секции меню */
-	
 	
 	public function getSection() : ArrayCollection
 	{
@@ -74,9 +72,10 @@ final class MenuAdminDTO implements MenuAdminEventInterface
 			
 			$this->update = true;
 		}
-
+		
 		return $this->section;
 	}
+	
 	
 	public function addSection(Section\MenuAdminSectionDTO $section) : void
 	{
@@ -86,11 +85,13 @@ final class MenuAdminDTO implements MenuAdminEventInterface
 		}
 	}
 	
+	
 	public function removeSection(Section\MenuAdminSectionDTO $section) : void
 	{
 		$this->section->removeElement($section);
 		
 	}
+	
 	
 	/**
 	 * @return bool
@@ -99,5 +100,5 @@ final class MenuAdminDTO implements MenuAdminEventInterface
 	{
 		return $this->update;
 	}
-
+	
 }

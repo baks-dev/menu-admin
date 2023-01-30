@@ -27,5 +27,9 @@ namespace BaksDev\Menu\Admin\Repository\MenuAdmin;
 
 interface MenuAdminRepositoryInterface
 {
+	/**
+	 * Метод возвращает массив меню администратора с группировкой
+	 */
 	public function fetchAllAssociativeIndexed() : array;
+	
 }

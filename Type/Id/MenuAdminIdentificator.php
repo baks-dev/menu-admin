@@ -20,23 +20,26 @@ namespace BaksDev\Menu\Admin\Type\Id;
 
 final class MenuAdminIdentificator
 {
-    public const TYPE = 'menu_admin';
-    
-    private string $value;
-
-    public function __construct()
-    {
-        $this->value = self::TYPE;
-    }
-    
-    public function __toString() : string
-    {
-        return $this->value;
-    }
-    
-    public function getValue() : string
-    {
-        return $this->value;
-    }
-    
+	public const TYPE = 'menu_admin';
+	
+	private string $value;
+	
+	
+	public function __construct()
+	{
+		$this->value = self::TYPE;
+	}
+	
+	
+	public function __toString() : string
+	{
+		return $this->value;
+	}
+	
+	
+	public function getValue() : string
+	{
+		return $this->value;
+	}
+	
 }

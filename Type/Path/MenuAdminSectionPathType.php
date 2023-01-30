@@ -25,7 +25,6 @@
 
 namespace BaksDev\Menu\Admin\Type\Path;
 
-
 use BaksDev\Core\Type\UidType\UidType;
 
 final class MenuAdminSectionPathType extends UidType
@@ -35,8 +34,10 @@ final class MenuAdminSectionPathType extends UidType
 		return MenuAdminSectionPathUid::class;
 	}
 	
+	
 	public function getName() : string
 	{
 		return MenuAdminSectionPathUid::TYPE;
 	}
+	
 }

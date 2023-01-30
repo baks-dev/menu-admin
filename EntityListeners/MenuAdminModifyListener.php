@@ -26,36 +26,39 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class MenuAdminModifyListener
 {
-    private RequestStack $request;
-    private TokenStorageInterface $token;
-    
-    public function __construct(
-      RequestStack $request,
-      TokenStorageInterface $token,
-    )
-    {
-        $this->request = $request;
-        $this->token = $token;
-    }
-    
-    public function prePersist(MenuAdminModify $data, LifecycleEventArgs $event)
-    {
-        $token = $this->token->getToken();
-    
-        if($token)
-        {
-            $data->setUser($token->getUser());
-        }
-    
-        /* Если пользователь не из консоли */
-        if($this->request->getCurrentRequest())
-        {
-        
-            $data->upModifyAgent(
-              new IpAddress($this->request->getCurrentRequest()->getClientIp()), /* Ip */
-              $this->request->getCurrentRequest()->headers->get('User-Agent') /* User-Agent */
-            );
-        }
-    }
-    
+	private RequestStack $request;
+	
+	private TokenStorageInterface $token;
+	
+	
+	public function __construct(
+		RequestStack $request,
+		TokenStorageInterface $token,
+	)
+	{
+		$this->request = $request;
+		$this->token = $token;
+	}
+	
+	
+	public function prePersist(MenuAdminModify $data, LifecycleEventArgs $event)
+	{
+		$token = $this->token->getToken();
+		
+		if($token)
+		{
+			$data->setUser($token->getUser());
+		}
+		
+		/* Если пользователь не из консоли */
+		if($this->request->getCurrentRequest())
+		{
+			
+			$data->upModifyAgent(
+				new IpAddress($this->request->getCurrentRequest()->getClientIp()), /* Ip */
+				$this->request->getCurrentRequest()->headers->get('User-Agent') /* User-Agent */
+			);
+		}
+	}
+	
 }

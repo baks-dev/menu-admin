@@ -31,6 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /* Перевод MenuAdminSectionPathTrans */
 
+
 class MenuAdminSectionPathTransDTO implements MenuAdminSectionPathTransInterface
 {
 	/** Локаль */
@@ -51,14 +52,16 @@ class MenuAdminSectionPathTransDTO implements MenuAdminSectionPathTransInterface
 	{
 		if(!(new \ReflectionProperty($this::class, 'local'))->isInitialized($this))
 		{
-			$this->local = new Locale($local) ;
+			$this->local = new Locale($local);
 		}
 	}
+	
 	
 	public function getLocal() : Locale
 	{
 		return $this->local;
 	}
+	
 	
 	/** Название */
 	
@@ -67,10 +70,12 @@ class MenuAdminSectionPathTransDTO implements MenuAdminSectionPathTransInterface
 		return $this->name;
 	}
 	
+	
 	public function setName(string $name) : void
 	{
 		$this->name = $name;
 	}
+	
 	
 	/** Описание */
 	
@@ -79,10 +84,10 @@ class MenuAdminSectionPathTransDTO implements MenuAdminSectionPathTransInterface
 		return $this->description;
 	}
 	
+	
 	public function setDescription(?string $description) : void
 	{
 		$this->description = $description;
 	}
-	
 	
 }
