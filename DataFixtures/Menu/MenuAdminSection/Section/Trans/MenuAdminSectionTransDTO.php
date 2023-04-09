@@ -75,7 +75,7 @@ class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
 	//	case USER = 'user'; // Пользователи
 	//	case MARKETING = 'marketing'; // Пользователи
 	//	case ANALYTICS = 'analytics'; // Аналитика
-	//	case SETTINGS = 'settings'; // Натсройки
+	//	case SETTINGS = 'settings'; // Настройки
 	
 	/** Локаль */
 	#[Assert\NotBlank]

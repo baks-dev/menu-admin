@@ -26,6 +26,7 @@
 namespace BaksDev\Menu\Admin\Twig;
 
 use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminRepositoryInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -34,11 +35,14 @@ final class MenuAdminExtension extends AbstractExtension
 {
 	private MenuAdminRepositoryInterface $MenuAdmin;
 	
+	private TranslatorInterface $translator;
 	
-	public function __construct(MenuAdminRepositoryInterface $repository)
+	
+	public function __construct(MenuAdminRepositoryInterface $repository, TranslatorInterface $translator)
 	{
 		
 		$this->MenuAdmin = $repository;
+		$this->translator = $translator;
 	}
 	
 	
@@ -55,6 +59,7 @@ final class MenuAdminExtension extends AbstractExtension
 	
 	public function renderMenuAdmin(Environment $twig) : string
 	{
+
 		$menu = $this->MenuAdmin->fetchAllAssociativeIndexed();
 		
 		try
