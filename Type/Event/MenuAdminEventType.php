@@ -26,6 +26,7 @@
 namespace BaksDev\Menu\Admin\Type\Event;
 
 use BaksDev\Core\Type\UidType\UidType;
+use Doctrine\DBAL\Types\Types;
 
 final class MenuAdminEventType extends UidType
 {
@@ -37,7 +38,7 @@ final class MenuAdminEventType extends UidType
 	
 	public function getName() : string
 	{
-		return MenuAdminEventUid::TYPE;
+        return MenuAdminEventUid::TYPE;
 	}
 	
 }

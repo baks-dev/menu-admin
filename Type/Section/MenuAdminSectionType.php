@@ -26,6 +26,7 @@
 namespace BaksDev\Menu\Admin\Type\Section;
 
 use BaksDev\Core\Type\UidType\UidType;
+use Doctrine\DBAL\Types\Types;
 
 final class MenuAdminSectionType extends UidType
 {
@@ -37,7 +38,7 @@ final class MenuAdminSectionType extends UidType
 	
 	public function getName() : string
 	{
-		return MenuAdminSectionUid::TYPE;
+        return MenuAdminSectionUid::TYPE;
 	}
 	
 }

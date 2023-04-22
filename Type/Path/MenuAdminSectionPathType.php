@@ -26,6 +26,7 @@
 namespace BaksDev\Menu\Admin\Type\Path;
 
 use BaksDev\Core\Type\UidType\UidType;
+use Doctrine\DBAL\Types\Types;
 
 final class MenuAdminSectionPathType extends UidType
 {
@@ -37,7 +38,7 @@ final class MenuAdminSectionPathType extends UidType
 	
 	public function getName() : string
 	{
-		return MenuAdminSectionPathUid::TYPE;
+        return MenuAdminSectionPathUid::TYPE;
 	}
 	
 }

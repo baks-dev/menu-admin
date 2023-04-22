@@ -31,103 +31,86 @@ use BaksDev\Users\Groups\Role\Type\RolePrefix\RolePrefix;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/* MenuAdminSectionPath */
-
+// MenuAdminSectionPath
 
 class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
 {
-	/** Перевод раздела */
-	#[Assert\Valid]
-	private ArrayCollection $translate;
-	
-	/** Роль доступа */
-	#[Assert\NotBlank]
-	private RolePrefix $role;
-	
-	/** Path вида User:admin.index  */
-	#[Assert\NotBlank]
-	private string $path;
-	
-	/** Сортировка */
-	#[Assert\NotBlank]
-	#[Assert\Range(min: 1, max: 999)]
-	private int $sort = 500;
-	
-	
-	public function __construct()
-	{
-		$this->translate = new ArrayCollection();
-	}
-	
-	
-	public function getTranslate() : ArrayCollection
-	{
-		/* Вычисляем расхождение и добавляем неопределенные локали */
-		foreach(Locale::diffLocale($this->translate) as $locale)
-		{
-			$TransFormDTO = new Trans\MenuAdminSectionPathTransDTO();
-			$TransFormDTO->setLocal($locale);
-			$this->addTranslate($TransFormDTO);
-		}
-		
-		return $this->translate;
-	}
-	
-	
-	public function addTranslate(Trans\MenuAdminSectionPathTransDTO $trans) : void
-	{
-		if(!$this->translate->contains($trans))
-		{
-			$this->translate->add($trans);
-		}
-	}
-	
-	
-	public function removeTranslate(Trans\MenuAdminSectionPathTransDTO $trans) : void
-	{
-		$this->translate->removeElement($trans);
-	}
-	
-	
-	/** Роль доступа */
-	
-	public function getRole() : RolePrefix
-	{
-		return $this->role;
-	}
-	
-	
-	public function setRole(RolePrefix $role) : void
-	{
-		$this->role = $role;
-	}
-	
-	
-	/** Path вида User:admin.index  */
-	
-	public function getPath() : string
-	{
-		return $this->path;
-	}
-	
-	
-	public function setPath(string $path) : void
-	{
-		$this->path = $path;
-	}
-	
-	
-	/** Сортировка */
-	
-	public function getSort() : int
-	{
-		return $this->sort;
-	}
-	
-	
-	public function setSort(int $sort) : void
-	{
-		$this->sort = $sort;
-	}
-	
+    /** Перевод раздела */
+    #[Assert\Valid]
+    private ArrayCollection $translate;
+
+    /** Роль доступа */
+    #[Assert\NotBlank]
+    private RolePrefix $role;
+
+    /** Path вида User:admin.index  */
+    #[Assert\NotBlank]
+    private string $path;
+
+    /** Сортировка */
+    #[Assert\NotBlank]
+    #[Assert\Range(min: 1, max: 999)]
+    private int $sort = 500;
+
+    public function __construct()
+    {
+        $this->translate = new ArrayCollection();
+    }
+
+    public function getTranslate(): ArrayCollection
+    {
+        // Вычисляем расхождение и добавляем неопределенные локали
+        foreach (Locale::diffLocale($this->translate) as $locale) {
+            $TransFormDTO = new Trans\MenuAdminSectionPathTransDTO();
+            $TransFormDTO->setLocal($locale);
+            $this->addTranslate($TransFormDTO);
+        }
+
+        return $this->translate;
+    }
+
+    public function addTranslate(Trans\MenuAdminSectionPathTransDTO $trans): void
+    {
+        if (!$this->translate->contains($trans)) {
+            $this->translate->add($trans);
+        }
+    }
+
+    public function removeTranslate(Trans\MenuAdminSectionPathTransDTO $trans): void
+    {
+        $this->translate->removeElement($trans);
+    }
+
+    /** Роль доступа */
+    public function getRole(): RolePrefix
+    {
+        return $this->role;
+    }
+
+    public function setRole(RolePrefix $role): void
+    {
+        $this->role = $role;
+    }
+
+    /** Path вида User:admin.index  */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    public function setPath(string $path): void
+    {
+        $this->path = $path;
+    }
+
+    /** Сортировка */
+    public function getSort(): int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): void
+    {
+        $this->sort = $sort;
+    }
 }
