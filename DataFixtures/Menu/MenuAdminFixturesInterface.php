@@ -21,16 +21,23 @@
  *  THE SOFTWARE.
  */
 
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+namespace BaksDev\Menu\Admin\DataFixtures\Menu;
 
-return static function (ContainerConfigurator $configurator) {
-    $services = $configurator->services()
-        ->defaults()
-        ->autowire()      // Automatically injects dependencies in your services.
-        ->autoconfigure() // Automatically registers your services as commands, event subscribers, etc.
-    ;
+use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroupEnum;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-    $namespace = 'BaksDev\Menu\Admin';
+#[AutoconfigureTag('baks.menu.admin')]
+interface MenuAdminFixturesInterface
+{
+    /** Метод возвращает префикс роли доступа */
+    public function getRole(): string;
 
-    $services->load($namespace.'\Repository\\', __DIR__.'/../../Repository');
-};
+    /** Метод возвращает PATH раздела */
+    public function getPath(): string;
+
+    /** Метод возвращает секцию, в которую помещается ссылка на раздел */
+    public function getGroupMenu(): MenuAdminSectionGroupEnum|bool;
+
+    /** Метод возвращает позицию, в которую распологается ссылка в секции меню */
+    public function getSortMenu(): int;
+}

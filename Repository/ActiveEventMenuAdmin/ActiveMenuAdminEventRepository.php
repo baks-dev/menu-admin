@@ -27,35 +27,29 @@ namespace BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin;
 
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
-use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
-use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroup;
-use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroupEnum;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class ActiveMenuAdminEventRepository implements ActiveMenuAdminEventRepositoryInterface
 {
-	private EntityManagerInterface $entityManager;
-	
-	
-	public function __construct(EntityManagerInterface $entityManager)
-	{
-		$this->entityManager = $entityManager;
-	}
-	
-	
-	/** Метод возвращает активное событие MenuAdminEvent  */
-	public function getEventOrNullResult() : ?MenuAdminEvent
-	{
-		$qb = $this->entityManager->createQueryBuilder();
-		$qb->select('event');
-		$qb->from(MenuAdmin::class, 'menu');
-		$qb->join(MenuAdminEvent::class, 'event', 'WITH', 'event.id = menu.event');
-		
-		$qb->where('menu.id = :menu');
-		$qb->setParameter('menu', MenuAdminIdentificator::TYPE);
-		
-		return $qb->getQuery()->getOneOrNullResult();
-	}
-	
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /** Метод возвращает активное событие MenuAdminEvent  */
+    public function getEventOrNullResult(): ?MenuAdminEvent
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('event');
+        $qb->from(MenuAdmin::class, 'menu');
+        $qb->join(MenuAdminEvent::class, 'event', 'WITH', 'event.id = menu.event');
+
+        $qb->where('menu.id = :menu');
+        $qb->setParameter('menu', MenuAdminIdentificator::TYPE);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

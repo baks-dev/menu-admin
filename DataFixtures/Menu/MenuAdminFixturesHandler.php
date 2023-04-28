@@ -31,110 +31,93 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class MenuAdminFixturesHandler
 {
-	private EntityManagerInterface $entityManager;
-	
-	private ValidatorInterface $validator;
-	
-	private LoggerInterface $logger;
-	
-	
-	public function __construct(
-		EntityManagerInterface $entityManager,
-		ValidatorInterface $validator,
-		LoggerInterface $logger,
-	)
-	{
-		$this->entityManager = $entityManager;
-		$this->validator = $validator;
-		$this->logger = $logger;
-	}
-	
-	
-	public function handle(
-		MenuAdminEventInterface $command,
-	) : string|Entity\MenuAdmin
-	{
-		/* Валидация */
-		$errors = $this->validator->validate($command);
-		
-		if(count($errors) > 0)
-		{
-			$uniqid = uniqid('', false);
-			$errorsString = (string) $errors;
-			$this->logger->error($uniqid.': '.$errorsString);
-			
-			return $uniqid;
-		}
-		
-		if($command->getEvent())
-		{
-			/** @var Entity\Event\MenuAdminEvent $EventRepo */
-			$EventRepo = $this->entityManager->getRepository(Entity\Event\MenuAdminEvent::class)->find(
-				$command->getEvent()
-			);
-			
-			if($EventRepo === null)
-			{
-				$uniqid = uniqid('', false);
-				$errorsString = sprintf(
-					'Not found %s by id: %s',
-					Entity\Event\MenuAdminEvent::class,
-					$command->getEvent()
-				);
-				$this->logger->error($uniqid.': '.$errorsString);
-				
-				return $uniqid;
-			}
-			
-			$Event = $EventRepo->cloneEntity();
-			
-		}
-		else
-		{
-			$Event = new Entity\Event\MenuAdminEvent();
-			$this->entityManager->persist($Event);
-		}
-		
-		$this->entityManager->clear();
-		
-		/** @var Entity\MenuAdmin $Main */
-		if($Event->getMain())
-		{
-			$Main = $this->entityManager->getRepository(Entity\MenuAdmin::class)->findOneBy(
-				['event' => $command->getEvent()]
-			);
-			
-			if(empty($Main))
-			{
-				$uniqid = uniqid('', false);
-				$errorsString = sprintf(
-					'Not found %s by event: %s',
-					Entity\MenuAdmin::class,
-					$command->getEvent()
-				);
-				$this->logger->error($uniqid.': '.$errorsString);
-				
-				return $uniqid;
-			}
-			
-		}
-		else
-		{
-			
-			$Main = new Entity\MenuAdmin();
-			$this->entityManager->persist($Main);
-			$Event->setMain($Main);
-		}
-		
-		$Event->setEntity($command);
-		$this->entityManager->persist($Event);
-		
-		/* присваиваем событие корню */
-		$Main->setEvent($Event);
-		
-		$this->entityManager->flush();
-		
-		return $Main;
-	}
-	
+    private EntityManagerInterface $entityManager;
+
+    private ValidatorInterface $validator;
+
+    private LoggerInterface $logger;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ValidatorInterface $validator,
+        LoggerInterface $logger,
+    ) {
+        $this->entityManager = $entityManager;
+        $this->validator = $validator;
+        $this->logger = $logger;
+    }
+
+    public function handle(
+        MenuAdminEventInterface $command,
+    ): string|Entity\MenuAdmin {
+        // Валидация
+        $errors = $this->validator->validate($command);
+
+        if (count($errors) > 0) {
+            $uniqid = uniqid('', false);
+            $errorsString = (string) $errors;
+            $this->logger->error($uniqid.': '.$errorsString);
+
+            return $uniqid;
+        }
+
+        if ($command->getEvent()) {
+            /** @var Entity\Event\MenuAdminEvent $EventRepo */
+            $EventRepo = $this->entityManager->getRepository(Entity\Event\MenuAdminEvent::class)->find(
+                $command->getEvent()
+            );
+
+            if (null === $EventRepo) {
+                $uniqid = uniqid('', false);
+                $errorsString = sprintf(
+                    'Not found %s by id: %s',
+                    Entity\Event\MenuAdminEvent::class,
+                    $command->getEvent()
+                );
+                $this->logger->error($uniqid.': '.$errorsString);
+
+                return $uniqid;
+            }
+
+            $Event = $EventRepo->cloneEntity();
+        } else {
+            $Event = new Entity\Event\MenuAdminEvent();
+            $this->entityManager->persist($Event);
+        }
+
+        $this->entityManager->clear();
+
+        // @var Entity\MenuAdmin $Main
+        if ($Event->getMain()) {
+            $Main = $this->entityManager->getRepository(Entity\MenuAdmin::class)->findOneBy(
+                ['event' => $command->getEvent()]
+            );
+
+            if (empty($Main)) {
+                $uniqid = uniqid('', false);
+                $errorsString = sprintf(
+                    'Not found %s by event: %s',
+                    Entity\MenuAdmin::class,
+                    $command->getEvent()
+                );
+                $this->logger->error($uniqid.': '.$errorsString);
+
+                return $uniqid;
+            }
+        } else {
+            $Main = new Entity\MenuAdmin();
+            $this->entityManager->persist($Main);
+            $Event->setMain($Main);
+        }
+
+        $Event->setEntity($command);
+        $this->entityManager->persist($Event);
+
+        // присваиваем событие корню
+        $Main->setEvent($Event);
+
+        $this->entityManager->flush();
+
+        return $Main;
+    }
 }

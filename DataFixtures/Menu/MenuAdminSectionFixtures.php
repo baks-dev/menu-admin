@@ -34,80 +34,71 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 final class MenuAdminSectionFixtures extends Fixture
 {
-	
-	private MenuAdminFixturesHandler $handler;
-	
-	private EntityManagerInterface $entityManager;
-	
-	private ActiveMenuAdminEventRepositoryInterface $menuAdminEventRepository;
-	
-	
-	public function __construct(
-		MenuAdminFixturesHandler $handler,
-		EntityManagerInterface $entityManager,
-		ActiveMenuAdminEventRepositoryInterface $menuAdminEventRepository,
-	)
-	{
-		$this->handler = $handler;
-		$this->entityManager = $entityManager;
-		$this->menuAdminEventRepository = $menuAdminEventRepository;
-	}
-	
-	
-	public function load(ObjectManager $manager)
-	{
-		# php bin/console doctrine:fixtures:load --append
-		
-		/* Сбрасываем кеш меню */
-		$cache = new FilesystemAdapter('CacheMenuAdmin');
-		foreach(Locale::cases() as $locale)
-		{
-			$cache->delete(MenuAdminIdentificator::TYPE.$locale);
-		}
-		
-		/** @var EntityMenuAdmin\Event\MenuAdminEvent $Event */
-		$Event = $this->menuAdminEventRepository->getEventOrNullResult();
-		$this->entityManager->clear();
-		
-		$MenuAdminDTO = new MenuAdminSection\MenuAdminDTO();
-		
-		if($Event)
-		{
-			$Event->getDto($MenuAdminDTO);
-		}
-		
-		$MenuAdminSectionDTO = $MenuAdminDTO->getSection();
-		
-		/* Не обновляем событие, если не было изменений в секциях */
-		if($MenuAdminDTO->isUpdate() === false)
-		{
-			return;
-		}
-		
-		/* Файл переводов секций */
-		$sectionTrans = require __DIR__.'/MenuAdminSection/Section/Trans/translate.php';
-		
-		/** @var MenuAdminSection\Section\MenuAdminSectionDTO $MenuAdminSection */
-		foreach($MenuAdminSectionDTO as $MenuAdminSection)
-		{
-			$MenuAdminSection->setSort($sectionTrans[$MenuAdminSection->getGroup()->getValue()]['sort']);
-			$MenuAdminSectionTransDTO = $MenuAdminSection->getTranslate();
-			
-			/** @var MenuAdminSection\Section\Trans\MenuAdminSectionTransDTO $MenuAdminSectionTrans */
-			foreach($MenuAdminSectionTransDTO as $MenuAdminSectionTrans)
-			{
-				$MenuAdminSectionTrans->setName(
-					$sectionTrans[$MenuAdminSection->getGroup()->getValue()][$MenuAdminSectionTrans->getLocal()
-						->getValue()]['name']
-				);
-				$MenuAdminSectionTrans->setDescription(
-					$sectionTrans[$MenuAdminSection->getGroup()->getValue()][$MenuAdminSectionTrans->getLocal()
-						->getValue()]['desc']
-				);
-			}
-		}
-		
-		$this->handler->handle($MenuAdminDTO);
-	}
-	
+    private MenuAdminFixturesHandler $handler;
+
+    private EntityManagerInterface $entityManager;
+
+    private ActiveMenuAdminEventRepositoryInterface $menuAdminEventRepository;
+
+    public function __construct(
+        MenuAdminFixturesHandler $handler,
+        EntityManagerInterface $entityManager,
+        ActiveMenuAdminEventRepositoryInterface $menuAdminEventRepository,
+
+    ) {
+        $this->handler = $handler;
+        $this->entityManager = $entityManager;
+        $this->menuAdminEventRepository = $menuAdminEventRepository;
+    }
+
+    public function load(ObjectManager $manager): void
+    {
+        // php bin/console doctrine:fixtures:load --append
+
+        // Сбрасываем кеш меню
+        $cache = new FilesystemAdapter('CacheMenuAdmin');
+        foreach (Locale::cases() as $locale) {
+            $cache->delete(MenuAdminIdentificator::TYPE.$locale);
+        }
+
+        /** @var EntityMenuAdmin\Event\MenuAdminEvent $Event */
+        $Event = $this->menuAdminEventRepository->getEventOrNullResult();
+        $this->entityManager->clear();
+
+        $MenuAdminDTO = new MenuAdminSection\MenuAdminDTO();
+
+        if ($Event) {
+            $Event->getDto($MenuAdminDTO);
+        }
+
+        $MenuAdminSectionDTO = $MenuAdminDTO->getSection();
+
+        // Не обновляем событие, если не было изменений в секциях
+        if (false === $MenuAdminDTO->isUpdate()) {
+            return;
+        }
+
+        // Файл переводов секций
+        $sectionTrans = require __DIR__.'/MenuAdminSection/Section/Trans/translate.php';
+
+        /** @var MenuAdminSection\Section\MenuAdminSectionDTO $MenuAdminSection */
+        foreach ($MenuAdminSectionDTO as $MenuAdminSection) {
+            $MenuAdminSection->setSort($sectionTrans[$MenuAdminSection->getGroup()->getValue()]['sort']);
+            $MenuAdminSectionTransDTO = $MenuAdminSection->getTranslate();
+
+            /** @var MenuAdminSection\Section\Trans\MenuAdminSectionTransDTO $MenuAdminSectionTrans */
+            foreach ($MenuAdminSectionTransDTO as $MenuAdminSectionTrans) {
+                $MenuAdminSectionTrans->setName(
+                    $sectionTrans[$MenuAdminSection->getGroup()->getValue()][$MenuAdminSectionTrans->getLocal()
+                        ->getValue()]['name']
+                );
+                $MenuAdminSectionTrans->setDescription(
+                    $sectionTrans[$MenuAdminSection->getGroup()->getValue()][$MenuAdminSectionTrans->getLocal()
+                        ->getValue()]['desc']
+                );
+            }
+        }
+
+        $this->handler->handle($MenuAdminDTO);
+    }
 }
