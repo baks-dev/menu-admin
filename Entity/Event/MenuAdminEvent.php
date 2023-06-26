@@ -25,137 +25,128 @@
 
 namespace BaksDev\Menu\Admin\Entity\Event;
 
+use BaksDev\Core\Entity\EntityEvent;
+use BaksDev\Core\Type\Modify\ModifyActionEnum;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
 use BaksDev\Menu\Admin\Entity\Modify\MenuAdminModify;
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use BaksDev\Menu\Admin\Type\Event\MenuAdminEventUid;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
-use BaksDev\Menu\Admin\Type\Id\MenuAdminUid;
-use BaksDev\Core\Type\Locale\Locale;
-use BaksDev\Core\Type\Modify\ModifyAction;
-use BaksDev\Core\Type\Modify\ModifyActionEnum;
-use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Core\Entity\EntityState;
-
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
 
 /* MenuAdminEvent */
-
 
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_event')]
 class MenuAdminEvent extends EntityEvent
 {
-	public const TABLE = 'menu_admin_event';
-	
-	/** ID */
-	#[ORM\Id]
-	#[ORM\Column(type: MenuAdminEventUid::TYPE)]
-	private MenuAdminEventUid $id;
-	
-	/** ID MenuAdmin */
-	#[ORM\Column(type: MenuAdminIdentificator::TYPE, length: 10, nullable: false)]
-	private ?MenuAdminIdentificator $main = null;
-	
-	/** One To One */
-	//#[ORM\OneToOne(mappedBy: 'event', targetEntity: MenuAdminLogo::class, cascade: ['all'])]
-	//private ?MenuAdminOne $one = null;
-	
-	/** Модификатор */
-	#[ORM\OneToOne(mappedBy: 'event', targetEntity: MenuAdminModify::class, cascade: ['all'])]
-	private MenuAdminModify $modify;
-	
-	/** Секции меню */
-	#[ORM\OneToMany(mappedBy: 'event', targetEntity: MenuAdminSection::class, cascade: ['all'])]
-	private Collection $section;
-	
-	
-	public function __toString() : string
-	{
-		return $this->id;
-	}
-	
-	
-	public function __construct()
-	{
-		$this->id = new MenuAdminEventUid();
-		$this->modify = new MenuAdminModify($this);
-		
-	}
-	
-	
-	public function __clone()
-	{
-		$this->id = new MenuAdminEventUid();
-	}
-	
-	
-	public function getId() : MenuAdminEventUid
-	{
-		return $this->id;
-	}
-	
-	
-	public function setMain(MenuAdminIdentificator|MenuAdmin $main) : void
-	{
-		$this->main = $main instanceof MenuAdmin ? $main->getId() : $main;
-	}
-	
-	
-	public function getMain() : ?MenuAdminIdentificator
-	{
-		return $this->main;
-	}
-	
-	
-	public function getDto($dto) : mixed
-	{
-		if($dto instanceof MenuAdminEventInterface)
-		{
-			return parent::getDto($dto);
-		}
-		
-		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
-	}
-	
-	
-	public function setEntity($dto) : mixed
-	{
-		if($dto instanceof MenuAdminEventInterface)
-		{
-			return parent::setEntity($dto);
-		}
-		
-		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
-	}
-	
-	
-	public function isModifyActionEquals(ModifyActionEnum $action) : bool
-	{
-		return $this->modify->equals($action);
-	}
-	
-	//	public function getUploadClass() : MenuAdminImage
-	//	{
-	//		return $this->image ?: $this->image = new MenuAdminImage($this);
-	//	}
-	
-	//	public function getNameByLocale(Locale $locale) : ?string
-	//	{
-	//		$name = null;
-	//		
-	//		/** @var MenuAdminTrans $trans */
-	//		foreach($this->translate as $trans)
-	//		{
-	//			if($name = $trans->name($locale))
-	//			{
-	//				break;
-	//			}
-	//		}
-	//		
-	//		return $name;
-	//	}
+    public const TABLE = 'menu_admin_event';
+
+    /** ID */
+    #[ORM\Id]
+    #[ORM\Column(type: MenuAdminEventUid::TYPE)]
+    private MenuAdminEventUid $id;
+
+    /** ID MenuAdmin */
+    #[ORM\Column(type: MenuAdminIdentificator::TYPE, length: 10, nullable: false)]
+    private ?MenuAdminIdentificator $main = null;
+
+    /** One To One */
+    //#[ORM\OneToOne(mappedBy: 'event', targetEntity: MenuAdminLogo::class, cascade: ['all'])]
+    //private ?MenuAdminOne $one = null;
+
+    /** Модификатор */
+    #[ORM\OneToOne(mappedBy: 'event', targetEntity: MenuAdminModify::class, cascade: ['all'])]
+    private MenuAdminModify $modify;
+
+    /** Секции меню */
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: MenuAdminSection::class, cascade: ['all'])]
+    private Collection $section;
+
+    public function __toString() : string
+    {
+        return $this->id;
+    }
+
+    public function __construct()
+    {
+        $this->id = new MenuAdminEventUid();
+        $this->modify = new MenuAdminModify($this);
+    }
+
+    public function __clone()
+    {
+        $this->id = new MenuAdminEventUid();
+    }
+
+    public function getId() : MenuAdminEventUid
+    {
+        return $this->id;
+    }
+
+    public function setMain(MenuAdminIdentificator|MenuAdmin $main) : void
+    {
+        $this->main = $main instanceof MenuAdmin ? $main->getId() : $main;
+    }
+
+    public function getMain() : ?MenuAdminIdentificator
+    {
+        return $this->main;
+    }
+
+    public function getDto($dto) : mixed
+    {
+        if ($dto instanceof MenuAdminEventInterface)
+        {
+            return parent::getDto($dto);
+        }
+
+        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+    public function setEntity($dto) : mixed
+    {
+        if ($dto instanceof MenuAdminEventInterface)
+        {
+            return parent::setEntity($dto);
+        }
+
+        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+    public function isModifyActionEquals(ModifyActionEnum $action) : bool
+    {
+        return $this->modify->equals($action);
+    }
+
+/**
+ * @return Collection
+ */
+public function getSection(): Collection
+{
+    return $this->section;
+}
+
+    //	public function getUploadClass() : MenuAdminImage
+    //	{
+    //		return $this->image ?: $this->image = new MenuAdminImage($this);
+    //	}
+
+    //	public function getNameByLocale(Locale $locale) : ?string
+    //	{
+    //		$name = null;
+	//
+    //		/** @var MenuAdminTrans $trans */
+    //		foreach($this->translate as $trans)
+    //		{
+    //			if($name = $trans->name($locale))
+    //			{
+    //				break;
+    //			}
+    //		}
+	//
+    //		return $name;
+    //	}
 }

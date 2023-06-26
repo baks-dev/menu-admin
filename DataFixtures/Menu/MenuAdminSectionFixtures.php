@@ -30,6 +30,7 @@ use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
+use InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 final class MenuAdminSectionFixtures extends Fixture
@@ -44,7 +45,6 @@ final class MenuAdminSectionFixtures extends Fixture
         MenuAdminFixturesHandler $handler,
         EntityManagerInterface $entityManager,
         ActiveMenuAdminEventRepositoryInterface $menuAdminEventRepository,
-
     ) {
         $this->handler = $handler;
         $this->entityManager = $entityManager;
@@ -56,8 +56,9 @@ final class MenuAdminSectionFixtures extends Fixture
         // php bin/console doctrine:fixtures:load --append
 
         // Сбрасываем кеш меню
-        $cache = new FilesystemAdapter('CacheMenuAdmin');
-        foreach (Locale::cases() as $locale) {
+        $cache = new FilesystemAdapter('MenuAdmin');
+        foreach (Locale::cases() as $locale)
+        {
             $cache->delete(MenuAdminIdentificator::TYPE.$locale);
         }
 
@@ -67,14 +68,16 @@ final class MenuAdminSectionFixtures extends Fixture
 
         $MenuAdminDTO = new MenuAdminSection\MenuAdminDTO();
 
-        if ($Event) {
+        if ($Event)
+        {
             $Event->getDto($MenuAdminDTO);
         }
-
+        
         $MenuAdminSectionDTO = $MenuAdminDTO->getSection();
 
         // Не обновляем событие, если не было изменений в секциях
-        if (false === $MenuAdminDTO->isUpdate()) {
+        if ($MenuAdminDTO->isUpdate() === false)
+        {
             return;
         }
 
@@ -82,12 +85,19 @@ final class MenuAdminSectionFixtures extends Fixture
         $sectionTrans = require __DIR__.'/MenuAdminSection/Section/Trans/translate.php';
 
         /** @var MenuAdminSection\Section\MenuAdminSectionDTO $MenuAdminSection */
-        foreach ($MenuAdminSectionDTO as $MenuAdminSection) {
+        foreach ($MenuAdminSectionDTO as $MenuAdminSection)
+        {
+            if (!isset($sectionTrans[$MenuAdminSection->getGroup()->getValue()]))
+            {
+                throw new InvalidArgumentException(sprintf('Отсутствует файл переводов для секции "%s" в файле %s', $MenuAdminSection->getGroup()->getValue(), __DIR__.'/MenuAdminSection/Section/Trans/translate.php'));
+            }
+
             $MenuAdminSection->setSort($sectionTrans[$MenuAdminSection->getGroup()->getValue()]['sort']);
             $MenuAdminSectionTransDTO = $MenuAdminSection->getTranslate();
 
             /** @var MenuAdminSection\Section\Trans\MenuAdminSectionTransDTO $MenuAdminSectionTrans */
-            foreach ($MenuAdminSectionTransDTO as $MenuAdminSectionTrans) {
+            foreach ($MenuAdminSectionTransDTO as $MenuAdminSectionTrans)
+            {
                 $MenuAdminSectionTrans->setName(
                     $sectionTrans[$MenuAdminSection->getGroup()->getValue()][$MenuAdminSectionTrans->getLocal()
                         ->getValue()]['name']

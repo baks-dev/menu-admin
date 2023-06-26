@@ -25,16 +25,17 @@
 
 namespace BaksDev\Menu\Admin\Entity\Section\Path;
 
+use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use BaksDev\Menu\Admin\Type\Path\MenuAdminSectionPathUid;
 use BaksDev\Users\Groups\Role\Type\RolePrefix\RolePrefix;
-use BaksDev\Core\Entity\EntityEvent;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
-/** Пунты меню MenuAdminSectionPath */
+/** Пункты меню MenuAdminSectionPath */
+
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_section_path')]
 class MenuAdminSectionPath extends EntityEvent
@@ -66,8 +67,15 @@ class MenuAdminSectionPath extends EntityEvent
 	/** Сортировка */
 	#[ORM\Column(type: Types::SMALLINT, length: 3, options: ['default' => 500])]
 	private int $sort;
-	
-	
+
+    /** Показать в выпадающем меню */
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $dropdown = true;
+
+    /** Модальное окно */
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $modal = false;
+
 	public function __construct(MenuAdminSection $section)
 	{
 		$this->id = new MenuAdminSectionPathUid();
@@ -83,7 +91,6 @@ class MenuAdminSectionPath extends EntityEvent
 	{
 		$this->id = new MenuAdminSectionPathUid();
 	}
-	
 	
 	public function getDto($dto) : mixed
 	{

@@ -29,15 +29,34 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('baks.menu.admin')]
 interface MenuAdminFixturesInterface
 {
-    /** Метод возвращает префикс роли доступа */
+    /**
+     * Метод возвращает префикс роли доступа.
+     */
     public function getRole(): string;
 
-    /** Метод возвращает PATH раздела */
+    /**
+     * Метод возвращает PATH раздела.
+     */
     public function getPath(): string;
 
-    /** Метод возвращает секцию, в которую помещается ссылка на раздел */
+    /**
+     * Метод возвращает секцию, в которую помещается ссылка на раздел.
+     */
     public function getGroupMenu(): MenuAdminSectionGroupEnum|bool;
 
-    /** Метод возвращает позицию, в которую распологается ссылка в секции меню */
+    /**
+     * Метод возвращает позицию, в которую располагается ссылка в секции меню.
+     */
     public function getSortMenu(): int;
+
+    /**
+     * Метод возвращает флаг "Показать в выпадающем меню".
+     */
+    public function getDropdownMenu(): bool;
+
+    /**
+     * Метод возвращает флаг "Модальное окно".
+     */
+    public function getModal(): bool;
+
 }

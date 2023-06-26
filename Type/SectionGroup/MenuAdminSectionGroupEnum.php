@@ -27,11 +27,11 @@ namespace BaksDev\Menu\Admin\Type\SectionGroup;
 
 enum MenuAdminSectionGroupEnum : string
 {
-	
 	case PRODUCTS = 'products'; // Продукция
+	case STOCKS = 'stocks'; // Склад
+	case DELIVERY = 'delivery'; // Доставка
 	case USER = 'user'; // Пользователи
-	case MARKETING = 'marketing'; // Пользователи
+	case MARKETING = 'marketing'; // Маркетинг
 	case ANALYTICS = 'analytics'; // Аналитика
 	case SETTINGS = 'settings'; // Настройки
-	
 }

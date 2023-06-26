@@ -33,7 +33,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 // MenuAdminSectionPath
 
-class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
+/** @see MenuAdminSectionPath */
+final class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
 {
     /** Перевод раздела */
     #[Assert\Valid]
@@ -46,6 +47,12 @@ class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
     /** Path вида User:admin.index  */
     #[Assert\NotBlank]
     private string $path;
+
+    /** Показать в выпадающем меню */
+    private bool $dropdown = true;
+
+    /** Показать в выпадающем меню */
+    private bool $modal = false;
 
     /** Сортировка */
     #[Assert\NotBlank]
@@ -60,7 +67,8 @@ class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
     public function getTranslate(): ArrayCollection
     {
         // Вычисляем расхождение и добавляем неопределенные локали
-        foreach (Locale::diffLocale($this->translate) as $locale) {
+        foreach (Locale::diffLocale($this->translate) as $locale)
+        {
             $TransFormDTO = new Trans\MenuAdminSectionPathTransDTO();
             $TransFormDTO->setLocal($locale);
             $this->addTranslate($TransFormDTO);
@@ -71,7 +79,8 @@ class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
 
     public function addTranslate(Trans\MenuAdminSectionPathTransDTO $trans): void
     {
-        if (!$this->translate->contains($trans)) {
+        if (!$this->translate->contains($trans))
+        {
             $this->translate->add($trans);
         }
     }
@@ -112,5 +121,30 @@ class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
     public function setSort(int $sort): void
     {
         $this->sort = $sort;
+    }
+
+    /** Показать в выпадающем меню */
+    public function getDropdown(): bool
+    {
+        return $this->dropdown;
+    }
+
+    public function setDropdown(bool $dropdown): void
+    {
+        $this->dropdown = $dropdown;
+    }
+
+    /**
+     * Модальное окно.
+     */
+
+    public function getModal(): bool
+    {
+        return $this->modal;
+    }
+
+    public function setModal(bool $modal): void
+    {
+        $this->modal = $modal;
     }
 }

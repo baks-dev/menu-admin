@@ -25,12 +25,12 @@
 
 namespace BaksDev\Menu\Admin\Entity\Section;
 
+use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPath;
 use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTrans;
 use BaksDev\Menu\Admin\Type\Section\MenuAdminSectionUid;
 use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroup;
-use BaksDev\Core\Entity\EntityEvent;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

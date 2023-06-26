@@ -53,7 +53,8 @@ final class MenuAdminFixturesHandler
         // Валидация
         $errors = $this->validator->validate($command);
 
-        if (count($errors) > 0) {
+        if (count($errors) > 0)
+        {
             $uniqid = uniqid('', false);
             $errorsString = (string) $errors;
             $this->logger->error($uniqid.': '.$errorsString);
@@ -61,13 +62,15 @@ final class MenuAdminFixturesHandler
             return $uniqid;
         }
 
-        if ($command->getEvent()) {
+        if ($command->getEvent())
+        {
             /** @var Entity\Event\MenuAdminEvent $EventRepo */
             $EventRepo = $this->entityManager->getRepository(Entity\Event\MenuAdminEvent::class)->find(
                 $command->getEvent()
             );
 
-            if (null === $EventRepo) {
+            if ($EventRepo === null)
+            {
                 $uniqid = uniqid('', false);
                 $errorsString = sprintf(
                     'Not found %s by id: %s',
@@ -80,20 +83,23 @@ final class MenuAdminFixturesHandler
             }
 
             $Event = $EventRepo->cloneEntity();
-        } else {
+        } else
+        {
             $Event = new Entity\Event\MenuAdminEvent();
             $this->entityManager->persist($Event);
         }
-
+        
         $this->entityManager->clear();
 
         // @var Entity\MenuAdmin $Main
-        if ($Event->getMain()) {
+        if ($Event->getMain())
+        {
             $Main = $this->entityManager->getRepository(Entity\MenuAdmin::class)->findOneBy(
                 ['event' => $command->getEvent()]
             );
 
-            if (empty($Main)) {
+            if (empty($Main))
+            {
                 $uniqid = uniqid('', false);
                 $errorsString = sprintf(
                     'Not found %s by event: %s',
@@ -104,13 +110,18 @@ final class MenuAdminFixturesHandler
 
                 return $uniqid;
             }
-        } else {
+        } else
+        {
             $Main = new Entity\MenuAdmin();
             $this->entityManager->persist($Main);
             $Event->setMain($Main);
         }
 
         $Event->setEntity($command);
+
+
+
+
         $this->entityManager->persist($Event);
 
         // присваиваем событие корню

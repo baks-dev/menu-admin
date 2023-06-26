@@ -25,8 +25,9 @@
 
 namespace BaksDev\Menu\Admin\DataFixtures\Menu\MenuAdminSection\Section\Trans;
 
-use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTransInterface;
 use BaksDev\Core\Type\Locale\Locale;
+use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTransInterface;
+use ReflectionProperty;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /* Перевод MenuAdminSectionTrans */
@@ -34,49 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
 {
-	
-	//	public const NAME = [
-	//		'products' =>
-	//			[
-	//				'ru' => 'Типы профилей',
-	//				'en' => 'Profile types',
-	//			],
-	//		'user' =>
-	//			[
-	//				'ru' => 'Типы профилей',
-	//				'en' => 'Profile types',
-	//			],
-	//
-	//		'marketing' =>
-	//			[
-	//				'ru' => 'Типы профилей',
-	//				'en' => 'Profile types',
-	//			],
-	//
-	//		'analytics' =>
-	//			[
-	//				'ru' => 'Типы профилей',
-	//				'en' => 'Profile types',
-	//			],
-	//
-	//		'settings' =>
-	//			[
-	//				'ru' => 'Типы профилей',
-	//				'en' => 'Profile types',
-	//			],
-	//	];
-	//
-	//	private const DESC = [
-	//		'ru' => 'Типы профилей пользователей',
-	//		'en' => 'User profile types',
-	//	];
-	
-	//		case PRODUCTS = 'products'; // Продукция
-	//	case USER = 'user'; // Пользователи
-	//	case MARKETING = 'marketing'; // Пользователи
-	//	case ANALYTICS = 'analytics'; // Аналитика
-	//	case SETTINGS = 'settings'; // Настройки
-	
+
 	/** Локаль */
 	#[Assert\NotBlank]
 	private readonly Locale $local;
@@ -93,7 +52,7 @@ class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
 	
 	public function setLocal(string $local) : void
 	{
-		if(!(new \ReflectionProperty($this::class, 'local'))->isInitialized($this))
+		if(!(new ReflectionProperty($this::class, 'local'))->isInitialized($this))
 		{
 			$this->local = new Locale($local);
 		}

@@ -29,6 +29,8 @@ use BaksDev\Core\Type\UidType\Uid;
 
 final class MenuAdminSectionPathUid extends Uid
 {
+    public const TEST = '0188a998-fb9c-776c-b7c2-4ce685d629f3';
+    
 	public const TYPE = 'menu_admin_section_path_uid';
 	
 }

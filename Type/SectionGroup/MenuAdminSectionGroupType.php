@@ -30,28 +30,23 @@ use Doctrine\DBAL\Types\StringType;
 
 final class MenuAdminSectionGroupType extends StringType
 {
-	public function convertToDatabaseValue($value, AbstractPlatform $platform) : mixed
-	{
-		return $value instanceof MenuAdminSectionGroup ? $value->getValue() : (new MenuAdminSectionGroup($value
-		))->getValue();
-	}
-	
-	
-	public function convertToPHPValue($value, AbstractPlatform $platform) : mixed
-	{
-		return !empty($value) ? new MenuAdminSectionGroup($value) : $value;
-	}
-	
-	
-	public function getName() : string
-	{
-		return MenuAdminSectionGroup::TYPE;
-	}
-	
-	
-	public function requiresSQLCommentHint(AbstractPlatform $platform) : bool
-	{
-		return true;
-	}
-	
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
+    {
+        return $value instanceof MenuAdminSectionGroup ? $value->getValue() : (new MenuAdminSectionGroup($value))->getValue();
+    }
+
+    public function convertToPHPValue($value, AbstractPlatform $platform): mixed
+    {
+        return !empty($value) ? new MenuAdminSectionGroup($value) : $value;
+    }
+
+    public function getName(): string
+    {
+        return MenuAdminSectionGroup::TYPE;
+    }
+
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
+    {
+        return true;
+    }
 }
