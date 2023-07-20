@@ -31,5 +31,5 @@ final class MenuAdminEventUid extends Uid
 {
     public const TEST = '0188a998-b13b-721c-861a-9fb47d36d111';
 
-    public const TYPE = 'menu_admin_event_uid';
+    public const TYPE = 'menu_admin_event';
 }
