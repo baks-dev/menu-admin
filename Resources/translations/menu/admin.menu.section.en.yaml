@@ -1,0 +1,7 @@
+settings:
+  name: 'Settings'
+  desc: 'Settings'
+
+user:
+  name: 'Users'
+  desc: 'Users'
