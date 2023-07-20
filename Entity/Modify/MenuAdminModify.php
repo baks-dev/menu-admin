@@ -25,19 +25,18 @@
 
 namespace BaksDev\Menu\Admin\Entity\Modify;
 
-use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
-use BaksDev\Users\User\Entity\User;
-use BaksDev\Users\User\Type\Id\UserUid;
 use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Core\Entity\EntityState;
 use BaksDev\Core\Type\Ip\IpAddress;
 use BaksDev\Core\Type\Modify\ModifyAction;
 use BaksDev\Core\Type\Modify\ModifyActionEnum;
+use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
+use BaksDev\Users\User\Entity\User;
+use BaksDev\Users\User\Type\Id\UserUid;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use InvalidArgumentException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /* Модификаторы событий MenuAdminModify */
 
@@ -50,16 +49,20 @@ class MenuAdminModify extends EntityEvent
 	public const TABLE = 'menu_admin_modify';
 	
 	/** ID события */
+    #[Assert\NotBlank]
+    #[Assert\Uuid]
 	#[ORM\Id]
 	#[ORM\OneToOne(inversedBy: 'modify', targetEntity: MenuAdminEvent::class)]
 	#[ORM\JoinColumn(name: 'event', referencedColumnName: 'id')]
 	private MenuAdminEvent $event;
 	
 	/** Модификатор */
+    #[Assert\NotBlank]
 	#[ORM\Column(type: ModifyAction::TYPE, nullable: false)]
 	private ModifyAction $action;
 	
 	/** Дата */
+    #[Assert\NotBlank]
 	#[ORM\Column(name: 'mod_date', type: Types::DATETIME_IMMUTABLE, nullable: false)]
 	private DateTimeImmutable $modDate;
 	
@@ -117,10 +120,10 @@ class MenuAdminModify extends EntityEvent
 	}
 	
 	
-	public function upModifyAgent(IpAddress $ipAddress, string $userAgent) : void
+	public function upModifyAgent(IpAddress $ipAddress, ?string $userAgent) : void
 	{
 		$this->ipAddress = $ipAddress;
-		$this->userAgent = $userAgent;
+		$this->userAgent = $userAgent ?: 'console';
 		$this->modDate = new DateTimeImmutable();
 	}
 	

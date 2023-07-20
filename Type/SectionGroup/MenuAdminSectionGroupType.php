@@ -27,17 +27,36 @@ namespace BaksDev\Menu\Admin\Type\SectionGroup;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
+use InvalidArgumentException;
 
 final class MenuAdminSectionGroupType extends StringType
 {
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
-        return $value instanceof MenuAdminSectionGroup ? $value->getValue() : (new MenuAdminSectionGroup($value))->getValue();
+        return $value instanceof MenuAdminSectionGroup ? $value->getTypeValue() : (new MenuAdminSectionGroup($value))->getTypeValue();
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): mixed
     {
-        return !empty($value) ? new MenuAdminSectionGroup($value) : $value;
+
+
+
+        /** @var MenuAdminSectionGroup $type */
+        foreach(MenuAdminSectionGroup::cases() as $type)
+        {
+            if($type->getType()::equals($value))
+            {
+                return $type;
+            }
+
+
+        }
+
+        dump( $value);
+        dump( MenuAdminSectionGroup::cases());
+       
+
+        throw new InvalidArgumentException(sprintf('Not found Menu Section Group %s', $value));
     }
 
     public function getName(): string

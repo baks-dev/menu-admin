@@ -25,7 +25,7 @@ final class MenuAdminRepository implements MenuAdminRepositoryInterface
     /**
      * Метод возвращает массив меню администратора с группировкой.
      */
-    public function fetchAllAssociativeIndexed() : array
+    public function fetchAllAssociativeIndexed(): array
     {
         $qb = $this->connection->createQueryBuilder();
 
@@ -98,8 +98,7 @@ final class MenuAdminRepository implements MenuAdminRepositoryInterface
 
         $config = $this->connection->getConfiguration();
         $config?->setResultCache($cacheFilesystem);
-
-
+        
         return $this->connection->executeCacheQuery(
             $qb->getSQL(),
             $qb->getParameters(),

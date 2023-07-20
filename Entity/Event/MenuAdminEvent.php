@@ -35,6 +35,7 @@ use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /* MenuAdminEvent */
 
@@ -45,29 +46,31 @@ class MenuAdminEvent extends EntityEvent
     public const TABLE = 'menu_admin_event';
 
     /** ID */
+    #[Assert\NotBlank]
+    #[Assert\Uuid]
     #[ORM\Id]
     #[ORM\Column(type: MenuAdminEventUid::TYPE)]
     private MenuAdminEventUid $id;
 
     /** ID MenuAdmin */
-    #[ORM\Column(type: MenuAdminIdentificator::TYPE, length: 10, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 10)]
+    #[ORM\Column(type: MenuAdminIdentificator::TYPE, nullable: false)]
     private ?MenuAdminIdentificator $main = null;
 
-    /** One To One */
-    //#[ORM\OneToOne(mappedBy: 'event', targetEntity: MenuAdminLogo::class, cascade: ['all'])]
-    //private ?MenuAdminOne $one = null;
-
     /** Модификатор */
+    #[Assert\Valid]
     #[ORM\OneToOne(mappedBy: 'event', targetEntity: MenuAdminModify::class, cascade: ['all'])]
     private MenuAdminModify $modify;
 
     /** Секции меню */
+    #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: MenuAdminSection::class, cascade: ['all'])]
     private Collection $section;
 
     public function __toString() : string
     {
-        return $this->id;
+        return $this->id->getValue();
     }
 
     public function __construct()

@@ -35,6 +35,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /* Section */
 
@@ -43,74 +44,98 @@ use InvalidArgumentException;
 #[ORM\Table(name: 'menu_admin_section')]
 class MenuAdminSection extends EntityEvent
 {
-	const TABLE = 'menu_admin_section';
-	
-	/** ID */
-	#[ORM\Id]
-	#[ORM\Column(type: MenuAdminSectionUid::TYPE)]
-	private MenuAdminSectionUid $id;
-	
-	/** Связь на событие Event */
-	#[ORM\ManyToOne(targetEntity: MenuAdminEvent::class, inversedBy: "section")]
-	#[ORM\JoinColumn(name: 'event', referencedColumnName: "id", nullable: true)]
-	private ?MenuAdminEvent $event;
-	
-	#[ORM\Column(name: 'groups', type: MenuAdminSectionGroup::TYPE, length: 10)]
-	private MenuAdminSectionGroup $group;
-	
-	/** Перевод екции */
-	#[ORM\OneToMany(mappedBy: 'section', targetEntity: MenuAdminSectionTrans::class, cascade: ['all'])]
-	private Collection $translate;
-	
-	/** Разделы */
-	#[ORM\OneToMany(mappedBy: 'section', targetEntity: MenuAdminSectionPath::class, cascade: ['all'])]
-	#[ORM\OrderBy(['sort' => 'ASC'])]
-	private Collection $path;
-	
-	/** Сортировка */
-	#[ORM\Column(name: 'sort', type: Types::SMALLINT, length: 3, nullable: false, options: ['default' => 500])]
-	private int $sort = 500;
-	
-	
-	public function __construct(MenuAdminEvent $event)
-	{
-		$this->id = new MenuAdminSectionUid();
-		$this->event = $event;
-	}
-	
-	
-	public function __clone() : void
-	{
-		$this->id = new MenuAdminSectionUid();
-	}
-	
-	
-	public function getId() : MenuAdminSectionUid
-	{
-		return $this->id;
-	}
-	
-	
-	public function getDto($dto) : mixed
-	{
-		if($dto instanceof MenuAdminSectionInterface)
-		{
-			return parent::getDto($dto);
-		}
-		
-		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
-	}
-	
-	
-	public function setEntity($dto) : mixed
-	{
-		
-		if($dto instanceof MenuAdminSectionInterface)
-		{
-			return parent::setEntity($dto);
-		}
-		
-		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
-	}
-	
+    const TABLE = 'menu_admin_section';
+
+    /** Идентификатор секции */
+    #[Assert\NotBlank]
+    #[Assert\Uuid]
+    #[ORM\Id]
+    #[ORM\Column(type: MenuAdminSectionUid::TYPE)]
+    private MenuAdminSectionUid $id;
+
+    /**
+     * Связь на событие
+     */
+    #[Assert\NotBlank]
+    #[Assert\Uuid]
+    #[ORM\ManyToOne(targetEntity: MenuAdminEvent::class, inversedBy: "section")]
+    #[ORM\JoinColumn(name: 'event', referencedColumnName: "id", nullable: true)]
+    private ?MenuAdminEvent $event;
+
+    /**
+     * Группа секции
+     */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 15)]
+    #[ORM\Column(name: 'groups', type: MenuAdminSectionGroup::TYPE)]
+    private MenuAdminSectionGroup $group;
+
+    /**
+     * Перевод cекции
+     */
+    #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'section', targetEntity: MenuAdminSectionTrans::class, cascade: ['all'])]
+    private Collection $translate;
+
+    /**
+     * Разделы
+     */
+    #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'section', targetEntity: MenuAdminSectionPath::class, cascade: ['all'])]
+    #[ORM\OrderBy(['sort' => 'ASC'])]
+    private Collection $path;
+
+    /** Сортировка */
+    #[Assert\NotBlank]
+    #[Assert\Range(min: 0, max: 999)]
+    #[ORM\Column(name: 'sort', type: Types::SMALLINT, nullable: false, options: ['default' => 500])]
+    private int $sort = 500;
+
+
+    public function __construct(MenuAdminEvent $event)
+    {
+        $this->id = new MenuAdminSectionUid();
+        $this->event = $event;
+    }
+
+
+    public function __clone(): void
+    {
+        $this->id = new MenuAdminSectionUid();
+    }
+
+    public function __toString(): string
+    {
+        return $this->id->getValue();
+    }
+
+
+    public function getId(): MenuAdminSectionUid
+    {
+        return $this->id;
+    }
+
+
+    public function getDto($dto): mixed
+    {
+        if($dto instanceof MenuAdminSectionInterface)
+        {
+            return parent::getDto($dto);
+        }
+
+        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+
+    public function setEntity($dto): mixed
+    {
+
+        if($dto instanceof MenuAdminSectionInterface)
+        {
+            return parent::setEntity($dto);
+        }
+
+        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
 }

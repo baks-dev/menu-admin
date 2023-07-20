@@ -25,13 +25,13 @@
 
 namespace BaksDev\Menu\Admin\Entity\Section\Trans;
 
-use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\DBAL\Types\Types;
 use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Core\Entity\EntityState;
 use BaksDev\Core\Type\Locale\Locale;
+use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /* Перевод MenuAdminSectionTrans */
 
@@ -41,65 +41,71 @@ use InvalidArgumentException;
 #[ORM\Index(columns: ['name'])]
 class MenuAdminSectionTrans extends EntityEvent
 {
-	public const TABLE = 'menu_admin_section_trans';
-	
-	/** Связь на екцию */
-	#[ORM\Id]
-	#[ORM\ManyToOne(targetEntity: MenuAdminSection::class, inversedBy: "translate")]
-	#[ORM\JoinColumn(name: 'section', referencedColumnName: "id")]
-	private MenuAdminSection $section;
-	
-	/** Локаль */
-	#[ORM\Id]
-	#[ORM\Column(type: Locale::TYPE, length: 2)]
-	private Locale $local;
-	
-	/** Название */
-	#[ORM\Column(type: Types::STRING, length: 100)]
-	private string $name;
-	
-	/** Описание */
-	#[ORM\Column(type: Types::TEXT, nullable: true)]
-	private ?string $description;
-	
-	
-	public function __construct(MenuAdminSection $section)
-	{
-		$this->section = $section;
-	}
-	
-	
-	public function getDto($dto) : mixed
-	{
-		if($dto instanceof MenuAdminSectionTransInterface)
-		{
-			return parent::getDto($dto);
-		}
-		
-		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
-	}
-	
-	
-	public function setEntity($dto) : mixed
-	{
-		
-		if($dto instanceof MenuAdminSectionTransInterface)
-		{
-			return parent::setEntity($dto);
-		}
-		
-		throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
-	}
-	
-	
-	public function name(Locale $locale) : ?string
-	{
-		if($this->local->getValue() === $locale->getValue())
-		{
-			return $this->name;
-		}
-		
-		return null;
-	}
-	
+    public const TABLE = 'menu_admin_section_trans';
+
+    /** Связь на секцию */
+    #[Assert\NotBlank]
+    #[Assert\Uuid]
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: MenuAdminSection::class, inversedBy: "translate")]
+    #[ORM\JoinColumn(name: 'section', referencedColumnName: "id")]
+    private MenuAdminSection $section;
+
+    /** Локаль */
+    #[Assert\NotBlank]
+    #[Assert\Locale]
+    #[ORM\Id]
+    #[ORM\Column(type: Locale::TYPE)]
+    private Locale $local;
+
+    /** Название */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
+    #[ORM\Column(type: Types::STRING)]
+    private string $name;
+
+    /** Описание */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description;
+
+
+    public function __construct(MenuAdminSection $section)
+    {
+        $this->section = $section;
+    }
+
+
+    public function getDto($dto): mixed
+    {
+        if($dto instanceof MenuAdminSectionTransInterface)
+        {
+            return parent::getDto($dto);
+        }
+
+        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+
+    public function setEntity($dto): mixed
+    {
+
+        if($dto instanceof MenuAdminSectionTransInterface)
+        {
+            return parent::setEntity($dto);
+        }
+
+        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+
+    public function name(Locale $locale): ?string
+    {
+        if($this->local->getValue() === $locale->getValue())
+        {
+            return $this->name;
+        }
+
+        return null;
+    }
+
 }

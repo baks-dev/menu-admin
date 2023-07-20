@@ -32,5 +32,14 @@ return static function (ContainerConfigurator $configurator) {
 
     $namespace = 'BaksDev\Menu\Admin';
 
-    $services->load($namespace.'\Repository\\', __DIR__.'/../../Repository');
+
+    $services->load($namespace.'\\', __DIR__.'/../../')
+        ->exclude(__DIR__.'/../../{Controller,Entity,Resources,Type,Tests,*DTO.php,*Message.php}');
+
+//    $services->load($namespace.'\Repository\\', __DIR__.'/../../Repository');
+//
+    $services->load($namespace.'\Type\SectionGroup\Group\\', __DIR__.'/../../Type/SectionGroup/Group');
+
+
+
 };

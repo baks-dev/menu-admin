@@ -26,7 +26,6 @@
 namespace BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin;
 
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
-use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroupEnum;
 
 interface ActiveMenuAdminEventRepositoryInterface
 {

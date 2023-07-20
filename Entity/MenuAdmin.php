@@ -29,7 +29,7 @@ use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Type\Event\MenuAdminEventUid;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /* MenuAdmin */
 
@@ -38,39 +38,47 @@ use Doctrine\DBAL\Types\Types;
 #[ORM\Table(name: 'menu_admin')]
 class MenuAdmin
 {
-	public const TABLE = 'menu_admin';
-	
-	/** ID */
-	#[ORM\Id]
-	#[ORM\Column(type: MenuAdminIdentificator::TYPE, length: 10, nullable: false)]
-	private MenuAdminIdentificator $id;
-	
-	/** ID События */
-	#[ORM\Column(type: MenuAdminEventUid::TYPE, unique: true)]
-	private MenuAdminEventUid $event;
-	
-	
-	public function __construct()
-	{
-		$this->id = new MenuAdminIdentificator();
-	}
-	
-	
-	public function getId() : MenuAdminIdentificator
-	{
-		return $this->id;
-	}
-	
-	
-	public function getEvent() : MenuAdminEventUid
-	{
-		return $this->event;
-	}
-	
-	
-	public function setEvent(MenuAdminEventUid|MenuAdminEvent $event) : void
-	{
-		$this->event = $event instanceof MenuAdminEvent ? $event->getId() : $event;
-	}
-	
+    public const TABLE = 'menu_admin';
+
+    /**
+     * Идентификатор корня
+     */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 10)]
+    #[ORM\Id]
+    #[ORM\Column(type: MenuAdminIdentificator::TYPE, nullable: false)]
+    private MenuAdminIdentificator $id;
+
+    /**
+     * Идентификатор События
+     */
+    #[Assert\NotBlank]
+    #[Assert\Uuid]
+    #[ORM\Column(type: MenuAdminEventUid::TYPE, unique: true)]
+    private MenuAdminEventUid $event;
+
+
+    public function __construct()
+    {
+        $this->id = new MenuAdminIdentificator();
+    }
+
+
+    public function getId(): MenuAdminIdentificator
+    {
+        return $this->id;
+    }
+
+
+    public function getEvent(): MenuAdminEventUid
+    {
+        return $this->event;
+    }
+
+
+    public function setEvent(MenuAdminEventUid|MenuAdminEvent $event): void
+    {
+        $this->event = $event instanceof MenuAdminEvent ? $event->getId() : $event;
+    }
+
 }

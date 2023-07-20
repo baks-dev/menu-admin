@@ -25,81 +25,141 @@
 
 namespace BaksDev\Menu\Admin\Type\SectionGroup;
 
+use BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection\MenuAdminSectionGroupCollectionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use InvalidArgumentException;
 
 final class MenuAdminSectionGroup
 {
-	public const TYPE = 'menu_admin_section_group';
-	
-	private MenuAdminSectionGroupEnum $type;
-	
-	
-	public function __construct(string|MenuAdminSectionGroupEnum $type)
-	{
-		if($type instanceof MenuAdminSectionGroupEnum)
-		{
-			$this->type = $type;
-		}
-		else
-		{
-			$this->type = MenuAdminSectionGroupEnum::from($type);
-		}
-	}
-	
-	
-	public function __toString() : string
-	{
-		return $this->type->value;
-	}
-	
-	
-	/** Возвращает Enum   */
-	public function getType() : MenuAdminSectionGroupEnum
-	{
-		return $this->type;
-	}
-	
-	
-	/** Возвращает значение (value) String */
-	public function getValue() : string
-	{
-		return $this->type->value;
-	}
-	
-	
-	/** Возвращает ключ (name) Enum */
-	public function getName() : string
-	{
-		return $this->type->name;
-	}
-	
-	
-	/** Возвращает массив из значнией ColorEnum */
-	public static function cases() : array
-	{
-		$case = null;
-		
-		foreach(MenuAdminSectionGroupEnum::cases() as $type)
-		{
-			$case[] = new self($type);
-		}
-		
-		return $case;
-	}
-	
-	
-	public static function diffLocale(ArrayCollection|array $diffArray)
-	{
-		$search = [];
-		
-		foreach($diffArray as $item)
-		{
-			$search[] = $item->getGroup();
-		}
-		
-		/* Вычисляем расхождение массивов */
-		
-		return array_diff(self::cases(), $search);
-	}
-	
+    public const TYPE = 'menu_admin_section_group';
+
+    private ?MenuAdminSectionGroupCollectionInterface $type = null;
+
+
+    public function __construct(self|string|MenuAdminSectionGroupCollectionInterface $type)
+    {
+
+        if($type instanceof MenuAdminSectionGroupCollectionInterface)
+        {
+            $this->type = $type;
+            return;
+        }
+
+        if($type instanceof $this)
+        {
+            $this->type = $type->getType();
+            return;
+        }
+
+        if(is_string($type))
+        {
+
+            /** @var MenuAdminSectionGroupCollectionInterface $class */
+            foreach(self::getDeclaredSectionGroupType() as $class)
+            {
+                if($class::equals($type))
+                {
+                    $this->type = new $class;
+                    return;
+                }
+            }
+        }
+
+
+        throw new InvalidArgumentException(sprintf('Not found Menu Section Group %s', $type));
+
+    }
+
+
+    public function __toString(): string
+    {
+        return $this->type ? $this->type->getvalue() : '';
+    }
+
+
+    /** Возвращает значение ColorsInterface */
+    public function getType(): MenuAdminSectionGroupCollectionInterface
+    {
+        return $this->type;
+    }
+
+
+    /** Возвращает значение ColorsInterface */
+    public function getTypeValue(): string
+    {
+        return $this->type->getValue();
+    }
+
+
+    public static function cases(): array
+    {
+        $case = [];
+
+        foreach(self::getDeclaredSectionGroupType() as $type)
+        {
+            /** @var MenuAdminSectionGroupCollectionInterface $type */
+            $types = new $type;
+            $case[$types::sort()] = new self($types);
+        }
+
+        ksort($case);
+
+        return $case;
+    }
+
+
+    public static function getDeclaredSectionGroupType(): array
+    {
+        return array_filter(get_declared_classes(), static function($className) {
+            return in_array(MenuAdminSectionGroupCollectionInterface::class, class_implements($className), true);
+        });
+    }
+
+
+    public static function diffType(ArrayCollection|array $diffArray)
+    {
+        $search = [];
+
+        foreach($diffArray as $item)
+        {
+            $search[] = $item->getGroup();
+        }
+
+        /* Вычисляем расхождение массивов */
+        return array_diff(self::cases(), $search);
+    }
+
+
+
+
+
+
+
+    //	public function __toString() : string
+    //	{
+    //		return $this->type->value;
+    //	}
+
+
+
+
+    //	/** Возвращает значение (value) String */
+    //	public function getValue() : string
+    //	{
+    //		return $this->type->value;
+    //	}
+    //
+    //
+    //	/** Возвращает ключ (name) Enum */
+    //	public function getName() : string
+    //	{
+    //		return $this->type->name;
+    //	}
+    //
+
+
+
+
+
+
 }

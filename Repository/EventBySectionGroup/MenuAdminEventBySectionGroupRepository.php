@@ -28,8 +28,8 @@ namespace BaksDev\Menu\Admin\Repository\EventBySectionGroup;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
+use BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection\MenuAdminSectionGroupCollectionInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroup;
-use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroupEnum;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class MenuAdminEventBySectionGroupRepository implements MenuAdminEventBySectionGroupRepositoryInterface
@@ -44,7 +44,7 @@ final class MenuAdminEventBySectionGroupRepository implements MenuAdminEventBySe
 	
 	
 	/** Метод возвращает активное событие MenuAdminEvent  */
-	public function getOneOrNullResult(MenuAdminSectionGroupEnum $group) : ?MenuAdminEvent
+	public function getOneOrNullResult(MenuAdminSectionGroupCollectionInterface $group) : ?MenuAdminEvent
 	{
 		$qb = $this->entityManager->createQueryBuilder();
 		$qb->select('event');

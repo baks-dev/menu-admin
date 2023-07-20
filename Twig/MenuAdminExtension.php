@@ -26,6 +26,7 @@
 namespace BaksDev\Menu\Admin\Twig;
 
 use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminRepositoryInterface;
+use Exception;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -40,7 +41,6 @@ final class MenuAdminExtension extends AbstractExtension
 	
 	public function __construct(MenuAdminRepositoryInterface $repository, TranslatorInterface $translator)
 	{
-		
 		$this->MenuAdmin = $repository;
 		$this->translator = $translator;
 	}
@@ -67,7 +67,7 @@ final class MenuAdminExtension extends AbstractExtension
 			return $twig->render('@Template/MenuAdmin/twig/menu.admin.html.twig', ['data' => $menu]);
 			
 		}
-		catch(\Exception $exception)
+		catch(Exception $exception)
 		{
 			return $twig->render('@MenuAdmin/twig/menu.admin.html.twig', ['data' => $menu]);
 		}

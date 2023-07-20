@@ -2,7 +2,6 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use BaksDev\Menu\Admin\Twig\MenuAdminExtension;
 use Symfony\Config\TwigConfig;
 
 return static function(ContainerConfigurator $configurator, TwigConfig $config) {
@@ -16,10 +15,10 @@ return static function(ContainerConfigurator $configurator, TwigConfig $config) 
 	
 	/** Twig Extension */
 	
-	$services->set('menu.admin.twig.extension')
-		->class(MenuAdminExtension::class)
-		->tag('twig.extension')
-	;
+//	$services->set('menu.admin.twig.extension')
+//		->class(MenuAdminExtension::class)
+//		->tag('twig.extension')
+//	;
 	
 };
 
