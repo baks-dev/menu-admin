@@ -74,10 +74,11 @@ final class MenuAdminPathDTO implements MenuAdminEventInterface
 	
 	public function addSection(Section\MenuAdminPathSectionDTO $section) : void
 	{
-		if(!$this->section->contains($section))
-		{
+      
+		//if(!$this->section->contains($section))
+		//{
 			$this->section->add($section);
-		}
+		//}
 	}
 	
 }

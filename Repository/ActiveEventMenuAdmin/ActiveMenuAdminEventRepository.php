@@ -42,6 +42,8 @@ final class ActiveMenuAdminEventRepository implements ActiveMenuAdminEventReposi
     /** Метод возвращает активное событие MenuAdminEvent  */
     public function getEventOrNullResult(): ?MenuAdminEvent
     {
+        $this->entityManager->clear();
+
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('event');
         $qb->from(MenuAdmin::class, 'menu');

@@ -93,10 +93,10 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
             }
 
             // Если пункт меню уже добавлен - пропускаем
-            if($this->MenuAdminPath->isExist($menu->getPath()))
-            {
-                continue;
-            }
+//            if($this->MenuAdminPath->isExist($menu->getPath()))
+//            {
+//                continue;
+//            }
 
             $Event = $this->activeMenuAdminEvent->getEventOrNullResult();
 
@@ -106,10 +106,8 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
                 return Command::SUCCESS;
             }
 
-
             $MenuAdminDTO = new MenuAdminPathDTO();
             $Event->getDto($MenuAdminDTO);
-
 
             /** @var MenuAdminPathSectionDTO $MenuAdminSectionDTO */
             foreach($MenuAdminDTO->getSection() as $MenuAdminSectionDTO)
@@ -154,7 +152,7 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
                             );
                         }
 
-                        // Опсиание пункта меню
+                        // Описание пункта меню
                         $MenuDesc = $this->translator->trans(id: $menu->getRole().'.desc', domain: 'security', locale: $locale);
                         $MenuAdminSectionPathTransDTO->setDescription($MenuDesc);
 
@@ -173,8 +171,7 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
 
 
             }
-
-
+            
             $MenuAdmin = $this->handler->handle($MenuAdminDTO);
 
             if(!$MenuAdmin instanceof MenuAdmin)

@@ -107,10 +107,17 @@ class MenuAdminPathSectionDTO implements MenuAdminSectionInterface
 	
 	public function addPath(Path\MenuAdminPathSectionPathDTO $path) : void
 	{
-		if(!$this->path->contains($path))
-		{
-			$this->path->add($path);
-		}
+
+        $filter = $this->path->filter(function(Path\MenuAdminPathSectionPathDTO $element) use ($path)
+        {
+            return $path->getPath() ===  $element->getPath();
+        });
+
+        if($filter->isEmpty())
+        {
+            $this->path->add($path);
+        }
+
 	}
 	
 

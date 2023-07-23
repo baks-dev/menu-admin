@@ -68,7 +68,7 @@ class MenuAdminEvent extends EntityEvent
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: MenuAdminSection::class, cascade: ['all'])]
     private Collection $section;
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->id->getValue();
     }
@@ -84,24 +84,24 @@ class MenuAdminEvent extends EntityEvent
         $this->id = new MenuAdminEventUid();
     }
 
-    public function getId() : MenuAdminEventUid
+    public function getId(): MenuAdminEventUid
     {
         return $this->id;
     }
 
-    public function setMain(MenuAdminIdentificator|MenuAdmin $main) : void
+    public function setMain(MenuAdminIdentificator|MenuAdmin $main): void
     {
         $this->main = $main instanceof MenuAdmin ? $main->getId() : $main;
     }
 
-    public function getMain() : ?MenuAdminIdentificator
+    public function getMain(): ?MenuAdminIdentificator
     {
         return $this->main;
     }
 
-    public function getDto($dto) : mixed
+    public function getDto($dto): mixed
     {
-        if ($dto instanceof MenuAdminEventInterface)
+        if($dto instanceof MenuAdminEventInterface)
         {
             return parent::getDto($dto);
         }
@@ -109,9 +109,9 @@ class MenuAdminEvent extends EntityEvent
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
 
-    public function setEntity($dto) : mixed
+    public function setEntity($dto): mixed
     {
-        if ($dto instanceof MenuAdminEventInterface)
+        if($dto instanceof MenuAdminEventInterface)
         {
             return parent::setEntity($dto);
         }
@@ -119,18 +119,18 @@ class MenuAdminEvent extends EntityEvent
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
 
-    public function isModifyActionEquals(ModifyActionEnum $action) : bool
+    public function isModifyActionEquals(ModifyActionEnum $action): bool
     {
         return $this->modify->equals($action);
     }
 
-/**
- * @return Collection
- */
-public function getSection(): Collection
-{
-    return $this->section;
-}
+    /**
+     * @return Collection
+     */
+    public function getSection(): Collection
+    {
+        return $this->section;
+    }
 
     //	public function getUploadClass() : MenuAdminImage
     //	{
@@ -140,7 +140,7 @@ public function getSection(): Collection
     //	public function getNameByLocale(Locale $locale) : ?string
     //	{
     //		$name = null;
-	//
+    //
     //		/** @var MenuAdminTrans $trans */
     //		foreach($this->translate as $trans)
     //		{
@@ -149,7 +149,7 @@ public function getSection(): Collection
     //				break;
     //			}
     //		}
-	//
+    //
     //		return $name;
     //	}
 }

@@ -30,6 +30,7 @@ use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEventInterface;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
 use BaksDev\Menu\Admin\Messenger\MenuAdminMessage;
+use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -107,39 +108,55 @@ final class MenuAdminHandler
 
         $this->entityManager->clear();
 
-        /** @var MenuAdmin $Main */
-        if($Event->getMain())
+        $Main = $this->entityManager->getRepository(MenuAdmin::class)->find(new MenuAdminIdentificator());
+
+        if(!$Main)
         {
-            $Main = $this->entityManager->getRepository(MenuAdmin::class)->findOneBy(
-                ['event' => $command->getEvent()]
-            );
-
-            if(empty($Main))
-            {
-                $uniqid = uniqid('', false);
-                $errorsString = sprintf(
-                    'Not found %s by event: %s',
-                    MenuAdmin::class,
-                    $command->getEvent()
-                );
-                $this->logger->error($uniqid.': '.$errorsString);
-
-                return $uniqid;
-            }
-
-        }
-        else
-        {
-
             $Main = new MenuAdmin();
             $this->entityManager->persist($Main);
-            $Event->setMain($Main);
         }
+        
+        $Event->setMain($Main);
+
+        //dd($Main);
+
+//
+//
+//        /** @var MenuAdmin $Main */
+//        if($Event->getMain())
+//        {
+//            $Main = $this->entityManager->getRepository(MenuAdmin::class)->findOneBy(
+//                ['event' => $command->getEvent()]
+//            );
+//
+//            if(empty($Main))
+//            {
+//                $uniqid = uniqid('', false);
+//                $errorsString = sprintf(
+//                    'Not found %s by event: %s',
+//                    MenuAdmin::class,
+//                    $command->getEvent()
+//                );
+//                $this->logger->error($uniqid.': '.$errorsString);
+//
+//                return $uniqid;
+//            }
+//
+//        }
+//        else
+//        {
+//
+//            $Main = new MenuAdmin();
+//            $this->entityManager->persist($Main);
+//            $Event->setMain($Main);
+//        }
 
 
         $Event->setEntity($command);
         $this->entityManager->persist($Event);
 
+
+       // dd(21231231321);
 
 
         /**
@@ -153,7 +170,6 @@ final class MenuAdminHandler
             {
                 dd($error);
             }
-
 
             $uniqid = uniqid('', false);
             $errorsString = (string)$errors;
