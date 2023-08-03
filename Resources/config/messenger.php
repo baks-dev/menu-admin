@@ -20,26 +20,14 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Symfony\Config\FrameworkConfig;
 
-return static function(ContainerConfigurator $configurator, FrameworkConfig $framework) {
-    $services = $configurator->services()
-        ->defaults()
-        ->autowire()
-        ->autoconfigure();
+return static function(FrameworkConfig $framework) {
 
-    $namespace = 'BaksDev\Menu\Admin';
-
-    // Services
-
-    $services->load($namespace.'\Messenger\\', __DIR__.'/../../Messenger')
-        ->exclude('../../Messenger/**/*Message.php');
-
-    /** Транспорт отправки писем */
     $messenger = $framework->messenger();
 
     $messenger
-        ->transport('menu_admin')
+        ->transport('menu-admin')
         ->dsn('%env(MESSENGER_TRANSPORT_DSN)%')
-        ->options(['queue_name' => 'menu_admin'])
+        ->options(['queue_name' => 'menu-admin'])
         ->retryStrategy()
         ->maxRetries(5)
         ->delay(1000)

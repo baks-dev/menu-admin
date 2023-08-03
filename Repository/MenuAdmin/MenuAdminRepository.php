@@ -2,24 +2,21 @@
 
 namespace BaksDev\Menu\Admin\Repository\MenuAdmin;
 
+use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Menu\Admin\Entity as EntityMenuAdmin;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
-use Doctrine\DBAL\Cache\QueryCacheProfile;
-use Doctrine\DBAL\Connection;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class MenuAdminRepository implements MenuAdminRepositoryInterface
 {
-    private Connection $connection;
-
     private TranslatorInterface $translator;
+    private DBALQueryBuilder $DBALQueryBuilder;
 
-    public function __construct(Connection $connection, TranslatorInterface $translator)
+    public function __construct(DBALQueryBuilder $DBALQueryBuilder,  TranslatorInterface $translator)
     {
-        $this->connection = $connection;
         $this->translator = $translator;
+        $this->DBALQueryBuilder = $DBALQueryBuilder;
     }
 
     /**
@@ -27,7 +24,7 @@ final class MenuAdminRepository implements MenuAdminRepositoryInterface
      */
     public function fetchAllAssociativeIndexed(): array
     {
-        $qb = $this->connection->createQueryBuilder();
+        $qb = $this->DBALQueryBuilder->createQueryBuilder(self::class);
 
         /** ЛОКАЛЬ */
         $locale = new Locale($this->translator->getLocale());
@@ -94,16 +91,9 @@ final class MenuAdminRepository implements MenuAdminRepositoryInterface
 
         $qb->orderBy('section.sort', 'ASC');
 
-        $cacheFilesystem = new FilesystemAdapter('MenuAdmin');
 
-        $config = $this->connection->getConfiguration();
-        $config?->setResultCache($cacheFilesystem);
-        
-        return $this->connection->executeCacheQuery(
-            $qb->getSQL(),
-            $qb->getParameters(),
-            $qb->getParameterTypes(),
-            new QueryCacheProfile((60 * 60 * 365), MenuAdminIdentificator::TYPE.$locale)
-        )->fetchAllAssociativeIndexed();
+        /* Кешируем результат DBAL */
+        return $qb->enableCache('MenuAdmin', 3600)->fetchAllAssociativeIndexed();
+
     }
 }

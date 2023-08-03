@@ -115,7 +115,7 @@ final class MenuAdminHandler
             $Main = new MenuAdmin();
             $this->entityManager->persist($Main);
         }
-        
+
         $Event->setMain($Main);
 
         //dd($Main);
@@ -155,10 +155,6 @@ final class MenuAdminHandler
         $Event->setEntity($command);
         $this->entityManager->persist($Event);
 
-
-       // dd(21231231321);
-
-
         /**
          * Валидация Event
          */
@@ -166,11 +162,6 @@ final class MenuAdminHandler
 
         if(count($errors) > 0)
         {
-            foreach($errors as $error)
-            {
-                dd($error);
-            }
-
             $uniqid = uniqid('', false);
             $errorsString = (string)$errors;
             $this->logger->error($uniqid.': '.$errorsString);
@@ -202,7 +193,7 @@ final class MenuAdminHandler
         /* Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
             message: new MenuAdminMessage($Main->getEvent(), $command->getEvent()),
-            transport: 'menu_admin'
+            transport: 'menu-admin'
         );
 
         // 'menu_admin_high'
