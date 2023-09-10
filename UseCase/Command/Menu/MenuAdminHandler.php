@@ -118,42 +118,10 @@ final class MenuAdminHandler
 
         $Event->setMain($Main);
 
-        //dd($Main);
-
-//
-//
-//        /** @var MenuAdmin $Main */
-//        if($Event->getMain())
-//        {
-//            $Main = $this->entityManager->getRepository(MenuAdmin::class)->findOneBy(
-//                ['event' => $command->getEvent()]
-//            );
-//
-//            if(empty($Main))
-//            {
-//                $uniqid = uniqid('', false);
-//                $errorsString = sprintf(
-//                    'Not found %s by event: %s',
-//                    MenuAdmin::class,
-//                    $command->getEvent()
-//                );
-//                $this->logger->error($uniqid.': '.$errorsString);
-//
-//                return $uniqid;
-//            }
-//
-//        }
-//        else
-//        {
-//
-//            $Main = new MenuAdmin();
-//            $this->entityManager->persist($Main);
-//            $Event->setMain($Main);
-//        }
-
-
         $Event->setEntity($command);
         $this->entityManager->persist($Event);
+
+
 
         /**
          * Валидация Event
@@ -186,6 +154,8 @@ final class MenuAdminHandler
             $this->logger->error($uniqid.': '.$errorsString);
             return $uniqid;
         }
+
+
 
 
         $this->entityManager->flush();

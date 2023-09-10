@@ -28,7 +28,7 @@ namespace BaksDev\Menu\Admin\Entity\Section\Path;
 use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use BaksDev\Menu\Admin\Type\Path\MenuAdminSectionPathUid;
-use BaksDev\Users\Groups\Role\Type\RolePrefix\RolePrefix;
+use BaksDev\Users\Profile\Group\Type\Prefix\Role\GroupRolePrefix;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,8 +68,8 @@ class MenuAdminSectionPath extends EntityEvent
      */
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
-    #[ORM\Column(type: RolePrefix::TYPE, options: ['default' => 'ROLE_ADMIN'])]
-    private RolePrefix $role;
+    #[ORM\Column(type: GroupRolePrefix::TYPE, options: ['default' => 'ROLE_ADMIN'])]
+    private GroupRolePrefix $role;
 
     /**
      * Path вида User:admin.index
@@ -103,17 +103,15 @@ class MenuAdminSectionPath extends EntityEvent
         $this->id = new MenuAdminSectionPathUid();
 
         $this->section = $section;
-        $this->role = new RolePrefix('ROLE_ADMIN');
+        $this->role = new GroupRolePrefix('ROLE_ADMIN');
         $this->path = 'Pages:admin.index';
-        $this->sort = 500;
     }
 
     public function __toString(): string
     {
         return $this->id->getValue();
     }
-
-
+    
     public function __clone(): void
     {
         $this->id = new MenuAdminSectionPathUid();

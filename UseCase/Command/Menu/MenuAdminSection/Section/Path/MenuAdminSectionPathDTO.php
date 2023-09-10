@@ -27,7 +27,7 @@ namespace BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminSection\Section\Path;
 
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPathInterface;
-use BaksDev\Users\Groups\Role\Type\RolePrefix\RolePrefix;
+use BaksDev\Users\Profile\Group\Type\Prefix\Role\GroupRolePrefix;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -46,7 +46,7 @@ final class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
      * Роль доступа
      */
     #[Assert\NotBlank]
-    private RolePrefix $role;
+    private GroupRolePrefix $role;
 
     /**
      * Path вида User:admin.index
@@ -102,12 +102,12 @@ final class MenuAdminSectionPathDTO implements MenuAdminSectionPathInterface
      * Роль доступа
      */
 
-    public function getRole(): RolePrefix
+    public function getRole(): GroupRolePrefix
     {
         return $this->role;
     }
 
-    public function setRole(RolePrefix $role): void
+    public function setRole(GroupRolePrefix $role): void
     {
         $this->role = $role;
     }

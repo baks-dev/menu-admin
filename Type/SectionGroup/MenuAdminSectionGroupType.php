@@ -38,9 +38,6 @@ final class MenuAdminSectionGroupType extends StringType
 
     public function convertToPHPValue($value, AbstractPlatform $platform): mixed
     {
-
-
-
         /** @var MenuAdminSectionGroup $type */
         foreach(MenuAdminSectionGroup::cases() as $type)
         {
@@ -48,14 +45,11 @@ final class MenuAdminSectionGroupType extends StringType
             {
                 return $type;
             }
-
-
         }
 
-        dump( $value);
-        dump( MenuAdminSectionGroup::cases());
-       
-
+        //dump( $value);
+        //dump( MenuAdminSectionGroup::cases());
+        
         throw new InvalidArgumentException(sprintf('Not found Menu Section Group %s', $value));
     }
 

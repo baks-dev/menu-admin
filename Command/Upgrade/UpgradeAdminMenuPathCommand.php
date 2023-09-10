@@ -32,7 +32,7 @@ use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\MenuAdminPathDTO;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\Section\MenuAdminPathSectionDTO;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\Section\Path\MenuAdminPathSectionPathDTO;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\Section\Path\Trans\MenuAdminPathSectionPathTransDTO;
-use BaksDev\Users\Groups\Role\Type\RolePrefix\RolePrefix;
+use BaksDev\Users\Profile\Group\Type\Prefix\Role\GroupRolePrefix;
 use InvalidArgumentException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -115,11 +115,13 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
             foreach($MenuAdminDTO->getSection() as $MenuAdminSectionDTO)
             {
 
+
+
                 if($menu->getGroupMenu()::equals($MenuAdminSectionDTO->getGroup()->getTypeValue()))
                 {
 
                     $MenuAdminSectionPathDTO = new MenuAdminPathSectionPathDTO();
-                    $MenuAdminSectionPathDTO->setRole(new RolePrefix($menu->getRole()));
+                    $MenuAdminSectionPathDTO->setRole(new GroupRolePrefix($menu->getRole()));
                     $MenuAdminSectionPathDTO->setPath($menu->getPath());
                     $MenuAdminSectionPathDTO->setSort($menu->getSortMenu());
                     $MenuAdminSectionPathDTO->setDropdown($menu->getDropdownMenu());
@@ -171,9 +173,8 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
                     }
                 }
 
-
             }
-            
+
             $MenuAdmin = $this->handler->handle($MenuAdminDTO);
 
             if(!$MenuAdmin instanceof MenuAdmin)
