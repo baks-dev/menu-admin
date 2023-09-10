@@ -41,8 +41,9 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(
-    name: 'baks:project:upgrade:menu-admin-section',
+    name: 'baks:menu-admin:section',
     description: 'Обновляет секции меню администратора',
+    aliases: ['baks:project:upgrade:menu-admin:section']
 )]
 #[AutoconfigureTag('baks.project.upgrade')]
 class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeInterface

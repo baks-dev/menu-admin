@@ -95,11 +95,11 @@ final class MenuAdminSectionGroup
     {
         $case = [];
 
-        foreach(self::getDeclaredSectionGroupType() as $type)
+        foreach(self::getDeclaredSectionGroupType() as $key => $type)
         {
             /** @var MenuAdminSectionGroupCollectionInterface $type */
             $types = new $type;
-            $case[$types::sort()] = new self($types);
+            $case[$types::sort().$key] = new self($types);
         }
 
         ksort($case);

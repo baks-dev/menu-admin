@@ -44,8 +44,9 @@ use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(
-    name: 'baks:project:upgrade:menu-admin-path',
+    name: 'baks:menu-admin:path',
     description: 'Обновляет ссылки меню администратора',
+    aliases: ['baks:project:upgrade:menu-admin:path']
 )]
 #[AutoconfigureTag('baks.project.upgrade')]
 class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInterface
@@ -54,6 +55,7 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
     private iterable $menu;
 
     private MenuAdminHandler $handler;
+
 
     private TranslatorInterface $translator;
 
@@ -189,6 +191,6 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
     /** Чам выше число - тем первым в итерации будет значение */
     public static function priority(): int
     {
-        return 0;
+        return 99;
     }
 }

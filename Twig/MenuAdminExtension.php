@@ -26,51 +26,95 @@
 namespace BaksDev\Menu\Admin\Twig;
 
 use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminRepositoryInterface;
-use Exception;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use BaksDev\Menu\Admin\Repository\MenuAuthority\MenuAuthorityRepositoryInterface;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class MenuAdminExtension extends AbstractExtension
 {
-	private MenuAdminRepositoryInterface $MenuAdmin;
-	
-	private TranslatorInterface $translator;
-	
-	
-	public function __construct(MenuAdminRepositoryInterface $repository, TranslatorInterface $translator)
-	{
-		$this->MenuAdmin = $repository;
-		$this->translator = $translator;
-	}
-	
-	
-	public function getFunctions() : array
-	{
-		return [
-			new TwigFunction('render_menu_admin',
-				[$this, 'renderMenuAdmin'],
-				['needs_environment' => true, 'is_safe' => ['html']]
-			),
-		];
-	}
-	
-	
-	public function renderMenuAdmin(Environment $twig) : string
-	{
+    private MenuAdminRepositoryInterface $MenuAdmin;
+    private Security $security;
+    private MenuAuthorityRepositoryInterface $menuAuthority;
+    private string $project_dir;
 
-		$menu = $this->MenuAdmin->fetchAllAssociativeIndexed();
-		
-		try
-		{
-			return $twig->render('@Template/MenuAdmin/twig/menu.admin.html.twig', ['data' => $menu]);
-			
-		}
-		catch(Exception $exception)
-		{
-			return $twig->render('@MenuAdmin/twig/menu.admin.html.twig', ['data' => $menu]);
-		}
-	}
-	
+    public function __construct(
+        #[Autowire('%kernel.project_dir%')] string $project_dir,
+        MenuAdminRepositoryInterface $repository,
+        MenuAuthorityRepositoryInterface $menuAuthority,
+        Security $security,
+    )
+    {
+        $this->MenuAdmin = $repository;
+        $this->security = $security;
+        $this->menuAuthority = $menuAuthority;
+        $this->project_dir = $project_dir;
+    }
+
+
+    public function getFunctions(): array
+    {
+        return [
+            new TwigFunction('render_menu_admin',
+                [$this, 'renderMenuAdmin'],
+                ['needs_environment' => true, 'is_safe' => ['html']]
+            ),
+        ];
+    }
+
+
+    public function renderMenuAdmin(Environment $twig): string
+    {
+
+        /** Меню навигации */
+        $menu = $this->MenuAdmin->fetchAllAssociativeIndexed();
+
+        /** Меню доверенностей */
+        $token = $this->security->getToken();
+        $user = $token instanceof SwitchUserToken ? $token->getOriginalToken()->getUser() : $token?->getUser();
+
+
+        /** Если авторизован администратор ресурса - подгружаем профили */
+
+        $authority = null;
+
+        if($user)
+        {
+            if(in_array('ROLE_ADMIN', $user?->getRoles()))
+            {
+                $authority = $this->menuAuthority->fetchAllMenuAuthorityAssociative($token->getUser()?->getProfile());
+            }
+            else
+            {
+                $authority = $this->menuAuthority->fetchAllMenuAuthorityAssociative($user?->getProfile());
+            }
+        }
+
+
+        //        dump($token instanceof SwitchUserToken);
+        //        dump($token);
+
+
+        if(file_exists($this->project_dir.'/templates/MenuAdmin/twig/menu.admin.html.twig'))
+        {
+            return $twig->render(
+                '@Template/MenuAdmin/twig/menu.admin.html.twig',
+                context: [
+                    'data' => $menu,
+                    'authority' => $authority
+                ]);
+        }
+
+        return $twig->render(
+            '@MenuAdmin/twig/menu.admin.html.twig',
+            context: [
+                'data' => $menu,
+                'authority' => $authority,
+                //'user' => $user
+            ]);
+    }
+
 }
