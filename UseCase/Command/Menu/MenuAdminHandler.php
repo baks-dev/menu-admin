@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Menu\Admin\UseCase\Command\Menu;
 
-use BaksDev\Core\Services\Messenger\MessageDispatchInterface;
+use BaksDev\Core\Messenger\MessageDispatchInterface;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEventInterface;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;

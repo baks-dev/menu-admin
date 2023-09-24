@@ -88,9 +88,11 @@ final class MenuAuthorityRepository implements MenuAuthorityRepositoryInterface
             'profile_personal.event = profile.event'
         );
 
-
         return $qb
             ->enableCache('MenuAdmin', 86400)
             ->fetchAllAssociative();
     }
+
+
+
 }

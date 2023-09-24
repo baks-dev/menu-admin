@@ -25,23 +25,30 @@ declare(strict_types=1);
 
 namespace BaksDev\Menu\Admin\Messenger;
 
-use Symfony\Component\Cache\Adapter\ApcuAdapter;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use BaksDev\Core\Cache\AppCacheInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(fromTransport: 'sync')]
 final class MenuAdminCacheClear
 {
+    private AppCacheInterface $cache;
+    private LoggerInterface $messageDispatchLogger;
+
+    public function __construct(
+        AppCacheInterface $cache,
+        LoggerInterface $messageDispatchLogger,
+    ) {
+        $this->cache = $cache;
+        $this->messageDispatchLogger = $messageDispatchLogger;
+    }
 
     public function __invoke(MenuAdminMessage $message)
     {
         /* Чистим кеш модуля */
-        $cache = new FilesystemAdapter('MenuAdmin');
+        $cache =  $this->cache->init('MenuAdmin');
         $cache->clear();
 
-        /* Сбрасываем индивидуальный кеш */
-        $cache = new ApcuAdapter('MenuAdmin');
-        $cache->clear();
-
+        $this->messageDispatchLogger->info('Очистили кеш MenuAdmin', [__LINE__ => __FILE__]);
     }
 }

@@ -92,8 +92,7 @@ final class MenuAdminExtension extends AbstractExtension
                 $authority = $this->menuAuthority->fetchAllMenuAuthorityAssociative($user?->getProfile());
             }
         }
-
-
+        
         //        dump($token instanceof SwitchUserToken);
         //        dump($token);
 
