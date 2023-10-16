@@ -30,13 +30,13 @@ use Doctrine\DBAL\Types\Types;
 
 final class MenuAdminSectionPathType extends UidType
 {
-	public function getClassType() : string
+	public function getClassType(): string
 	{
 		return MenuAdminSectionPathUid::class;
 	}
 	
 	
-	public function getName() : string
+	public function getName(): string
 	{
         return MenuAdminSectionPathUid::TYPE;
 	}

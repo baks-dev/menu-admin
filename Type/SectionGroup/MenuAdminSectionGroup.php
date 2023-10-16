@@ -135,7 +135,7 @@ final class MenuAdminSectionGroup
 
 
 
-    //	public function __toString() : string
+    //	public function __toString(): string
     //	{
     //		return $this->type->value;
     //	}
@@ -144,14 +144,14 @@ final class MenuAdminSectionGroup
 
 
     //	/** Возвращает значение (value) String */
-    //	public function getValue() : string
+    //	public function getValue(): string
     //	{
     //		return $this->type->value;
     //	}
     //
     //
     //	/** Возвращает ключ (name) Enum */
-    //	public function getName() : string
+    //	public function getName(): string
     //	{
     //		return $this->type->name;
     //	}

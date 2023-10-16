@@ -25,7 +25,7 @@
 
 namespace BaksDev\Menu\Admin\Entity\Section;
 
-use BaksDev\Core\Entity\EntityEvent;
+use BaksDev\Core\Entity\EntityReadonly;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPath;
 use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTrans;
@@ -42,7 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_section')]
-class MenuAdminSection extends EntityEvent
+class MenuAdminSection extends EntityReadonly
 {
     const TABLE = 'menu_admin_section';
 
@@ -101,23 +101,19 @@ class MenuAdminSection extends EntityEvent
 
     public function __clone(): void
     {
-        $this->id = new MenuAdminSectionUid();
+        $this->id = clone $this->id;
     }
 
     public function __toString(): string
     {
-        return $this->id->getValue();
-    }
-
-
-    public function getId(): MenuAdminSectionUid
-    {
-        return $this->id;
+        return (string) $this->id;
     }
 
 
     public function getDto($dto): mixed
     {
+        $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
+
         if($dto instanceof MenuAdminSectionInterface)
         {
             return parent::getDto($dto);
@@ -130,7 +126,7 @@ class MenuAdminSection extends EntityEvent
     public function setEntity($dto): mixed
     {
 
-        if($dto instanceof MenuAdminSectionInterface)
+        if($dto instanceof MenuAdminSectionInterface || $dto instanceof self)
         {
             return parent::setEntity($dto);
         }
@@ -138,4 +134,21 @@ class MenuAdminSection extends EntityEvent
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
 
+
+    /**
+     * Id
+     */
+    public function getId(): MenuAdminSectionUid
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * Event
+     */
+    public function getEvent(): ?MenuAdminEvent
+    {
+        return $this->event;
+    }
 }

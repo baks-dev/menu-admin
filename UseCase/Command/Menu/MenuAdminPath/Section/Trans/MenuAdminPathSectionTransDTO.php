@@ -63,7 +63,7 @@ class MenuAdminPathSectionTransDTO implements MenuAdminSectionTransInterface
 	
 	/** Название */
 	
-	public function getName() : string
+	public function getName(): string
 	{
 		return $this->name;
 	}

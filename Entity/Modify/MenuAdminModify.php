@@ -96,10 +96,16 @@ class MenuAdminModify extends EntityEvent
 		$this->ip = new IpAddress('127.0.0.1');
 		$this->agent = 'console';
 	}
+
+    public function __toString(): string
+    {
+        return (string) $this->event;
+    }
 	
-	
-	public function getDto($dto) : mixed
+	public function getDto($dto): mixed
 	{
+        $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
+
 		if($dto instanceof MenuAdminModifyInterface)
 		{
 			return parent::getDto($dto);
@@ -109,9 +115,9 @@ class MenuAdminModify extends EntityEvent
 	}
 	
 	
-	public function setEntity($dto) : mixed
+	public function setEntity($dto): mixed
 	{
-		if($dto instanceof MenuAdminModifyInterface)
+		if($dto instanceof MenuAdminModifyInterface || $dto instanceof self)
 		{
 			return parent::setEntity($dto);
 		}

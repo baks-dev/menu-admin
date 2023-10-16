@@ -56,14 +56,14 @@ class MenuAdminPathSectionPathTransDTO implements MenuAdminSectionPathTransInter
 	/**
      * Локаль
      */
-	
-	public function setLocal(string $local) : void
-	{
-		if(!(new ReflectionProperty($this::class, 'local'))->isInitialized($this))
-		{
-			$this->local = new Locale($local);
-		}
-	}
+
+    public function setLocal(Locale|string $local) : void
+    {
+        if(!(new ReflectionProperty(self::class, 'local'))->isInitialized($this))
+        {
+            $this->local = $local instanceof Locale ? $local : new Locale($local);
+        }
+    }
 	
 	
 	public function getLocal() : Locale
@@ -76,7 +76,7 @@ class MenuAdminPathSectionPathTransDTO implements MenuAdminSectionPathTransInter
      * Название
      */
 	
-	public function getName() : string
+	public function getName(): string
 	{
 		return $this->name;
 	}

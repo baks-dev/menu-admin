@@ -25,45 +25,69 @@ declare(strict_types=1);
 
 namespace BaksDev\Menu\Admin\UseCase\Command\Menu;
 
-use BaksDev\Core\Messenger\MessageDispatchInterface;
+use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEventInterface;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
 use BaksDev\Menu\Admin\Messenger\MenuAdminMessage;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use DomainException;
 
-final class MenuAdminHandler
+final class MenuAdminHandler extends AbstractHandler
 {
-    private EntityManagerInterface $entityManager;
-
-    private ValidatorInterface $validator;
-
-    private LoggerInterface $logger;
-
-    private MessageDispatchInterface $messageDispatch;
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
-        LoggerInterface $logger,
-        MessageDispatchInterface $messageDispatch
-    )
+    public function handle(MenuAdminEventInterface $command): string|MenuAdmin
     {
-        $this->entityManager = $entityManager;
-        $this->validator = $validator;
-        $this->logger = $logger;
-        $this->messageDispatch = $messageDispatch;
+        /** Валидация WbSupplyNewDTO  */
+        $this->validatorCollection->add($command);
 
+        $this->main = new MenuAdmin();
+        $this->event = new MenuAdminEvent();
+
+        try
+        {
+            $command->getEvent() ? $this->preUpdate($command) : $this->prePersist($command);
+        }
+        catch(DomainException $errorUniqid)
+        {
+            return $errorUniqid;
+        }
+
+
+        /** Валидация всех объектов */
+        if($this->validatorCollection->isInvalid())
+        {
+            return $this->validatorCollection->getErrorUniqid();
+        }
+
+        $this->entityManager->flush();
+
+        /* Отправляем сообщение в шину */
+        $this->messageDispatch->dispatch(
+            message: new MenuAdminMessage($this->main->getEvent(), $command->getEvent()),
+            transport: 'menu-admin'
+        );
+
+        return $this->main;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
     /** @see MenuAdmin */
-    public function handle(
-        MenuAdminEventInterface $command,
-    ): string|MenuAdmin
+    public function old_handle(MenuAdminEventInterface $command,): string|MenuAdmin
     {
+
+
+
         /**
          *  Валидация MenuAdminDTO
          */
@@ -72,7 +96,7 @@ final class MenuAdminHandler
         if(count($errors) > 0)
         {
             $uniqid = uniqid('', false);
-            $errorsString = (string)$errors;
+            $errorsString = (string) $errors;
             $this->logger->error($uniqid.': '.$errorsString);
             return $uniqid;
         }
@@ -97,16 +121,20 @@ final class MenuAdminHandler
                 return $uniqid;
             }
 
+            $EventRepo->setEntity($command);
+            $EventRepo->setEntityManager($this->entityManager);
             $Event = $EventRepo->cloneEntity();
-
         }
         else
         {
             $Event = new MenuAdminEvent();
+            $Event->setEntity($command);
             $this->entityManager->persist($Event);
         }
 
-        $this->entityManager->clear();
+        //        $this->entityManager->clear();
+        //        $this->entityManager->persist($Event);
+
 
         $Main = $this->entityManager->getRepository(MenuAdmin::class)->find(new MenuAdminIdentificator());
 
@@ -117,30 +145,23 @@ final class MenuAdminHandler
         }
 
         $Event->setMain($Main);
-
-        $Event->setEntity($command);
-        $this->entityManager->persist($Event);
-
+        $Main->setEvent($Event);
 
 
         /**
          * Валидация Event
          */
+
         $errors = $this->validator->validate($Event);
 
         if(count($errors) > 0)
         {
+            /** Ошибка валидации */
             $uniqid = uniqid('', false);
-            $errorsString = (string)$errors;
-            $this->logger->error($uniqid.': '.$errorsString);
+            $this->logger->error(sprintf('%s: %s', $uniqid, $errors), [__FILE__.':'.__LINE__]);
+
             return $uniqid;
         }
-
-
-
-
-        /* присваиваем событие корню */
-        $Main->setEvent($Event);
 
         /**
          * Валидация Main
@@ -150,12 +171,10 @@ final class MenuAdminHandler
         if(count($errors) > 0)
         {
             $uniqid = uniqid('', false);
-            $errorsString = (string)$errors;
+            $errorsString = (string) $errors;
             $this->logger->error($uniqid.': '.$errorsString);
             return $uniqid;
         }
-
-
 
 
         $this->entityManager->flush();

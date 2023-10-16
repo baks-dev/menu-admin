@@ -32,6 +32,6 @@ interface MenuAdminSectionTransInterface
 	public function getLocal() : Locale;
 	
 	
-	public function getName() : string;
+	public function getName(): string;
 	
 }

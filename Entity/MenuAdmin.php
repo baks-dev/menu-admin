@@ -63,6 +63,10 @@ class MenuAdmin
         $this->id = new MenuAdminIdentificator();
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->id;
+    }
 
     public function getId(): MenuAdminIdentificator
     {

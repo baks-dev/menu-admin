@@ -58,11 +58,11 @@ class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
      * Локаль
      */
 	
-	public function setLocal(string $local) : void
+	public function setLocal(Locale|string $local) : void
 	{
-		if(!(new ReflectionProperty($this::class, 'local'))->isInitialized($this))
+		if(!(new ReflectionProperty(self::class, 'local'))->isInitialized($this))
 		{
-			$this->local = new Locale($local);
+			$this->local = $local instanceof Locale ? $local : new Locale($local);
 		}
 	}
 	
@@ -77,7 +77,7 @@ class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
      * Название
      */
 	
-	public function getName() : string
+	public function getName(): string
 	{
 		return $this->name;
 	}

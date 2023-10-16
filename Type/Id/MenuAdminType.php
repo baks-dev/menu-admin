@@ -31,19 +31,19 @@ use Doctrine\DBAL\Types\StringType;
 
 final class MenuAdminType extends StringType
 {
-	public function convertToDatabaseValue($value, AbstractPlatform $platform) : mixed
+	public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
 	{
 		return $value instanceof MenuAdminIdentificator ? $value->getValue() : $value;
 	}
 	
 	
-	public function convertToPHPValue($value, AbstractPlatform $platform) : mixed
+	public function convertToPHPValue($value, AbstractPlatform $platform): mixed
 	{
 		return !empty($value) ? new MenuAdminIdentificator() : $value;
 	}
 	
 	
-	public function getName() : string
+	public function getName(): string
 	{
 		return MenuAdminIdentificator::TYPE;
 	}

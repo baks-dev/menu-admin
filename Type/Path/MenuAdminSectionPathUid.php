@@ -25,12 +25,19 @@
 
 namespace BaksDev\Menu\Admin\Type\Path;
 
+use App\Kernel;
 use BaksDev\Core\Type\UidType\Uid;
+use Symfony\Component\Uid\AbstractUid;
 
 final class MenuAdminSectionPathUid extends Uid
 {
     public const TEST = '0188a998-fb9c-776c-b7c2-4ce685d629f3';
     
 	public const TYPE = 'menu_admin_section_path';
-	
+
+    public function __construct(AbstractUid|string|null $value = null)
+    {
+        parent::__construct(Kernel::isTestEnvironment() && !$value ? self::TEST : $value);
+    }
+
 }

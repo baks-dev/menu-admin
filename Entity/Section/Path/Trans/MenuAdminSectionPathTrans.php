@@ -25,7 +25,7 @@
 
 namespace BaksDev\Menu\Admin\Entity\Section\Path\Trans;
 
-use BaksDev\Core\Entity\EntityEvent;
+use BaksDev\Core\Entity\EntityReadonly;
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPath;
 use Doctrine\DBAL\Types\Types;
@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_section_path_trans')]
 #[ORM\Index(columns: ['name'])]
-class MenuAdminSectionPathTrans extends EntityEvent
+class MenuAdminSectionPathTrans extends EntityReadonly
 {
     public const TABLE = 'menu_admin_section_path_trans';
 
@@ -73,9 +73,15 @@ class MenuAdminSectionPathTrans extends EntityEvent
         $this->path = $path;
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->path;
+    }
 
     public function getDto($dto): mixed
     {
+        $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
+
         if($dto instanceof MenuAdminSectionPathTransInterface)
         {
             return parent::getDto($dto);
@@ -87,8 +93,7 @@ class MenuAdminSectionPathTrans extends EntityEvent
 
     public function setEntity($dto): mixed
     {
-
-        if($dto instanceof MenuAdminSectionPathTransInterface)
+        if($dto instanceof MenuAdminSectionPathTransInterface || $dto instanceof self)
         {
             return parent::setEntity($dto);
         }

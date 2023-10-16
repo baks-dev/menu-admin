@@ -25,7 +25,7 @@
 
 namespace BaksDev\Menu\Admin\Entity\Section\Path;
 
-use BaksDev\Core\Entity\EntityEvent;
+use BaksDev\Core\Entity\EntityReadonly;
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use BaksDev\Menu\Admin\Type\Path\MenuAdminSectionPathUid;
 use BaksDev\Users\Profile\Group\Type\Prefix\Role\GroupRolePrefix;
@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /** Пункты меню MenuAdminSectionPath */
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_section_path')]
-class MenuAdminSectionPath extends EntityEvent
+class MenuAdminSectionPath extends EntityReadonly
 {
     public const TABLE = 'menu_admin_section_path';
 
@@ -107,18 +107,21 @@ class MenuAdminSectionPath extends EntityEvent
         $this->path = 'Pages:admin.index';
     }
 
-    public function __toString(): string
-    {
-        return $this->id->getValue();
-    }
-    
+
     public function __clone(): void
     {
-        $this->id = new MenuAdminSectionPathUid();
+        $this->id = clone $this->id;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->id;
     }
 
     public function getDto($dto): mixed
     {
+        $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
+
         if($dto instanceof MenuAdminSectionPathInterface)
         {
             return parent::getDto($dto);
@@ -130,8 +133,7 @@ class MenuAdminSectionPath extends EntityEvent
 
     public function setEntity($dto): mixed
     {
-
-        if($dto instanceof MenuAdminSectionPathInterface)
+        if($dto instanceof MenuAdminSectionPathInterface || $dto instanceof self)
         {
             return parent::setEntity($dto);
         }

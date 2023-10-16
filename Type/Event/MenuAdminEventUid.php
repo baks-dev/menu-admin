@@ -25,11 +25,18 @@
 
 namespace BaksDev\Menu\Admin\Type\Event;
 
+use App\Kernel;
 use BaksDev\Core\Type\UidType\Uid;
+use Symfony\Component\Uid\AbstractUid;
 
 final class MenuAdminEventUid extends Uid
 {
     public const TEST = '0188a998-b13b-721c-861a-9fb47d36d111';
 
     public const TYPE = 'menu_admin_event';
+
+    public function __construct(AbstractUid|string|null $value = null)
+    {
+        parent::__construct(Kernel::isTestEnvironment() && !$value ? self::TEST : $value);
+    }
 }

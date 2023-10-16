@@ -114,9 +114,6 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
             /** @var MenuAdminPathSectionDTO $MenuAdminSectionDTO */
             foreach($MenuAdminDTO->getSection() as $MenuAdminSectionDTO)
             {
-
-
-
                 if($menu->getGroupMenu()::equals($MenuAdminSectionDTO->getGroup()->getTypeValue()))
                 {
 

@@ -26,6 +26,7 @@
 namespace BaksDev\Menu\Admin\Entity\Event;
 
 use BaksDev\Core\Entity\EntityEvent;
+use BaksDev\Core\Entity\EntityReadonly;
 use BaksDev\Core\Type\Modify\ModifyActionEnum;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
 use BaksDev\Menu\Admin\Entity\Modify\MenuAdminModify;
@@ -68,11 +69,6 @@ class MenuAdminEvent extends EntityEvent
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: MenuAdminSection::class, cascade: ['all'])]
     private Collection $section;
 
-    public function __toString(): string
-    {
-        return $this->id->getValue();
-    }
-
     public function __construct()
     {
         $this->id = new MenuAdminEventUid();
@@ -81,7 +77,12 @@ class MenuAdminEvent extends EntityEvent
 
     public function __clone()
     {
-        $this->id = new MenuAdminEventUid();
+        $this->id = clone $this->id;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->id;
     }
 
     public function getId(): MenuAdminEventUid
@@ -101,6 +102,8 @@ class MenuAdminEvent extends EntityEvent
 
     public function getDto($dto): mixed
     {
+        $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
+
         if($dto instanceof MenuAdminEventInterface)
         {
             return parent::getDto($dto);
@@ -111,7 +114,7 @@ class MenuAdminEvent extends EntityEvent
 
     public function setEntity($dto): mixed
     {
-        if($dto instanceof MenuAdminEventInterface)
+        if($dto instanceof MenuAdminEventInterface || $dto instanceof self)
         {
             return parent::setEntity($dto);
         }

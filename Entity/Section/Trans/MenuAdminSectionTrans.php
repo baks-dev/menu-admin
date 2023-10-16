@@ -25,7 +25,7 @@
 
 namespace BaksDev\Menu\Admin\Entity\Section\Trans;
 
-use BaksDev\Core\Entity\EntityEvent;
+use BaksDev\Core\Entity\EntityReadonly;
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use Doctrine\DBAL\Types\Types;
@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\Table(name: 'menu_admin_section_trans')]
 #[ORM\Index(columns: ['name'])]
-class MenuAdminSectionTrans extends EntityEvent
+class MenuAdminSectionTrans extends EntityReadonly
 {
     public const TABLE = 'menu_admin_section_trans';
 
@@ -74,9 +74,15 @@ class MenuAdminSectionTrans extends EntityEvent
         $this->section = $section;
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->section;
+    }
 
     public function getDto($dto): mixed
     {
+        $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
+
         if($dto instanceof MenuAdminSectionTransInterface)
         {
             return parent::getDto($dto);
@@ -88,8 +94,7 @@ class MenuAdminSectionTrans extends EntityEvent
 
     public function setEntity($dto): mixed
     {
-
-        if($dto instanceof MenuAdminSectionTransInterface)
+        if($dto instanceof MenuAdminSectionTransInterface || $dto instanceof self)
         {
             return parent::setEntity($dto);
         }

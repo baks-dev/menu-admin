@@ -29,7 +29,7 @@ use BaksDev\Core\Cache\AppCacheInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler(fromTransport: 'sync')]
+#[AsMessageHandler]
 final class MenuAdminCacheClear
 {
     private AppCacheInterface $cache;
@@ -49,6 +49,6 @@ final class MenuAdminCacheClear
         $cache =  $this->cache->init('MenuAdmin');
         $cache->clear();
 
-        $this->messageDispatchLogger->info('Очистили кеш MenuAdmin', [__LINE__ => __FILE__]);
+        $this->messageDispatchLogger->info('Очистили кеш MenuAdmin', [__FILE__.':'.__LINE__]);
     }
 }
