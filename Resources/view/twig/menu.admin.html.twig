@@ -10,7 +10,7 @@
 
             {# <a class="nav-link rounded-3 px-3 text-white{{ route == 'Pages:user.catalog.category' ? ' active'  }}" href="{{ path('Pages:user.catalog.category') }}">Продукция</a>
 				<a class="nav-link rounded-3 px-3 text-white{{ route == 'Pages:user.about' ? ' active'  }}" href="{{ path('Pages:user.about') }}">О компании</a>
-				<a class="nav-link rounded-3 px-3 text-white{{ route == 'Delivery:user.delivery' ? ' active' }}" href="{{ path('Delivery:user.delivery') }}">доставка</a>
+				<a class="nav-link rounded-3 px-3 text-white{{ route == 'delivery:user.delivery' ? ' active' }}" href="{{ path('delivery:user.delivery') }}">доставка</a>
 				<a class="nav-link rounded-3 px-3 text-white{{ route == 'Pages:user.wholesale' ? ' active' }}" href="{{ path('Pages:user.wholesale') }}">Опт</a>
 				<a class="nav-link rounded-3 px-3 text-white{{ route == 'Pages:user.guaranty' ? ' active' }}" href="{{ path('Pages:user.guaranty') }}">Гарантия</a>
 				<a class="nav-link rounded-3 px-3 text-white{{ route == 'Pages:user.calc' ? ' active'  }}" href="{{ path('Pages:user.calc') }}">Шинный калькулятор</a> #}
@@ -122,14 +122,14 @@ return $('.select_box').html();
                         {% if app.user.administration %}
                             <ul class="leader list-group list-group-flush w-100 small">
                                 <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 text-truncate rounded-5">
-                                    <a href="{{ path('AuthEmail:user.edit') }}"
+                                    <a href="{{ path('auth-email:user.edit') }}"
                                        class="text-decoration-none text-dark w-100"
                                        title="{{ 'user.page.edit'|trans({}, 'user.account') }}">
                                         {{ 'user.page.edit'|trans({}, 'user.account') }}
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 text-truncate rounded-5">
                                     <a class="text-decoration-none text-dark w-100"
-                                       href="{{ path('UserProfile:user.index') }}">
+                                       href="{{ path('users-profile-user:user.index') }}">
                                         Профили
                                     </a>
                                 </li>
@@ -152,12 +152,12 @@ return $('.select_box').html();
 
 
                     {% if baks_profile.user_profile_event is defined %}
-                        <a href="{{ path('UserProfile:user.newedit.edit', { id : baks_profile.user_profile_event }) }}"
+                        <a href="{{ path('users-profile-user:user.newedit.edit', { id : baks_profile.user_profile_event }) }}"
                            class="text-dark text-decoration-none">
                             {{ baks_profile.username }}
                         </a>
                     {% else %}
-                        <a href="{{ path('UserProfile:user.index') }}" class="text-dark text-decoration-none">
+                        <a href="{{ path('users-profile-user:user.index') }}" class="text-dark text-decoration-none">
                             {{ baks_profile.user_email }}
                         </a>
                     {% endif %}
@@ -236,7 +236,7 @@ return $('.select_box').html();
                             {% endif %}
 
                             <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
-                                <a href="{{ path('AuthEmail:user.logout') }}"
+                                <a href="{{ path('auth-email:user.logout') }}"
                                    class="text-decoration-none text-dark w-100"
                                    title="Выход">
                                     Выход</a>
@@ -311,7 +311,7 @@ return $('.select_box').html();
                                             </a>
 
                                             {# <a class="nav-link rounded-3 px-2 small text-nowrap mb-1"
-                                               href="{{ path('UserProfile:user.activate', { id: profil.user_profile_event }) }}">
+                                               href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
                                                 {{ profil.user_profile_username }}
                                             </a> #}
                                         </li>

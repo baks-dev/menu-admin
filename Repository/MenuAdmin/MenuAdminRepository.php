@@ -93,7 +93,7 @@ final class MenuAdminRepository implements MenuAdminRepositoryInterface
 
 
         /* Кешируем результат DBAL */
-        return $qb->enableCache('MenuAdmin', 3600)->fetchAllAssociativeIndexed();
+        return $qb->enableCache('menu-admin', 3600)->fetchAllAssociativeIndexed();
 
     }
 }

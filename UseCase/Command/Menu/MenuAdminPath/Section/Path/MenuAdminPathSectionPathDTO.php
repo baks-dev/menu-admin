@@ -87,6 +87,11 @@ final class MenuAdminPathSectionPathDTO implements MenuAdminSectionPathInterface
 
     public function addTranslate(Trans\MenuAdminPathSectionPathTransDTO $trans): void
     {
+        if(empty($trans->getLocal()->getLocalValue()))
+        {
+            return;
+        }
+
         if (!$this->translate->contains($trans))
         {
             $this->translate->add($trans);

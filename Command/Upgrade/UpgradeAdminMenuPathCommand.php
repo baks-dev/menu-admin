@@ -131,7 +131,7 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
                     /** @var MenuAdminPathSectionPathTransDTO $MenuAdminSectionPathTransDTO */
                     foreach($MenuAdminSectionPathTrans as $MenuAdminSectionPathTransDTO)
                     {
-                        $locale = $MenuAdminSectionPathTransDTO->getLocal()->getValue();
+                        $locale = $MenuAdminSectionPathTransDTO->getLocal()->getLocalValue();
 
                         // Название пункта меню
                         $MenuName = $this->translator->trans(

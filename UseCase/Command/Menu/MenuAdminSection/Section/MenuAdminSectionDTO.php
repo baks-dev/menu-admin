@@ -105,6 +105,11 @@ class MenuAdminSectionDTO implements MenuAdminSectionInterface
 	
 	public function addTranslate(Trans\MenuAdminSectionTransDTO $trans) : void
 	{
+        if(empty($trans->getLocal()->getLocalValue()))
+        {
+            return;
+        }
+
 		if(!$this->translate->contains($trans))
 		{
 			$this->translate->add($trans);

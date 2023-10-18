@@ -110,7 +110,7 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
                 $name = $this->translator->trans(
                     id: $MenuAdminSection->getGroup()->getTypeValue().'.name',
                     domain: 'admin.menu.section',
-                    locale: $MenuAdminSectionTrans->getLocal()->getValue()
+                    locale: $MenuAdminSectionTrans->getLocal()->getLocalValue()
                 );
 
                 if($MenuAdminSection->getGroup()->getTypeValue().'.name' === $name)
@@ -118,7 +118,7 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
                     throw new InvalidArgumentException(sprintf(
                         'Отсутствует файл переводов для секции "%s" в домене %s',
                         $MenuAdminSection->getGroup()->getTypeValue(),
-                        'admin.menu.section.'.$MenuAdminSectionTrans->getLocal()->getValue().'.yaml'
+                        'admin.menu.section.'.$MenuAdminSectionTrans->getLocal()->getLocalValue().'.yaml'
                     ));
                 }
 
@@ -127,7 +127,7 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
                 $desc = $this->translator->trans(
                     id: $MenuAdminSection->getGroup()->getTypeValue().'.desc',
                     domain: 'admin.menu.section',
-                    locale: $MenuAdminSectionTrans->getLocal()->getValue()
+                    locale: $MenuAdminSectionTrans->getLocal()->getLocalValue()
                 );
 
                 if($MenuAdminSection->getGroup()->getTypeValue().'.desc' !== $desc)

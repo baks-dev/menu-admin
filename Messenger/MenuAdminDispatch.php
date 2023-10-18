@@ -30,25 +30,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class MenuAdminCacheClear
+final class MenuAdminDispatch
 {
-    private AppCacheInterface $cache;
-    private LoggerInterface $messageDispatchLogger;
-
-    public function __construct(
-        AppCacheInterface $cache,
-        LoggerInterface $messageDispatchLogger,
-    ) {
-        $this->cache = $cache;
-        $this->messageDispatchLogger = $messageDispatchLogger;
-    }
-
-    public function __invoke(MenuAdminMessage $message)
-    {
-        /* Чистим кеш модуля */
-        $cache =  $this->cache->init('MenuAdmin');
-        $cache->clear();
-
-        $this->messageDispatchLogger->info('Очистили кеш MenuAdmin', [__FILE__.':'.__LINE__]);
-    }
+    public function __invoke(MenuAdminMessage $message): void {}
 }

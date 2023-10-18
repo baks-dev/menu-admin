@@ -108,7 +108,7 @@ final class MenuAdminExtension extends AbstractExtension
         }
 
         return $twig->render(
-            '@MenuAdmin/twig/menu.admin.html.twig',
+            '@menu-admin/twig/menu.admin.html.twig',
             context: [
                 'data' => $menu,
                 'authority' => $authority,

@@ -25,11 +25,11 @@ return static function (DoctrineConfig $doctrine) {
 
     $MODULE = substr(__DIR__, 0, strpos(__DIR__, "Resources"));
 
-    $emDefault->mapping('MenuAdmin')
+    $emDefault->mapping('menu-admin')
         ->type('attribute')
         ->dir($MODULE.'Entity')
         ->isBundle(false)
         ->prefix('BaksDev\Menu\Admin\Entity')
-        ->alias('MenuAdmin')
+        ->alias('menu-admin')
     ;
 };
