@@ -92,9 +92,6 @@ final class MenuAdminExtension extends AbstractExtension
                 $authority = $this->menuAuthority->fetchAllMenuAuthorityAssociative($user?->getProfile());
             }
         }
-        
-        //        dump($token instanceof SwitchUserToken);
-        //        dump($token);
 
 
         if(file_exists($this->project_dir.'/templates/MenuAdmin/twig/menu.admin.html.twig'))
