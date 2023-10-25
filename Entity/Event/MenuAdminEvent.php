@@ -27,7 +27,6 @@ namespace BaksDev\Menu\Admin\Entity\Event;
 
 use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Core\Entity\EntityReadonly;
-use BaksDev\Core\Type\Modify\ModifyActionEnum;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
 use BaksDev\Menu\Admin\Entity\Modify\MenuAdminModify;
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
@@ -122,37 +121,8 @@ class MenuAdminEvent extends EntityEvent
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
 
-    public function isModifyActionEquals(ModifyActionEnum $action): bool
-    {
-        return $this->modify->equals($action);
-    }
-
-    /**
-     * @return Collection
-     */
     public function getSection(): Collection
     {
         return $this->section;
     }
-
-    //	public function getUploadClass() : MenuAdminImage
-    //	{
-    //		return $this->image ?: $this->image = new MenuAdminImage($this);
-    //	}
-
-    //	public function getNameByLocale(Locale $locale) : ?string
-    //	{
-    //		$name = null;
-    //
-    //		/** @var MenuAdminTrans $trans */
-    //		foreach($this->translate as $trans)
-    //		{
-    //			if($name = $trans->name($locale))
-    //			{
-    //				break;
-    //			}
-    //		}
-    //
-    //		return $name;
-    //	}
 }
