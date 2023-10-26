@@ -5,15 +5,15 @@
     <div class="collapse navbar-collapse">
 
         <div class="navbar-nav justify-content-between align-items-center flex-grow-1 ">
-            <a class="nav-link p-3 text-uppercase text-white{{ route == 'Pages:user.homepage' ? ' active' }}"
-               href="{{ path('Pages:user.homepage') }}">Главная</a>
+            <a class="nav-link p-3 text-uppercase text-white{{ route == 'core:user.homepage' ? ' active' }}"
+               href="{{ path('core:user.homepage') }}">Главная</a>
 
-            {# <a class="nav-link rounded-3 px-3 text-white{{ route == 'Pages:user.catalog.category' ? ' active'  }}" href="{{ path('Pages:user.catalog.category') }}">Продукция</a>
-				<a class="nav-link rounded-3 px-3 text-white{{ route == 'Pages:user.about' ? ' active'  }}" href="{{ path('Pages:user.about') }}">О компании</a>
+            {# <a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.catalog.category' ? ' active'  }}" href="{{ path('pages:user.catalog.category') }}">Продукция</a>
+				<a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.about' ? ' active'  }}" href="{{ path('pages:user.about') }}">О компании</a>
 				<a class="nav-link rounded-3 px-3 text-white{{ route == 'delivery:user.delivery' ? ' active' }}" href="{{ path('delivery:user.delivery') }}">доставка</a>
-				<a class="nav-link rounded-3 px-3 text-white{{ route == 'Pages:user.wholesale' ? ' active' }}" href="{{ path('Pages:user.wholesale') }}">Опт</a>
-				<a class="nav-link rounded-3 px-3 text-white{{ route == 'Pages:user.guaranty' ? ' active' }}" href="{{ path('Pages:user.guaranty') }}">Гарантия</a>
-				<a class="nav-link rounded-3 px-3 text-white{{ route == 'Pages:user.calc' ? ' active'  }}" href="{{ path('Pages:user.calc') }}">Шинный калькулятор</a> #}
+				<a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.wholesale' ? ' active' }}" href="{{ path('pages:user.wholesale') }}">Опт</a>
+				<a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.guaranty' ? ' active' }}" href="{{ path('pages:user.guaranty') }}">Гарантия</a>
+				<a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.calc' ? ' active'  }}" href="{{ path('pages:user.calc') }}">Шинный калькулятор</a> #}
 
             {% for item in data %}
 
@@ -268,13 +268,13 @@ return $('.select_box').html();
                             {% for link in authority %}
 
                                 {% if baks_profile.id is defined and baks_profile.id == link.authority %}
-                                    {# <a href='{{ path('Pages:user.homepage', {'authority' : '_exit' }) }}'
+                                    {# <a href='{{ path('core:user.homepage', {'authority' : '_exit' }) }}'
                                        class="text-decoration-none text-muted small">
                                         <div class="w-100">{{ link.profile_username }}</div>
                                     </a> #}
                                 {% else %}
                                     <li class="p-1 w-100 list-group-item rounded-5">
-                                        <a href='{{ path('Pages:user.homepage', {'authority' : link.authority }) }}'
+                                        <a href='{{ path('core:user.homepage', {'authority' : link.authority }) }}'
                                            class="d-block text-decoration-none text-muted w-100 px-1">
                                             {{ link.authority_username }}
                                         </a>
@@ -284,7 +284,7 @@ return $('.select_box').html();
                                 {# {% if link.authority %} #}
 
                                 {# {% else %}
-                                    <a href='{{ path('Pages:user.homepage', {'authority' : link.profile }) }}'
+                                    <a href='{{ path('core:user.homepage', {'authority' : link.profile }) }}'
                                        class="text-decoration-none {{   link.active ? '' : 'text-muted small' }}">
                                         {{  link.profile_username }}
                                     </a>

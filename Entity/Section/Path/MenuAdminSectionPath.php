@@ -76,7 +76,7 @@ class MenuAdminSectionPath extends EntityReadonly
      */
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
-    #[ORM\Column(type: Types::STRING, options: ['default' => 'Pages:admin.index'])]
+    #[ORM\Column(type: Types::STRING, options: ['default' => 'pages:admin.index'])]
     private string $path;
 
     /** Сортировка */
@@ -104,7 +104,7 @@ class MenuAdminSectionPath extends EntityReadonly
 
         $this->section = $section;
         $this->role = new GroupRolePrefix('ROLE_ADMIN');
-        $this->path = 'Pages:admin.index';
+        $this->path = 'pages:admin.index';
     }
 
 
