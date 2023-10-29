@@ -141,7 +141,7 @@ class MenuAdminModify extends EntityEvent
 	}
 	
 	
-	public function equals(ModifyActionEnum $action) : bool
+	public function equals(mixed $action) : bool
 	{
 		return $this->action->equals($action);
 	}

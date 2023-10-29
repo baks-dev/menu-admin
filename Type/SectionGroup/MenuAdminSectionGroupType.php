@@ -33,24 +33,13 @@ final class MenuAdminSectionGroupType extends StringType
 {
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
-        return $value instanceof MenuAdminSectionGroup ? $value->getTypeValue() : (new MenuAdminSectionGroup($value))->getTypeValue();
+        return (string) $value;
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): mixed
     {
-        /** @var MenuAdminSectionGroup $type */
-        foreach(MenuAdminSectionGroup::cases() as $type)
-        {
-            if($type->getType()::equals($value))
-            {
-                return $type;
-            }
-        }
+        return !empty($value) ? new MenuAdminSectionGroup($value) : null;
 
-        //dump( $value);
-        //dump( MenuAdminSectionGroup::cases());
-        
-        throw new InvalidArgumentException(sprintf('Not found Menu Section Group %s', $value));
     }
 
     public function getName(): string
