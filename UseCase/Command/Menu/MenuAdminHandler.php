@@ -49,7 +49,7 @@ final class MenuAdminHandler extends AbstractHandler
         }
         catch(DomainException $errorUniqid)
         {
-            return $errorUniqid;
+            return $errorUniqid->getMessage();
         }
 
 
