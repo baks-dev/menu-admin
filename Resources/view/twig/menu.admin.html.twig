@@ -256,64 +256,66 @@ return $('.select_box').html();
 
                     <div class="dropdown" style="min-width: 150px;">
 
-
-                        <div class="nav-link p-3 text-white dropdown-toggle" type="button"
+                        <div class="nav-link p-3 text-white {{ baks_profile.user_profile_profiles is defined ? 'dropdown-toggle' }}"
+                             type="button"
                              data-bs-toggle="dropdown"
                              aria-expanded="false">
                             {{ baks_profile.user_profile_username ?? null }}
                         </div>
 
-                        <ul class="dropdown-menu p-2 small dropdown-menu-center leader ">
+                        {% if baks_profile.user_profile_profiles is defined %}
 
-                            {% for link in authority %}
+                            <ul class="dropdown-menu p-2 small dropdown-menu-center leader ">
 
-                                {% if baks_profile.id is defined and baks_profile.id == link.authority %}
-                                    {# <a href='{{ path('core:user.homepage', {'authority' : '_exit' }) }}'
+                                {#{% for link in authority %}
+
+                                    {% if baks_profile.id is defined and baks_profile.id == link.authority %}
+                                        #}{# <a href='{{ path('core:user.homepage', {'authority' : '_exit' }) }}'
                                        class="text-decoration-none text-muted small">
                                         <div class="w-100">{{ link.profile_username }}</div>
-                                    </a> #}
-                                {% else %}
-                                    <li class="p-1 w-100 list-group-item rounded-5">
-                                        <a href='{{ path('core:user.homepage', {'authority' : link.authority }) }}'
-                                           class="d-block text-decoration-none text-muted w-100 px-1">
-                                            {{ link.authority_username }}
-                                        </a>
-                                    </li>
-                                {% endif %}
+                                    </a> #}{#
+                                    {% else %}
+                                        <li class="p-1 w-100 list-group-item rounded-5">
+                                            <a href='{{ path('core:user.homepage', {'authority' : link.authority }) }}'
+                                               class="d-block text-decoration-none text-muted w-100 px-1">
+                                                {{ link.authority_username }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
 
-                                {# {% if link.authority %} #}
+                                    #}{# {% if link.authority %} #}{#
 
-                                {# {% else %}
+                                    #}{# {% else %}
                                     <a href='{{ path('core:user.homepage', {'authority' : link.profile }) }}'
                                        class="text-decoration-none {{   link.active ? '' : 'text-muted small' }}">
                                         {{  link.profile_username }}
                                     </a>
-                                {% endif %} #}
+                                {% endif %} #}{#
 
-                            {% endfor %}
+                                {% endfor %}#}
 
 
-                            {% if baks_profile.user_profile_profiles is defined %}
-                                {% for profil in baks_profile.user_profile_profiles %}
-                                    {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %}
-                                        <li class="p-1 w-100 list-group-item rounded-5">
+                                {% if baks_profile.user_profile_profiles is defined %}
+                                    {% for profil in baks_profile.user_profile_profiles %}
+                                        {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %}
+                                            <li class="p-1 w-100 list-group-item rounded-5">
 
-                                            <a href='{{ path(app.current_route, {'authority' : profil.user_profile_id }|merge(app.current_route_parameters)) }}'
-                                               class="d-block text-decoration-none text-muted w-100 px-1">
-                                                {{ profil.user_profile_username }}
-                                            </a>
+                                                <a href='{{ path(app.current_route, {'authority' : profil.user_profile_id }|merge(app.current_route_parameters)) }}'
+                                                   class="d-block text-decoration-none text-muted w-100 px-1">
+                                                    {{ profil.user_profile_username }}
+                                                </a>
 
-                                            {# <a class="nav-link rounded-3 px-2 small text-nowrap mb-1"
+                                                {# <a class="nav-link rounded-3 px-2 small text-nowrap mb-1"
                                                href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
                                                 {{ profil.user_profile_username }}
                                             </a> #}
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
 
-                        </ul>
-
+                            </ul>
+                        {% endif %}
                     </div>
 
 
