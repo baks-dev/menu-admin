@@ -35,8 +35,5 @@ final class MenuAdminSectionUid extends Uid
 
     public const TYPE = 'menu_admin_section';
 
-    public function __construct(AbstractUid|string|null $value = null)
-    {
-        parent::__construct(Kernel::isTestEnvironment() && !$value ? self::TEST : $value);
-    }
+
 }

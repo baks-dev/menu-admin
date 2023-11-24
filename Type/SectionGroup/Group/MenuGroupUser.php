@@ -58,6 +58,6 @@ final class MenuGroupUser implements MenuAdminSectionGroupCollectionInterface
      */
     public static function equals(string $group): bool
     {
-        return self::GROUP === strtolower($group);
+        return self::GROUP === mb_strtolower($group);
     }
 }
