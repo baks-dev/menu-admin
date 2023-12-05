@@ -301,7 +301,7 @@ return $('.select_box').html();
                                             <li class="p-1 w-100 list-group-item rounded-5">
 
                                                 <a href='{{ path(app.current_route, {'authority' : profil.user_profile_id }|merge(app.current_route_parameters)) }}'
-                                                   class="d-block text-decoration-none text-muted w-100 px-1">
+                                                   class="d-block text-decoration-none text-nowrap text-muted w-100 px-1">
                                                     {{ profil.user_profile_username }}
                                                 </a>
 
@@ -317,7 +317,6 @@ return $('.select_box').html();
                             </ul>
                         {% endif %}
                     </div>
-
 
                 {% endif %}
 
