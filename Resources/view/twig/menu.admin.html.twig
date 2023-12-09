@@ -296,7 +296,10 @@ return $('.select_box').html();
 
 
                                 {% if baks_profile.user_profile_profiles is defined %}
+
+                                    {# Личные профили пользователя #}
                                     {% for profil in baks_profile.user_profile_profiles %}
+
                                         {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %}
                                             <li class="p-1 w-100 list-group-item rounded-5">
 
@@ -305,10 +308,10 @@ return $('.select_box').html();
                                                     {{ profil.user_profile_username }}
                                                 </a>
 
-                                                {# <a class="nav-link rounded-3 px-2 small text-nowrap mb-1"
-                                               href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
-                                                {{ profil.user_profile_username }}
-                                            </a> #}
+                                                 {#<a class="nav-link rounded-3 px-2 small text-nowrap mb-1"
+                                                   href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
+                                                    {{ profil.user_profile_username }}
+                                                </a>#}
                                             </li>
                                         {% endif %}
                                     {% endfor %}
