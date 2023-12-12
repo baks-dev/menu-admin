@@ -27,6 +27,7 @@ namespace BaksDev\Menu\Admin\Twig;
 
 use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminRepositoryInterface;
 use BaksDev\Menu\Admin\Repository\MenuAuthority\MenuAuthorityRepositoryInterface;
+use BaksDev\Users\User\Repository\GetUserById\GetUserByIdInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
@@ -40,11 +41,13 @@ final class MenuAdminExtension extends AbstractExtension
     private Security $security;
     private MenuAuthorityRepositoryInterface $menuAuthority;
     private string $project_dir;
+    private GetUserByIdInterface $getUserById;
 
     public function __construct(
         #[Autowire('%kernel.project_dir%')] string $project_dir,
         MenuAdminRepositoryInterface $repository,
         MenuAuthorityRepositoryInterface $menuAuthority,
+        GetUserByIdInterface $getUserById,
         Security $security,
     )
     {
@@ -52,6 +55,7 @@ final class MenuAdminExtension extends AbstractExtension
         $this->security = $security;
         $this->menuAuthority = $menuAuthority;
         $this->project_dir = $project_dir;
+        $this->getUserById = $getUserById;
     }
 
 
@@ -68,7 +72,6 @@ final class MenuAdminExtension extends AbstractExtension
 
     public function renderMenuAdmin(Environment $twig): string
     {
-
         /** Меню навигации */
         $menu = $this->MenuAdmin->fetchAllAssociativeIndexed();
 
@@ -76,6 +79,10 @@ final class MenuAdminExtension extends AbstractExtension
         $token = $this->security->getToken();
         $user = $token instanceof SwitchUserToken ? $token->getOriginalToken()->getUser() : $token?->getUser();
 
+
+        /** Получаем активный профиль пользовтаеля */
+
+        $user = $this->getUserById->get($user->getId());
 
         /** Если авторизован администратор ресурса - подгружаем профили */
 
@@ -92,7 +99,6 @@ final class MenuAdminExtension extends AbstractExtension
                 $authority = $this->menuAuthority->fetchAllMenuAuthorityAssociative($user?->getProfile());
             }
         }
-
 
         if(file_exists($this->project_dir.'/templates/MenuAdmin/twig/menu.admin.html.twig'))
         {

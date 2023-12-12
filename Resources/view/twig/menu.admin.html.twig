@@ -102,8 +102,8 @@ return $('.select_box').html();
                                     {# Тип профиля пользователя #}
                                     {% if baks_profile.user_profile_type is defined %}
                                         <span class="badge bg-light text-dark fw-bolder px-2 py-1">
-                            {{ baks_profile.user_profile_type }}
-                        </span>
+                                            {{ baks_profile.user_profile_type }}
+                                        </span>
                                     {% endif %}
 
                                     {% if baks_profile.user_profile_contact is defined %}
@@ -252,6 +252,8 @@ return $('.select_box').html();
 
                 {% endif %}
 
+
+
                 {% if baks_profile is defined %}
 
                     <div class="dropdown" style="min-width: 150px;">
@@ -267,13 +269,50 @@ return $('.select_box').html();
 
                             <ul class="dropdown-menu p-2 small dropdown-menu-center leader ">
 
-                                {#{% for link in authority %}
+
+                                {# Личные профили пользователя #}
+                                {% if baks_profile.user_profile_profiles is defined %}
+
+
+                                    {% for profil in baks_profile.user_profile_profiles|sort((a, b) => a.user_profile_username <=> b.user_profile_username) %}
+
+                                        {# {{ dump(baks_profile.id) }}
+                                            {{ dump(profil.user_profile_id) }} #}
+
+                                        {# {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %} #}
+                                        {% if baks_profile and baks_profile.id != profil.user_profile_id %}
+
+                                            <li class="p-1 w-100 list-group-item rounded-5">
+
+                                                {# <a href='{{ path(app.current_route, {'authority' : profil.user_profile_id }|merge(app.current_route_parameters)) }}'
+                                                       class="d-block text-decoration-none text-nowrap text-muted w-100 px-1">
+                                                        {{ profil.user_profile_username }}
+                                                    </a> #}
+
+                                                {#<a class="nav-link rounded-3 px-2 small text-nowrap mb-1"#}
+                                                <a class="d-block text-decoration-none text-dark w-100 px-1 text-nowrap"
+                                                   href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
+                                                    {{ profil.user_profile_username }}
+                                                </a>
+                                            </li>
+
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+
+
+                                {% for link in authority %}
+
+                                    {% if loop.first %}
+                                        <li><hr class="dropdown-divider"></li>
+                                    {% endif %}
+
 
                                     {% if baks_profile.id is defined and baks_profile.id == link.authority %}
-                                        #}{# <a href='{{ path('core:user.homepage', {'authority' : '_exit' }) }}'
+                                        {# <a href='{{ path('core:user.homepage', {'authority' : '_exit' }) }}'
                                        class="text-decoration-none text-muted small">
                                         <div class="w-100">{{ link.profile_username }}</div>
-                                    </a> #}{#
+                                    </a> #}
                                     {% else %}
                                         <li class="p-1 w-100 list-group-item rounded-5">
                                             <a href='{{ path('core:user.homepage', {'authority' : link.authority }) }}'
@@ -283,39 +322,19 @@ return $('.select_box').html();
                                         </li>
                                     {% endif %}
 
-                                    #}{# {% if link.authority %} #}{#
+                                    {# {% if link.authority %} #}
 
-                                    #}{# {% else %}
+                                    {# {% else %}
                                     <a href='{{ path('core:user.homepage', {'authority' : link.profile }) }}'
                                        class="text-decoration-none {{   link.active ? '' : 'text-muted small' }}">
                                         {{  link.profile_username }}
                                     </a>
-                                {% endif %} #}{#
+                                {% endif %} #}
 
-                                {% endfor %}#}
+                                {% else %}
 
+                                {% endfor %}
 
-                                {% if baks_profile.user_profile_profiles is defined %}
-
-                                    {# Личные профили пользователя #}
-                                    {% for profil in baks_profile.user_profile_profiles %}
-
-                                        {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %}
-                                            <li class="p-1 w-100 list-group-item rounded-5">
-
-                                                <a href='{{ path(app.current_route, {'authority' : profil.user_profile_id }|merge(app.current_route_parameters)) }}'
-                                                   class="d-block text-decoration-none text-nowrap text-muted w-100 px-1">
-                                                    {{ profil.user_profile_username }}
-                                                </a>
-
-                                                 {#<a class="nav-link rounded-3 px-2 small text-nowrap mb-1"
-                                                   href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
-                                                    {{ profil.user_profile_username }}
-                                                </a>#}
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
 
                             </ul>
                         {% endif %}
@@ -402,6 +421,4 @@ return $('.select_box').html();
         </div>
     </div>
 </nav>
-
-
 

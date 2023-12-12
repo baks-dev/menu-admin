@@ -45,6 +45,7 @@ final class MenuAuthorityRepository implements MenuAuthorityRepositoryInterface
      */
     public function fetchAllMenuAuthorityAssociative(?UserProfileUid $profile): ?array
     {
+
         if(!class_exists(ProfileGroupUsers::class) || $profile === null)
         {
             return null;
