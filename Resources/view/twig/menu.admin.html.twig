@@ -30,10 +30,10 @@
                             {{ item.name }}
                         </div>
 
-                        <ul class="dropdown-menu p-2 small dropdown-menu-center">
+                        <ul class="dropdown-menu p-2 dropdown-menu-center">
                             {% for path in arr_path_filter %}
                                 <li>
-                                    <a class="nav-link rounded-3 px-2 small text-nowrap mb-1 {{ route == path.href ? ' active' }} {{ path.modal ? 'modal-link' }}"
+                                    <a class="nav-link rounded-3 px-2 text-nowrap mb-1 {{ route == path.href ? ' active' }} {{ path.modal ? 'modal-link' }}"
                                        href="{{ path(path.href) }}"
                                             {% if path.modal %}
                                                 data-bs-toggle="modal"
@@ -267,7 +267,7 @@ return $('.select_box').html();
 
                         {% if baks_profile.user_profile_profiles is defined %}
 
-                            <ul class="dropdown-menu p-2 small dropdown-menu-center leader ">
+                            <ul class="dropdown-menu p-2 small dropdown-menu-center leader">
 
 
                                 {# Личные профили пользователя #}
