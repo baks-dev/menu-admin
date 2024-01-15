@@ -82,7 +82,7 @@ final class MenuAdminExtension extends AbstractExtension
 
         /** Получаем активный профиль пользовтаеля */
 
-        $user = $this->getUserById->get($user->getId());
+        $user = $user ? $this->getUserById->get($user->getId()) : null;
 
         /** Если авторизован администратор ресурса - подгружаем профили */
 
@@ -100,10 +100,10 @@ final class MenuAdminExtension extends AbstractExtension
             }
         }
 
-        if(file_exists($this->project_dir.'/templates/MenuAdmin/twig/menu.admin.html.twig'))
+        if(file_exists($this->project_dir.'/templates/menu-admin/twig/menu.admin.html.twig'))
         {
             return $twig->render(
-                '@Template/MenuAdmin/twig/menu.admin.html.twig',
+                '@Template/menu-admin/twig/menu.admin.html.twig',
                 context: [
                     'data' => $menu,
                     'authority' => $authority
