@@ -28,11 +28,17 @@ return static function(FrameworkConfig $framework) {
         ->transport('menu-admin')
         ->dsn('%env(MESSENGER_TRANSPORT_DSN)%')
         ->options(['queue_name' => 'menu-admin'])
+        ->failureTransport('failed-menu-admin')
         ->retryStrategy()
         ->maxRetries(3)
         ->delay(1000)
         ->maxDelay(0)
         ->multiplier(3) // увеличиваем задержку перед каждой повторной попыткой
-        ->service(null);
+        ->service(null)
+
+    ;
+
+    $messenger->transport('failed-menu-admin')
+        ->dsn('%env(MESSENGER_TRANSPORT_DSN)%');
 
 };
