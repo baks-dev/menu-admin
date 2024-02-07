@@ -28,18 +28,19 @@ namespace BaksDev\Menu\Admin\Type\Id;
 use BaksDev\Core\Type\UidType\UidType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
+use Doctrine\DBAL\Types\Type;
 
-final class MenuAdminType extends StringType
+final class MenuAdminType extends Type
 {
-	public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
+	public function convertToDatabaseValue($value, AbstractPlatform $platform): string
 	{
 		return $value instanceof MenuAdminIdentificator ? $value->getValue() : $value;
 	}
 	
 	
-	public function convertToPHPValue($value, AbstractPlatform $platform): mixed
+	public function convertToPHPValue($value, AbstractPlatform $platform): ?MenuAdminIdentificator
 	{
-		return !empty($value) ? new MenuAdminIdentificator() : $value;
+		return !empty($value) ? new MenuAdminIdentificator() : null;
 	}
 	
 	
@@ -53,5 +54,9 @@ final class MenuAdminType extends StringType
 	{
 		return true;
 	}
-	
+
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return $platform->getStringTypeDeclarationSQL($column);
+    }
 }
