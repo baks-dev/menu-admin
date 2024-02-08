@@ -9,7 +9,6 @@
                href="{{ path('core:user.homepage') }}">Главная</a>
 
 
-
             {# <a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.catalog.category' ? ' active'  }}" href="{{ path('pages:user.catalog.category') }}">Продукция</a>
 				<a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.about' ? ' active'  }}" href="{{ path('pages:user.about') }}">О компании</a>
 				<a class="nav-link rounded-3 px-3 text-white{{ route == 'delivery:user.delivery' ? ' active' }}" href="{{ path('delivery:user.delivery') }}">доставка</a>
@@ -75,10 +74,10 @@
                             style="width: 50px;"
                     >
 
-        <span class="icon rounded-circle bg-contain lazy p-1"
-              style="width: 30px; height: 30px;"
-              data-bg="{{ baks_profile.user_profile_avatar is defined ? baks_profile.user_profile_avatar : '/assets/img/blank.svg' }}"
-        ></span>
+                    <span class="icon rounded-circle bg-contain lazy p-1"
+                          style="width: 30px; height: 30px;"
+                          data-bg="{{ baks_profile.user_profile_avatar is defined ? baks_profile.user_profile_avatar : '/assets/img/blank.svg' }}"
+                    ></span>
 
                         {# <span class="small text-dark" style="width: 100px;">Личный кабинет</span> #}
 
@@ -90,41 +89,43 @@ return $('.select_box').html();
 }, #}
 
 
-                    <div id="user-menu-title" class="d-none">
 
+
+
+
+                    <div id="user-menu-title" class="d-none">
 
                         <div class="dropdown">
 
-
-                            <a class="btn btn- w-100 text-dark text-decoration-none" href="#"
+                            <a class="btn w-100 text-dark text-decoration-none text-start"
+                               href="{{ path('users-profile-user:user.index') }}"
                                role="button" data-bs-toggle="dropdown"
                                aria-expanded="false"
                             >
-                                <div class="w-100 float-start text-start">
+                                <div class="w-100 float-start d-flex align-items-center gap-3 text-nowrap">
                                     {{ baks_profile.user_profile_username is defined ? baks_profile.user_profile_username }}
 
                                     {# Тип профиля пользователя #}
                                     {% if baks_profile.user_profile_type is defined %}
-                                        <span class="badge bg-light text-dark fw-bolder px-2 py-1">
-                                            {{ baks_profile.user_profile_type }}
+                                        <span class="badge bg-light text-dark fw-bolder px-1 py-1">
+                                            <small>{{ baks_profile.user_profile_type }}</small>
                                         </span>
                                     {% endif %}
-
+                                </div>
+                                <div>
                                     {% if baks_profile.user_profile_contact is defined %}
                                         <div class="text-muted small">
                                             {{ baks_profile.user_profile_contact }}
                                         </div>
                                     {% endif %}
-
                                 </div>
-
                             </a>
-
                         </div>
+                    </div>
 
-
+                    <div id="user-menu-content" class="d-none">
                         {% if app.user.administration %}
-                            <ul class="leader list-group list-group-flush w-100 small">
+                            <ul class="leader list-group list-group-flush w-100 px-0">
                                 <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 text-truncate rounded-5">
                                     <a href="{{ path('auth-email:user.edit') }}"
                                        class="text-decoration-none text-dark w-100"
@@ -140,95 +141,11 @@ return $('.select_box').html();
                             </ul>
                         {% endif %}
 
-                    </div>
-
-
-                    <div id="user-menu-content" class="d-none">
-
-
-                        {# {% if baks_profile %}
-
-        <div class="menu-content d-flex align-items-center px-3 mb-3">
-
-
-            <div class="d-flex flex-column">
-                <div class="fw-bolder d-flex align-items-center">
-
-
-                    {% if baks_profile.user_profile_event is defined %}
-                        <a href="{{ path('users-profile-user:user.newedit.edit', { id : baks_profile.user_profile_event }) }}"
-                           class="text-dark text-decoration-none">
-                            {{ baks_profile.username }}
-                        </a>
-                    {% else %}
-                        <a href="{{ path('users-profile-user:user.index') }}" class="text-dark text-decoration-none">
-                            {{ baks_profile.user_email }}
-                        </a>
-                    {% endif %}
-                        #}{# Тип профиля пользователя #}{#
-                        {% if baks_profile.profile_type is defined %}
-                            <span class="badge bg-light text-dark fw-bolder fs-8 px-2 py-1 ms-2">
-                                    {{ baks_profile.profile_type }}
-                                </span>
-                        {% endif %}
-
-                    </div>
-                    <span class="text-muted small">
-                        {{ baks_profile.email }}
-                    </span>
-
-
-                    </div>
-                    <!--end::Username-->
-
-
-                    </div>
-
-                    {% endif %} #}
+                        <li class="list-group">
+                            <hr>
+                        </li>
 
                         <ul class="leader list-group list-group-flush w-100">
-
-
-                            {# <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
-            <a href="/detail" class="text-decoration-none text-dark w-100"
-                    title="Избранные товары">
-                Избранные товары</a>
-
-            <span class="badge bg-primary rounded-pill lh-normal">5</span>
-        </li> #}
-
-                            {# <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
-            <a href="/detail" class="text-decoration-none text-dark w-100"
-                    title="Просмотренные">
-                Просмотренные</a>
-
-            <span class="badge bg-primary rounded-pill lh-normal">7</span>
-        </li> #}
-
-                            {# ******************************* #}
-                            {# <li class="list-group">
-            <hr>
-        </li> #}
-
-
-                            {# <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
-            <a href="/detail" class="text-decoration-none text-dark w-100"
-                    title="История покупок">
-                История покупок</a>
-        </li> #}
-
-                            {# <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
-            <a href="/detail" class="text-decoration-none text-dark w-100"
-                    title="Отзывы">
-                Отзывы</a>
-        </li> #}
-
-
-                            {# ******************************* #}
-                            {# <li class="list-group">
-            <hr>
-        </li> #}
-
 
                             {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                 <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
@@ -245,11 +162,6 @@ return $('.select_box').html();
                                    title="Выход">
                                     Выход</a>
                             </li>
-
-                            {# <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    A list item
-                                    <span class="badge bg-primary rounded-pill">14</span>
-                                </li> #}
 
                         </ul>
                     </div>
@@ -293,7 +205,7 @@ return $('.select_box').html();
                                                         {{ profil.user_profile_username }}
                                                     </a> #}
 
-                                                {#<a class="nav-link rounded-3 px-2 small text-nowrap mb-1"#}
+                                                {# <a class="nav-link rounded-3 px-2 small text-nowrap mb-1" #}
                                                 <a class="d-block text-decoration-none text-dark w-100 px-1 text-nowrap"
                                                    href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
                                                     {{ profil.user_profile_username }}
@@ -308,7 +220,9 @@ return $('.select_box').html();
                                 {% for link in authority %}
 
                                     {% if loop.first %}
-                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
                                     {% endif %}
 
 
