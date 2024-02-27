@@ -43,14 +43,12 @@ final class MenuAuthorityRepository implements MenuAuthorityRepositoryInterface
     /**
      * Возвращает доверенные профили активного профиля пользователя
      */
-    public function fetchAllMenuAuthorityAssociative(?UserProfileUid $profile): ?array
+    public function findAll(?UserProfileUid $profile): ?array
     {
-
         if(!class_exists(ProfileGroupUsers::class) || $profile === null)
         {
             return null;
         }
-
 
         $qb = $this->DBALQueryBuilder->createQueryBuilder(self::class);
 

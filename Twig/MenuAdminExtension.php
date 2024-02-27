@@ -92,11 +92,11 @@ final class MenuAdminExtension extends AbstractExtension
         {
             if(in_array('ROLE_ADMIN', $user?->getRoles()))
             {
-                $authority = $this->menuAuthority->fetchAllMenuAuthorityAssociative($token->getUser()?->getProfile());
+                $authority = $this->menuAuthority->findAll($token->getUser()?->getProfile());
             }
             else
             {
-                $authority = $this->menuAuthority->fetchAllMenuAuthorityAssociative($user?->getProfile());
+                $authority = $this->menuAuthority->findAll($user?->getProfile());
             }
         }
 

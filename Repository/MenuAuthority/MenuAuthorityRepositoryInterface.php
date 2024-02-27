@@ -30,5 +30,5 @@ interface MenuAuthorityRepositoryInterface
     /**
      * Возвращает доверенные профили активного профиля пользователя
      */
-    public function fetchAllMenuAuthorityAssociative(?UserProfileUid $profile): ?array;
+    public function findAll(?UserProfileUid $profile): ?array;
 }
