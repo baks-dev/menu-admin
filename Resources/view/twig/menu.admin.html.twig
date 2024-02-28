@@ -185,13 +185,12 @@ return $('.select_box').html();
 
                             <ul class="dropdown-menu p-2 small dropdown-menu-center leader">
 
+                                {% set separator = false %}
 
                                 {# Личные профили пользователя #}
                                 {% if baks_profile.user_profile_profiles is defined %}
 
-
                                     {% for profil in baks_profile.user_profile_profiles|sort((a, b) => a.user_profile_username <=> b.user_profile_username) %}
-
 
                                         {# {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %} #}
                                         {% if baks_profile and baks_profile.id != profil.user_profile_id %}
@@ -203,6 +202,8 @@ return $('.select_box').html();
                                                 </a>
                                             </li>
 
+                                            {% set separator = true %}
+
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
@@ -210,12 +211,11 @@ return $('.select_box').html();
 
                                 {% for link in authority %}
 
-                                    {% if loop.first %}
+                                    {% if separator and loop.first %}
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
                                     {% endif %}
-
 
                                     {% if baks_profile.id is defined and baks_profile.id == link.authority %}
                                         {# <a href='{{ path('core:user.homepage', {'authority' : '_exit' }) }}'
