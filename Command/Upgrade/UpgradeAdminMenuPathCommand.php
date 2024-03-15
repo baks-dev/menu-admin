@@ -51,11 +51,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[AutoconfigureTag('baks.project.upgrade')]
 class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInterface
 {
-
     private iterable $menu;
 
     private MenuAdminHandler $handler;
-
 
     private TranslatorInterface $translator;
 
