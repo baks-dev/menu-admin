@@ -205,12 +205,13 @@ return $('.select_box').html();
 
                                             {% set separator = true %}
 
-                                        {% else %}
-                                            <li class="p-1 w-100 rounded-5">
+
+                                        {#{% else %}#}
+                                            {#<li class="p-1 w-100 rounded-5">
                                                 <span class="d-block text-muted small w-100 px-1 text-nowrap">
                                                     {{ profil.user_profile_username }}
                                                 </span>
-                                            </li>
+                                            </li>#}
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
@@ -232,7 +233,7 @@ return $('.select_box').html();
                                     {% else %}
                                         <li class="p-1 w-100 list-group-item rounded-5">
                                             <a href='{{ path('core:user.homepage', {'authority' : link.authority }) }}'
-                                               class="d-block text-decoration-none text-muted w-100 px-1">
+                                               class="d-block text-decoration-none w-100 px-1 text-nowrap">
                                                 {{ link.authority_username }}
                                             </a>
                                         </li>
