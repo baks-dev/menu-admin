@@ -23,10 +23,13 @@
  *
  */
 
-namespace BaksDev\Menu\Admin\Repository\ExistPath;
+namespace BaksDev\Menu\Admin\Repository\MenuAdmin;
 
-interface MenuAdminExistPathRepositoryInterface
+interface MenuAdminInterface
 {
-	public function isExist(string $path) : bool;
+	/**
+	 * Метод возвращает массив меню администратора с группировкой
+	 */
+	public function fetchAllAssociativeIndexed() : array;
 	
 }

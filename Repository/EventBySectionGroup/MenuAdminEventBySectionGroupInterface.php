@@ -25,7 +25,7 @@
 
 namespace BaksDev\Menu\Admin\Repository\EventBySectionGroup;
 
-interface MenuAdminEventBySectionGroupRepositoryInterface
+interface MenuAdminEventBySectionGroupInterface
 {
 	
 }

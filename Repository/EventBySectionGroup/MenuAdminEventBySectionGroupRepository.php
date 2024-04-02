@@ -32,7 +32,7 @@ use BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection\MenuAdminSectionGroupC
 use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroup;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class MenuAdminEventBySectionGroupRepository implements MenuAdminEventBySectionGroupRepositoryInterface
+final class MenuAdminEventBySectionGroupRepository implements MenuAdminEventBySectionGroupInterface
 {
 	private EntityManagerInterface $entityManager;
 	

@@ -23,12 +23,10 @@
  *
  */
 
-namespace BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin;
+namespace BaksDev\Menu\Admin\Repository\ExistPath;
 
-use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
-
-interface ActiveMenuAdminEventRepositoryInterface
+interface MenuAdminExistPathInterface
 {
-	public function getEventOrNullResult() : ?MenuAdminEvent;
+	public function isExist(string $path) : bool;
 	
 }

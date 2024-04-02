@@ -8,7 +8,7 @@ use BaksDev\Menu\Admin\Entity as EntityMenuAdmin;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class MenuAdminRepository implements MenuAdminRepositoryInterface
+final class MenuAdminRepository implements MenuAdminInterface
 {
     private TranslatorInterface $translator;
     private DBALQueryBuilder $DBALQueryBuilder;

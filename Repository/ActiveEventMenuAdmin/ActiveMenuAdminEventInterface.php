@@ -23,13 +23,12 @@
  *
  */
 
-namespace BaksDev\Menu\Admin\Repository\MenuAdmin;
+namespace BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin;
 
-interface MenuAdminRepositoryInterface
+use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
+
+interface ActiveMenuAdminEventInterface
 {
-	/**
-	 * Метод возвращает массив меню администратора с группировкой
-	 */
-	public function fetchAllAssociativeIndexed() : array;
+	public function getEventOrNullResult() : ?MenuAdminEvent;
 	
 }

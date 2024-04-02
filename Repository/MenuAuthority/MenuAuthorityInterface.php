@@ -25,7 +25,7 @@ namespace BaksDev\Menu\Admin\Repository\MenuAuthority;
 
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
-interface MenuAuthorityRepositoryInterface
+interface MenuAuthorityInterface
 {
     /**
      * Возвращает доверенные профили активного профиля пользователя

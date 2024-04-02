@@ -25,8 +25,8 @@ namespace BaksDev\Menu\Admin\Command\Upgrade;
 
 use BaksDev\Core\Command\Update\ProjectUpgradeInterface;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
-use BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin\ActiveMenuAdminEventRepositoryInterface;
-use BaksDev\Menu\Admin\Repository\ExistPath\MenuAdminExistPathRepositoryInterface;
+use BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin\ActiveMenuAdminEventInterface;
+use BaksDev\Menu\Admin\Repository\ExistPath\MenuAdminExistPathInterface;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminHandler;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\MenuAdminPathDTO;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\Section\MenuAdminPathSectionDTO;
@@ -57,16 +57,16 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
 
     private TranslatorInterface $translator;
 
-    private MenuAdminExistPathRepositoryInterface $MenuAdminPath;
+    private MenuAdminExistPathInterface $MenuAdminPath;
 
-    private ActiveMenuAdminEventRepositoryInterface $activeMenuAdminEvent;
+    private ActiveMenuAdminEventInterface $activeMenuAdminEvent;
 
     public function __construct(
         #[TaggedIterator('baks.menu.admin')] iterable $menu,
         MenuAdminHandler $handler,
         TranslatorInterface $translator,
-        MenuAdminExistPathRepositoryInterface $MenuAdminPath,
-        ActiveMenuAdminEventRepositoryInterface $activeMenuAdminEvent,
+        MenuAdminExistPathInterface $MenuAdminPath,
+        ActiveMenuAdminEventInterface $activeMenuAdminEvent,
     )
     {
         parent::__construct();

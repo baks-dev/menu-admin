@@ -60,12 +60,12 @@ class MenuAdminEvent extends EntityEvent
 
     /** Модификатор */
     #[Assert\Valid]
-    #[ORM\OneToOne(mappedBy: 'event', targetEntity: MenuAdminModify::class, cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: MenuAdminModify::class, mappedBy: 'event', cascade: ['all'])]
     private MenuAdminModify $modify;
 
     /** Секции меню */
     #[Assert\Valid]
-    #[ORM\OneToMany(mappedBy: 'event', targetEntity: MenuAdminSection::class, cascade: ['all'])]
+    #[ORM\OneToMany(targetEntity: MenuAdminSection::class, mappedBy: 'event', cascade: ['all'])]
     private Collection $section;
 
     public function __construct()

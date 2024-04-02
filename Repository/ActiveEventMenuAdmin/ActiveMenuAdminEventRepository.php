@@ -30,7 +30,7 @@ use BaksDev\Menu\Admin\Entity\MenuAdmin;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class ActiveMenuAdminEventRepository implements ActiveMenuAdminEventRepositoryInterface
+final class ActiveMenuAdminEventRepository implements ActiveMenuAdminEventInterface
 {
     private EntityManagerInterface $entityManager;
 

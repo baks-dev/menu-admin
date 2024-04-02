@@ -28,7 +28,7 @@ namespace BaksDev\Menu\Admin\Repository\ExistPath;
 use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPath;
 use Doctrine\DBAL\Connection;
 
-final class MenuAdminExistPathRepository implements MenuAdminExistPathRepositoryInterface
+final class MenuAdminExistPathRepository implements MenuAdminExistPathInterface
 {
 	private Connection $connection;
 	

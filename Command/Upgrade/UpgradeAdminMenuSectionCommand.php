@@ -26,7 +26,7 @@ namespace BaksDev\Menu\Admin\Command\Upgrade;
 use BaksDev\Core\Command\Update\ProjectUpgradeInterface;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
-use BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin\ActiveMenuAdminEventRepositoryInterface;
+use BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin\ActiveMenuAdminEventInterface;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminHandler;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminSection\MenuAdminSectionDTO;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminSection\Section\Trans\MenuAdminSectionTransDTO;
@@ -51,13 +51,13 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
 
     private MenuAdminHandler $handler;
     private EntityManagerInterface $entityManager;
-    private ActiveMenuAdminEventRepositoryInterface $menuAdminEventRepository;
+    private ActiveMenuAdminEventInterface $menuAdminEventRepository;
     private TranslatorInterface $translator;
 
     public function __construct(
         MenuAdminHandler $handler,
         EntityManagerInterface $entityManager,
-        ActiveMenuAdminEventRepositoryInterface $menuAdminEventRepository,
+        ActiveMenuAdminEventInterface $menuAdminEventRepository,
         TranslatorInterface $translator
     )
     {

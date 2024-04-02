@@ -25,8 +25,8 @@
 
 namespace BaksDev\Menu\Admin\Twig;
 
-use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminRepositoryInterface;
-use BaksDev\Menu\Admin\Repository\MenuAuthority\MenuAuthorityRepositoryInterface;
+use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminInterface;
+use BaksDev\Menu\Admin\Repository\MenuAuthority\MenuAuthorityInterface;
 use BaksDev\Users\User\Repository\GetUserById\GetUserByIdInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -37,16 +37,16 @@ use Twig\TwigFunction;
 
 final class MenuAdminExtension extends AbstractExtension
 {
-    private MenuAdminRepositoryInterface $MenuAdmin;
+    private MenuAdminInterface $MenuAdmin;
     private Security $security;
-    private MenuAuthorityRepositoryInterface $menuAuthority;
+    private MenuAuthorityInterface $menuAuthority;
     private string $project_dir;
     private GetUserByIdInterface $getUserById;
 
     public function __construct(
         #[Autowire('%kernel.project_dir%')] string $project_dir,
-        MenuAdminRepositoryInterface $repository,
-        MenuAuthorityRepositoryInterface $menuAuthority,
+        MenuAdminInterface $repository,
+        MenuAuthorityInterface $menuAuthority,
         GetUserByIdInterface $getUserById,
         Security $security,
     )

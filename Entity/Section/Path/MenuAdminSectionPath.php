@@ -60,7 +60,7 @@ class MenuAdminSectionPath extends EntityReadonly
      * Перевод раздела
      */
     #[Assert\Valid]
-    #[ORM\OneToMany(mappedBy: 'path', targetEntity: Trans\MenuAdminSectionPathTrans::class, cascade: ['all'])]
+    #[ORM\OneToMany(targetEntity: Trans\MenuAdminSectionPathTrans::class, mappedBy: 'path', cascade: ['all'])]
     private Collection $translate;
 
     /**

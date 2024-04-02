@@ -31,7 +31,7 @@ use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
-final class MenuAuthorityRepository implements MenuAuthorityRepositoryInterface
+final class MenuAuthorityRepository implements MenuAuthorityInterface
 {
     private DBALQueryBuilder $DBALQueryBuilder;
 
