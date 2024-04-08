@@ -42,14 +42,14 @@ final class MenuAdminExtension extends AbstractExtension
     ///private Security $security;
     private MenuAuthorityInterface $menuAuthority;
     private string $project_dir;
-    private GetUserByIdInterface $getUserById;
+    //private GetUserByIdInterface $getUserById;
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         #[Autowire('%kernel.project_dir%')] string $project_dir,
         MenuAdminInterface $repository,
         MenuAuthorityInterface $menuAuthority,
-        GetUserByIdInterface $getUserById,
+        //GetUserByIdInterface $getUserById,
         //Security $security,
         TokenStorageInterface $tokenStorage,
     )
@@ -58,7 +58,7 @@ final class MenuAdminExtension extends AbstractExtension
         //$this->security = $security;
         $this->menuAuthority = $menuAuthority;
         $this->project_dir = $project_dir;
-        $this->getUserById = $getUserById;
+        //$this->getUserById = $getUserById;
         $this->tokenStorage = $tokenStorage;
     }
 
