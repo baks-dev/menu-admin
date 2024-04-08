@@ -27,9 +27,10 @@ namespace BaksDev\Menu\Admin\Twig;
 
 use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminInterface;
 use BaksDev\Menu\Admin\Repository\MenuAuthority\MenuAuthorityInterface;
-use BaksDev\Users\User\Repository\GetUserById\GetUserByIdInterface;
-use Symfony\Bundle\SecurityBundle\Security;
+//use BaksDev\Users\User\Repository\GetUserById\GetUserByIdInterface;
+//use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -38,24 +39,27 @@ use Twig\TwigFunction;
 final class MenuAdminExtension extends AbstractExtension
 {
     private MenuAdminInterface $MenuAdmin;
-    private Security $security;
+    ///private Security $security;
     private MenuAuthorityInterface $menuAuthority;
     private string $project_dir;
-    private GetUserByIdInterface $getUserById;
+    //private GetUserByIdInterface $getUserById;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         #[Autowire('%kernel.project_dir%')] string $project_dir,
         MenuAdminInterface $repository,
         MenuAuthorityInterface $menuAuthority,
-        GetUserByIdInterface $getUserById,
-        Security $security,
+        //GetUserByIdInterface $getUserById,
+        //Security $security,
+        TokenStorageInterface $tokenStorage,
     )
     {
         $this->MenuAdmin = $repository;
-        $this->security = $security;
+        //$this->security = $security;
         $this->menuAuthority = $menuAuthority;
         $this->project_dir = $project_dir;
-        $this->getUserById = $getUserById;
+        //$this->getUserById = $getUserById;
+        $this->tokenStorage = $tokenStorage;
     }
 
 
@@ -75,14 +79,22 @@ final class MenuAdminExtension extends AbstractExtension
         /** Меню навигации */
         $menu = $this->MenuAdmin->fetchAllAssociativeIndexed();
 
+
+
         /** Меню доверенностей */
-        $token = $this->security->getToken();
+        //$token = $this->security->getToken();
+        $token = $this->tokenStorage->getToken();
         $user = $token instanceof SwitchUserToken ? $token->getOriginalToken()->getUser() : $token?->getUser();
 
+//        ///dump((string) $user->getId());
+//        //dump((string) $user->getProfile());
+//
+//        /** Получаем активный профиль пользовтаеля */
+        //$user = $user ? $this->getUserById->get($user->getId()) : null;
+//
+//        //dump((string) $user->getId());
+//        //dump((string) $user->getProfile());
 
-        /** Получаем активный профиль пользовтаеля */
-
-        $user = $user ? $this->getUserById->get($user->getId()) : null;
 
         /** Если авторизован администратор ресурса - подгружаем профили */
 
@@ -90,14 +102,24 @@ final class MenuAdminExtension extends AbstractExtension
 
         if($user)
         {
-            if(in_array('ROLE_ADMIN', $user?->getRoles()))
-            {
-                $authority = $this->menuAuthority->findAll($token->getUser()?->getProfile());
-            }
-            else
-            {
+
+            //dump((string) $this->getUserById->get($user->getId())?->getProfile());
+            //dump((string) $user?->getProfile());
+
+//            dump($token instanceof SwitchUserToken);
+//
+//            dump((string) $token->getOriginalToken()->getUser()->getProfile());
+//
+//            dump((string) $user?->getProfile());
+
+//            if(in_array('ROLE_ADMIN', $user?->getRoles()))
+//            {
+//                $authority = $this->menuAuthority->findAll($token->getUser()?->getProfile());
+//            }
+//            else
+//            {
                 $authority = $this->menuAuthority->findAll($user?->getProfile());
-            }
+            //}
         }
 
         if(file_exists($this->project_dir.'/templates/menu-admin/twig/menu.admin.html.twig'))

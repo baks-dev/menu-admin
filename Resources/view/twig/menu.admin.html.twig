@@ -169,7 +169,6 @@ return $('.select_box').html();
                 {% endif %}
 
 
-
                 {% if baks_profile is defined %}
 
                     <div class="dropdown" style="min-width: 150px;">
@@ -215,6 +214,8 @@ return $('.select_box').html();
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
+
+                                {{ dump(authority) }}
 
 
                                 {% for link in authority %}
