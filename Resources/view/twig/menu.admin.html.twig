@@ -215,16 +215,7 @@ return $('.select_box').html();
                                     {% endfor %}
                                 {% endif %}
 
-                                {{ dump(authority) }}
-
-
                                 {% for link in authority %}
-
-                                    {% if separator and loop.first %}
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                    {% endif %}
 
                                     {% if baks_profile.id is defined and baks_profile.id == link.authority %}
                                         {# <a href='{{ path('core:user.homepage', {'authority' : '_exit' }) }}'
@@ -232,6 +223,16 @@ return $('.select_box').html();
                                         <div class="w-100">{{ link.profile_username }}</div>
                                     </a> #}
                                     {% else %}
+
+                                        {% if separator %}
+
+                                            {% set separator = false %}
+
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                        {% endif %}
+
                                         <li class="p-1 w-100 list-group-item rounded-5">
                                             <a href='{{ path('core:user.homepage', {'authority' : link.authority }) }}'
                                                class="d-block text-decoration-none w-100 px-1 text-nowrap">

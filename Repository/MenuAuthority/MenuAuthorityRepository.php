@@ -88,7 +88,7 @@ final class MenuAuthorityRepository implements MenuAuthorityInterface
         );
 
         return $qb
-            ->enableCache('menu-admin', 86400)
+            ->enableCache('profile-group-users', 86400)
             ->fetchAllAssociative();
     }
 

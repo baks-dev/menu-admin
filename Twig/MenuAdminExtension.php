@@ -27,7 +27,7 @@ namespace BaksDev\Menu\Admin\Twig;
 
 use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminInterface;
 use BaksDev\Menu\Admin\Repository\MenuAuthority\MenuAuthorityInterface;
-//use BaksDev\Users\User\Repository\GetUserById\GetUserByIdInterface;
+use BaksDev\Users\User\Repository\GetUserById\GetUserByIdInterface;
 //use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -42,14 +42,14 @@ final class MenuAdminExtension extends AbstractExtension
     ///private Security $security;
     private MenuAuthorityInterface $menuAuthority;
     private string $project_dir;
-    //private GetUserByIdInterface $getUserById;
+    private GetUserByIdInterface $getUserById;
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         #[Autowire('%kernel.project_dir%')] string $project_dir,
         MenuAdminInterface $repository,
         MenuAuthorityInterface $menuAuthority,
-        //GetUserByIdInterface $getUserById,
+        GetUserByIdInterface $getUserById,
         //Security $security,
         TokenStorageInterface $tokenStorage,
     )
@@ -58,7 +58,7 @@ final class MenuAdminExtension extends AbstractExtension
         //$this->security = $security;
         $this->menuAuthority = $menuAuthority;
         $this->project_dir = $project_dir;
-        //$this->getUserById = $getUserById;
+        $this->getUserById = $getUserById;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -72,7 +72,6 @@ final class MenuAdminExtension extends AbstractExtension
             ),
         ];
     }
-
 
     public function renderMenuAdmin(Environment $twig): string
     {
@@ -90,7 +89,7 @@ final class MenuAdminExtension extends AbstractExtension
 //        //dump((string) $user->getProfile());
 //
 //        /** Получаем активный профиль пользовтаеля */
-        //$user = $user ? $this->getUserById->get($user->getId()) : null;
+         //$user = $user ? $this->getUserById->get($user->getId()) : null;
 //
 //        //dump((string) $user->getId());
 //        //dump((string) $user->getProfile());
@@ -114,7 +113,7 @@ final class MenuAdminExtension extends AbstractExtension
 
 //            if(in_array('ROLE_ADMIN', $user?->getRoles()))
 //            {
-//                $authority = $this->menuAuthority->findAll($token->getUser()?->getProfile());
+//                //$authority = $this->menuAuthority->findAll($token->getUser()?->getProfile());
 //            }
 //            else
 //            {
