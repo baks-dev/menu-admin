@@ -193,7 +193,7 @@ return $('.select_box').html();
                                     {% for profil in baks_profile.user_profile_profiles|sort((a, b) => a.user_profile_username <=> b.user_profile_username) %}
 
                                         {# {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %} #}
-                                        {% if baks_profile and baks_profile.id != profil.user_profile_id %}
+                                        {% if baks_profile.id is defined and baks_profile.id != profil.user_profile_id %}
 
                                             <li class="p-1 w-100 list-group-item rounded-5">
                                                 <a class="d-block text-decoration-none w-100 px-1 text-nowrap"
