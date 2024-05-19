@@ -65,7 +65,7 @@ class MenuAdminPathSectionDTO implements MenuAdminSectionInterface
 		$this->path = new ArrayCollection();
 	}
 	
-	
+
 	/**
      * Группа секции
      */
@@ -110,7 +110,7 @@ class MenuAdminPathSectionDTO implements MenuAdminSectionInterface
 
         $filter = $this->path->filter(function(Path\MenuAdminPathSectionPathDTO $element) use ($path)
         {
-            return $path->getPath() ===  $element->getPath();
+            return $path->getRole()->getValue() === $element->getRole()->getValue() and $path->getPath() === $element->getPath();
         });
 
         if($filter->isEmpty())
