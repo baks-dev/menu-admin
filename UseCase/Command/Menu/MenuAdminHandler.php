@@ -55,10 +55,6 @@ final class MenuAdminHandler extends AbstractHandler
         /** Валидация всех объектов */
         if($this->validatorCollection->isInvalid())
         {
-
-            //dump($command);
-            dd($this->validatorCollection->isInvalid());
-
             return $this->validatorCollection->getErrorUniqid();
         }
 
