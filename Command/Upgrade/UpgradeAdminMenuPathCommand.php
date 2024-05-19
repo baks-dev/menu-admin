@@ -93,10 +93,10 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
             }
 
             // Если пункт меню уже добавлен - пропускаем
-//            if($this->MenuAdminPath->isExist($menu->getPath()))
-//            {
-//                continue;
-//            }
+            //            if($this->MenuAdminPath->isExist($menu->getPath()))
+            //            {
+            //                continue;
+            //            }
 
             $Event = $this->activeMenuAdminEvent->getEventOrNullResult();
 
@@ -114,7 +114,6 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
             {
                 if($menu->getGroupMenu()::equals($MenuAdminSectionDTO->getGroup()->getTypeValue()))
                 {
-
                     $MenuAdminSectionPathDTO = new MenuAdminPathSectionPathDTO();
                     $MenuAdminSectionPathDTO->setRole(new GroupRolePrefix($menu->getRole()));
                     $MenuAdminSectionPathDTO->setPath($menu->getPath());
@@ -122,6 +121,9 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
                     $MenuAdminSectionPathDTO->setDropdown($menu->getDropdownMenu());
                     $MenuAdminSectionPathDTO->setModal($menu->getModal());
                     $MenuAdminSectionDTO->addPath($MenuAdminSectionPathDTO);
+
+                    $localId = $menu->getRole().($menu->getPath() ? '.name' : '.header');
+
 
                     // Настройки локали пункта меню
                     $MenuAdminSectionPathTrans = $MenuAdminSectionPathDTO->getTranslate();
@@ -131,16 +133,19 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
                     {
                         $locale = $MenuAdminSectionPathTransDTO->getLocal()->getLocalValue();
 
+
+                        dump($localId);
+
                         // Название пункта меню
                         $MenuName = $this->translator->trans(
-                            id: $menu->getRole().'.name',
+                            id: $localId,
                             domain: 'security',
                             locale: $locale
                         );
 
                         $MenuAdminSectionPathTransDTO->setName($MenuName);
 
-                        if($MenuName === $menu->getRole().'.name')
+                        if($MenuName === $localId)
                         {
                             throw new InvalidArgumentException(
                                 sprintf(

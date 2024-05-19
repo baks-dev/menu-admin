@@ -37,7 +37,7 @@ interface MenuAdminInterface
     /**
      * Метод возвращает PATH раздела.
      */
-    public function getPath(): string;
+    public function getPath(): ?string;
 
     /**
      * Метод возвращает секцию, в которую помещается ссылка на раздел.

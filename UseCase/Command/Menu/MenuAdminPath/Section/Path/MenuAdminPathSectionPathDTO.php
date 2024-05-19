@@ -49,8 +49,8 @@ final class MenuAdminPathSectionPathDTO implements MenuAdminSectionPathInterface
     /**
      * Path вида User:admin.index
      */
-    #[Assert\NotBlank]
-    private string $path;
+    #[Assert\Length(max: 255)]
+    private ?string $path = null;
 
     /**
      * Показать в выпадающем меню
@@ -115,12 +115,12 @@ final class MenuAdminPathSectionPathDTO implements MenuAdminSectionPathInterface
     }
 
     /** Path вида User:admin.index  */
-    public function getPath(): string
+    public function getPath(): ?string
     {
         return $this->path;
     }
 
-    public function setPath(string $path): void
+    public function setPath(?string $path): void
     {
         $this->path = $path;
     }

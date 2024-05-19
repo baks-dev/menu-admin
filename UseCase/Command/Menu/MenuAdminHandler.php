@@ -52,10 +52,13 @@ final class MenuAdminHandler extends AbstractHandler
             return $errorUniqid->getMessage();
         }
 
-
         /** Валидация всех объектов */
         if($this->validatorCollection->isInvalid())
         {
+
+            //dump($command);
+            dd($this->validatorCollection->isInvalid());
+
             return $this->validatorCollection->getErrorUniqid();
         }
 
