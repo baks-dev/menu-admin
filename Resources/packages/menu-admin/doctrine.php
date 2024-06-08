@@ -2,6 +2,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use BaksDev\Menu\Admin\BaksDevMenuAdminBundle;
 use BaksDev\Menu\Admin\Type\Event\MenuAdminEventType;
 use BaksDev\Menu\Admin\Type\Event\MenuAdminEventUid;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
@@ -23,11 +24,10 @@ return static function (DoctrineConfig $doctrine) {
 
     $emDefault = $doctrine->orm()->entityManager('default')->autoMapping(true);
 
-    $MODULE = substr(__DIR__, 0, strpos(__DIR__, "Resources"));
 
     $emDefault->mapping('menu-admin')
         ->type('attribute')
-        ->dir($MODULE.'Entity')
+        ->dir(BaksDevMenuAdminBundle::PATH.'Entity')
         ->isBundle(false)
         ->prefix('BaksDev\Menu\Admin\Entity')
         ->alias('menu-admin')
