@@ -24,33 +24,24 @@ class BaksDevMenuAdminBundle extends AbstractBundle
 
     public const PATH = __DIR__.DIRECTORY_SEPARATOR;
 
-    public function configure(DefinitionConfigurator $definition): void
-    {
-        $definition->rootNode()
-            ->children()
-            ->scalarNode('baks_menu_admin')
-            ->defaultValue(true)
-            ->end()
-            ->end();
-    }
-
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->parameters()->set('baks_menu_admin', true);
-    }
+        $services = $container->services()
+            ->defaults()
+            ->autowire()
+            ->autoconfigure();
 
-    // The compiler pass
-    public function process(ContainerBuilder $container): void
-    {
-        if (false === $container->hasDefinition('twig')) {
-            return;
-        }
+        $services->load(self::NAMESPACE, self::PATH)
+            ->exclude([
+                self::PATH.'{Entity,Resources,Type}',
+                self::PATH.'**/*Message.php',
+                self::PATH.'**/*DTO.php',
+            ]);
 
-        dump(6546545);
-
-        $exists = $container->getParameter('baks_menu_admin');
-        $def = $container->getDefinition('twig');
-        $def->addMethodCall('addGlobal', ['baks_menu_admin', $exists]);
+        $services->load(
+            self::NAMESPACE.'Type\SectionGroup\Group\\',
+            self::PATH.'Type/SectionGroup/Group'
+        );
     }
 
 }
