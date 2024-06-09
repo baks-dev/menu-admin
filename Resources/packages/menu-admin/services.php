@@ -40,10 +40,8 @@ return static function(ContainerConfigurator $configurator) {
             $PATH.'{Entity,Resources,Type}',
             $PATH.'**/*Message.php',
             $PATH.'**/*DTO.php',
-        ])
-    ;
+        ]);
 
     $services->load($NAMESPACE.'Type\SectionGroup\Group\\', $PATH.'Type/SectionGroup/Group');
-
 
 };

@@ -1,7 +1,7 @@
 {
   "namespaces": [
     {
-      "namespace": "MenuAdmin",
+      "namespace": "menu-admin",
       "path": "Resources/view"
     }
   ]
