@@ -26,8 +26,8 @@ return static function(FrameworkConfig $framework) {
 
     $messenger
         ->transport('menu-admin')
-        ->dsn('%env(MESSENGER_TRANSPORT_DSN)%')
-        ->options(['queue_name' => 'menu-admin'])
+        ->dsn('redis://%env(REDIS_PASSWORD)%@%env(REDIS_HOST)%:%env(REDIS_PORT)%?auto_setup=true')
+        ->options(['stream' => 'menu-admin'])
         ->failureTransport('failed-menu-admin')
         ->retryStrategy()
         ->maxRetries(3)
@@ -38,7 +38,9 @@ return static function(FrameworkConfig $framework) {
 
     ;
 
-    $messenger->transport('failed-menu-admin')
+    $failure = $framework->messenger();
+
+    $failure->transport('failed-menu-admin')
         ->dsn('%env(MESSENGER_TRANSPORT_DSN)%')
         ->options(['queue_name' => 'failed-menu-admin'])
     ;
