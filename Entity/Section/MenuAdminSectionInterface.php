@@ -27,5 +27,5 @@ namespace BaksDev\Menu\Admin\Entity\Section;
 
 interface MenuAdminSectionInterface
 {
-	
+
 }

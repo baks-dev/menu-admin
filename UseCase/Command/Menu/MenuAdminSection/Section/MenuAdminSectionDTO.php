@@ -37,121 +37,121 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MenuAdminSectionDTO implements MenuAdminSectionInterface
 {
-	/**
+    /**
      * Группа секции
      */
-	#[Assert\NotBlank]
-	private MenuAdminSectionGroup $group;
-	
-	/**
+    #[Assert\NotBlank]
+    private MenuAdminSectionGroup $group;
+
+    /**
      * Перевод секции
      */
-	#[Assert\Valid]
-	private ArrayCollection $translate;
-	
-	/**
+    #[Assert\Valid]
+    private ArrayCollection $translate;
+
+    /**
      * Разделы
      */
-	#[Assert\Valid]
-	private ArrayCollection $path;
-	
-	/**
+    #[Assert\Valid]
+    private ArrayCollection $path;
+
+    /**
      * Сортировка
      */
-	#[Assert\Range(min: 1, max: 999)]
-	private int $sort = 500;
-	
-	
-	public function __construct()
-	{
-		$this->translate = new ArrayCollection();
-		$this->path = new ArrayCollection();
-	}
-	
-	
-	/**
+    #[Assert\Range(min: 1, max: 999)]
+    private int $sort = 500;
+
+
+    public function __construct()
+    {
+        $this->translate = new ArrayCollection();
+        $this->path = new ArrayCollection();
+    }
+
+
+    /**
      * Группа секции
      */
-	
-	public function getGroup() : MenuAdminSectionGroup
-	{
-		return $this->group;
-	}
-	
-	
-	public function setGroup(MenuAdminSectionGroup|MenuAdminSectionGroupCollectionInterface $group) : void
-	{
-		$this->group = $group instanceof MenuAdminSectionGroupCollectionInterface ? new MenuAdminSectionGroup($group) : $group;
-	}
-	
-	
-	/**
+
+    public function getGroup(): MenuAdminSectionGroup
+    {
+        return $this->group;
+    }
+
+
+    public function setGroup(MenuAdminSectionGroup|MenuAdminSectionGroupCollectionInterface $group): void
+    {
+        $this->group = $group instanceof MenuAdminSectionGroupCollectionInterface ? new MenuAdminSectionGroup($group) : $group;
+    }
+
+
+    /**
      * Перевод cекции
      */
-	
-	public function getTranslate() : ArrayCollection
-	{
-		/* Вычисляем расхождение и добавляем неопределенные локали */
-		foreach(Locale::diffLocale($this->translate) as $locale)
-		{
-			$TransFormDTO = new Trans\MenuAdminSectionTransDTO();
-			$TransFormDTO->setLocal($locale);
-			$this->addTranslate($TransFormDTO);
-		}
-		
-		return $this->translate;
-	}
-	
-	
-	public function addTranslate(Trans\MenuAdminSectionTransDTO $trans) : void
-	{
+
+    public function getTranslate(): ArrayCollection
+    {
+        /* Вычисляем расхождение и добавляем неопределенные локали */
+        foreach(Locale::diffLocale($this->translate) as $locale)
+        {
+            $TransFormDTO = new Trans\MenuAdminSectionTransDTO();
+            $TransFormDTO->setLocal($locale);
+            $this->addTranslate($TransFormDTO);
+        }
+
+        return $this->translate;
+    }
+
+
+    public function addTranslate(Trans\MenuAdminSectionTransDTO $trans): void
+    {
         if(empty($trans->getLocal()->getLocalValue()))
         {
             return;
         }
 
-		if(!$this->translate->contains($trans))
-		{
-			$this->translate->add($trans);
-		}
-	}
-	
-	
-	public function removeTranslate(Trans\MenuAdminSectionTransDTO $trans) : void
-	{
-		$this->translate->removeElement($trans);
-	}
-	
-	
-	/**
+        if(!$this->translate->contains($trans))
+        {
+            $this->translate->add($trans);
+        }
+    }
+
+
+    public function removeTranslate(Trans\MenuAdminSectionTransDTO $trans): void
+    {
+        $this->translate->removeElement($trans);
+    }
+
+
+    /**
      * Разделы
      */
-	
-	public function getPath() : ArrayCollection
-	{
-		return $this->path;
-	}
-	
-	
-	public function setPath(ArrayCollection $path) : void
-	{
-		$this->path = $path;
-	}
-	
-	
-	/**
+
+    public function getPath(): ArrayCollection
+    {
+        return $this->path;
+    }
+
+
+    public function setPath(ArrayCollection $path): void
+    {
+        $this->path = $path;
+    }
+
+
+    /**
      * Сортировка
      */
-	
-	public function getSort() : int
-	{
-		return $this->sort;
-	}
-	
-	
-	public function setSort(int $sort) : void
-	{
-		$this->sort = $sort;
-	}
-	
+
+    public function getSort(): int
+    {
+        return $this->sort;
+    }
+
+
+    public function setSort(int $sort): void
+    {
+        $this->sort = $sort;
+    }
+
 }

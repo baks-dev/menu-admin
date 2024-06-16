@@ -29,6 +29,6 @@ use BaksDev\Menu\Admin\Type\Event\MenuAdminEventUid;
 
 interface MenuAdminEventInterface
 {
-	public function getEvent() : ?MenuAdminEventUid;
-	
+    public function getEvent(): ?MenuAdminEventUid;
+
 }

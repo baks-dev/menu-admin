@@ -70,21 +70,9 @@ final class MenuAdminHandler extends AbstractHandler
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
     /** @see MenuAdmin */
     public function old_handle(MenuAdminEventInterface $command,): string|MenuAdmin
     {
-
 
 
         /**

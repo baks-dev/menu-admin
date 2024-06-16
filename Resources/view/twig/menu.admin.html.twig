@@ -5,9 +5,11 @@
     <div class="collapse navbar-collapse">
 
         <div class="navbar-nav justify-content-between align-items-center flex-grow-1 ">
-            <a class="nav-link p-3 text-uppercase text-white{{ route == 'core:user.homepage' ? ' active' }}"
-               href="{{ path('core:user.homepage') }}">Главная</a>
 
+            {% if exist_path('core:user.homepage') %}
+                <a class="nav-link p-3 text-uppercase text-white{{ route == 'core:user.homepage' ? ' active' }}"
+                   href="{{ path('core:user.homepage') }}">Главная</a>
+            {% endif %}
 
             {# <a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.catalog.category' ? ' active'  }}" href="{{ path('pages:user.catalog.category') }}">Продукция</a>
 				<a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.about' ? ' active'  }}" href="{{ path('pages:user.about') }}">О компании</a>
@@ -234,12 +236,15 @@ return $('.select_box').html();
                                             </li>
                                         {% endif %}
 
-                                        <li class="p-1 w-100 list-group-item rounded-5">
-                                            <a href='{{ path('core:user.homepage', {'authority' : link.authority }) }}'
-                                               class="d-block text-decoration-none w-100 px-1 text-nowrap">
-                                                {{ link.authority_username }}
-                                            </a>
-                                        </li>
+                                        {% if exist_path('core:user.homepage') %}
+                                            <li class="p-1 w-100 list-group-item rounded-5">
+                                                <a href='{{ path('core:user.homepage', {'authority' : link.authority }) }}'
+                                                   class="d-block text-decoration-none w-100 px-1 text-nowrap">
+                                                    {{ link.authority_username }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+
                                     {% endif %}
 
                                     {# {% if link.authority %} #}

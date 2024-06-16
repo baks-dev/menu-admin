@@ -27,6 +27,6 @@ namespace BaksDev\Menu\Admin\Repository\ExistPath;
 
 interface MenuAdminExistPathInterface
 {
-	public function isExist(string $path) : bool;
-	
+    public function isExist(string $path): bool;
+
 }

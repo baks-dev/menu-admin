@@ -75,7 +75,7 @@ final class MenuAdminPathSectionPathDTO implements MenuAdminSectionPathInterface
     public function getTranslate(): ArrayCollection
     {
         // Вычисляем расхождение и добавляем неопределенные локали
-        foreach (Locale::diffLocale($this->translate) as $locale)
+        foreach(Locale::diffLocale($this->translate) as $locale)
         {
             $TransFormDTO = new Trans\MenuAdminPathSectionPathTransDTO();
             $TransFormDTO->setLocal($locale);
@@ -92,7 +92,7 @@ final class MenuAdminPathSectionPathDTO implements MenuAdminSectionPathInterface
             return;
         }
 
-        if (!$this->translate->contains($trans))
+        if(!$this->translate->contains($trans))
         {
             $this->translate->add($trans);
         }

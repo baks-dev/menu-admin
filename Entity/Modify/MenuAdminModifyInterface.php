@@ -29,6 +29,6 @@ use BaksDev\Core\Type\Modify\ModifyAction;
 
 interface MenuAdminModifyInterface
 {
-	public function getModify() : ModifyAction;
-	
+    public function getModify(): ModifyAction;
+
 }

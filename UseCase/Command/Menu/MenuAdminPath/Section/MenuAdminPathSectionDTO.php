@@ -35,81 +35,80 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MenuAdminPathSectionDTO implements MenuAdminSectionInterface
 {
-	/**
+    /**
      * Группа секции
      */
-	#[Assert\NotBlank]
-	private readonly MenuAdminSectionGroup $group;
-	
-	/**
+    #[Assert\NotBlank]
+    private readonly MenuAdminSectionGroup $group;
+
+    /**
      * Перевод секции
      */
-	private readonly ArrayCollection $translate;
-	
-	/**
+    private readonly ArrayCollection $translate;
+
+    /**
      * Разделы
      */
-	#[Assert\Valid]
-	private ArrayCollection $path;
-	
-	/**
+    #[Assert\Valid]
+    private ArrayCollection $path;
+
+    /**
      * Сортировка
      */
-	#[Assert\Range(min: 1, max: 999)]
-	private readonly int $sort;
-	
-	
-	public function __construct()
-	{
-		$this->translate = new ArrayCollection();
-		$this->path = new ArrayCollection();
-	}
-	
+    #[Assert\Range(min: 1, max: 999)]
+    private readonly int $sort;
 
-	/**
+
+    public function __construct()
+    {
+        $this->translate = new ArrayCollection();
+        $this->path = new ArrayCollection();
+    }
+
+
+    /**
      * Группа секции
      */
-	
-	public function getGroup() : MenuAdminSectionGroup
-	{
-		return $this->group;
-	}
-	
-	
-	/**
+
+    public function getGroup(): MenuAdminSectionGroup
+    {
+        return $this->group;
+    }
+
+
+    /**
      * Перевод секции
      */
-	
-	public function getTranslate() : ArrayCollection
-	{
-		return $this->translate;
-	}
-	
-	
-	public function addTranslate(Trans\MenuAdminPathSectionTransDTO $trans) : void
-	{
-		if(!$this->translate->contains($trans))
-		{
-			$this->translate->add($trans);
-		}
-	}
-	
-	
-	/**
+
+    public function getTranslate(): ArrayCollection
+    {
+        return $this->translate;
+    }
+
+
+    public function addTranslate(Trans\MenuAdminPathSectionTransDTO $trans): void
+    {
+        if(!$this->translate->contains($trans))
+        {
+            $this->translate->add($trans);
+        }
+    }
+
+
+    /**
      * Разделы
      */
-	
-	public function getPath() : ArrayCollection
-	{
-		return $this->path;
-	}
-	
-	
-	public function addPath(Path\MenuAdminPathSectionPathDTO $path) : void
-	{
 
-        $filter = $this->path->filter(function(Path\MenuAdminPathSectionPathDTO $element) use ($path)
-        {
+    public function getPath(): ArrayCollection
+    {
+        return $this->path;
+    }
+
+
+    public function addPath(Path\MenuAdminPathSectionPathDTO $path): void
+    {
+
+        $filter = $this->path->filter(function(Path\MenuAdminPathSectionPathDTO $element) use ($path) {
             return $path->getRole()->getValue() === $element->getRole()->getValue() and $path->getPath() === $element->getPath();
         });
 
@@ -118,12 +117,12 @@ class MenuAdminPathSectionDTO implements MenuAdminSectionInterface
             $this->path->add($path);
         }
 
-	}
-	
+    }
 
-	public function getSort()
-	{
-		return $this->sort;
-	}
-	
+
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
 }

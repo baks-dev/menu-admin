@@ -27,5 +27,5 @@ namespace BaksDev\Menu\Admin\Repository\EventBySectionGroup;
 
 interface MenuAdminEventBySectionGroupInterface
 {
-	
+
 }

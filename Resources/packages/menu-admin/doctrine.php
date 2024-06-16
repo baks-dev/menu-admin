@@ -15,7 +15,7 @@ use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroup;
 use BaksDev\Menu\Admin\Type\SectionGroup\MenuAdminSectionGroupType;
 use Symfony\Config\DoctrineConfig;
 
-return static function (DoctrineConfig $doctrine) {
+return static function(DoctrineConfig $doctrine) {
     $doctrine->dbal()->type(MenuAdminIdentificator::TYPE)->class(MenuAdminType::class);
     $doctrine->dbal()->type(MenuAdminEventUid::TYPE)->class(MenuAdminEventType::class);
     $doctrine->dbal()->type(MenuAdminSectionUid::TYPE)->class(MenuAdminSectionType::class);
@@ -30,6 +30,5 @@ return static function (DoctrineConfig $doctrine) {
         ->dir(BaksDevMenuAdminBundle::PATH.'Entity')
         ->isBundle(false)
         ->prefix('BaksDev\Menu\Admin\Entity')
-        ->alias('menu-admin')
-    ;
+        ->alias('menu-admin');
 };

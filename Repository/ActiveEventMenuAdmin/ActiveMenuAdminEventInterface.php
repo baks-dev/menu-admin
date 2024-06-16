@@ -29,6 +29,6 @@ use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 
 interface ActiveMenuAdminEventInterface
 {
-	public function getEventOrNullResult() : ?MenuAdminEvent;
-	
+    public function getEventOrNullResult(): ?MenuAdminEvent;
+
 }

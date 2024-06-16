@@ -93,5 +93,4 @@ final class MenuAuthorityRepository implements MenuAuthorityInterface
     }
 
 
-
 }

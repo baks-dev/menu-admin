@@ -27,5 +27,5 @@ namespace BaksDev\Menu\Admin\Entity\Section\Path;
 
 interface MenuAdminSectionPathInterface
 {
-	
+
 }

@@ -34,26 +34,26 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class MenuAdminEventBySectionGroupRepository implements MenuAdminEventBySectionGroupInterface
 {
-	private EntityManagerInterface $entityManager;
-	
-	
-	public function __construct(EntityManagerInterface $entityManager)
-	{
-		$this->entityManager = $entityManager;
-	}
-	
-	
-	/** Метод возвращает активное событие MenuAdminEvent  */
-	public function getOneOrNullResult(MenuAdminSectionGroupCollectionInterface $group) : ?MenuAdminEvent
-	{
-		$qb = $this->entityManager->createQueryBuilder();
-		$qb->select('event');
-		$qb->from(MenuAdmin::class, 'menu');
-		$qb->join(MenuAdminEvent::class, 'event', 'WITH', 'event.id = menu.event');
-		$qb->join(MenuAdminSection::class, 'section', 'WITH', 'section.event = event.id AND section.group = :group');
-		$qb->setParameter('group', new MenuAdminSectionGroup($group), MenuAdminSectionGroup::TYPE);
-		
-		return $qb->getQuery()->getOneOrNullResult();
-	}
-	
+    private EntityManagerInterface $entityManager;
+
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+
+    /** Метод возвращает активное событие MenuAdminEvent  */
+    public function getOneOrNullResult(MenuAdminSectionGroupCollectionInterface $group): ?MenuAdminEvent
+    {
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('event');
+        $qb->from(MenuAdmin::class, 'menu');
+        $qb->join(MenuAdminEvent::class, 'event', 'WITH', 'event.id = menu.event');
+        $qb->join(MenuAdminSection::class, 'section', 'WITH', 'section.event = event.id AND section.group = :group');
+        $qb->setParameter('group', new MenuAdminSectionGroup($group), MenuAdminSectionGroup::TYPE);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
 }

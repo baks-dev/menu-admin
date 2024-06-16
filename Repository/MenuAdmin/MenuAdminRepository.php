@@ -13,7 +13,7 @@ final class MenuAdminRepository implements MenuAdminInterface
     private TranslatorInterface $translator;
     private DBALQueryBuilder $DBALQueryBuilder;
 
-    public function __construct(DBALQueryBuilder $DBALQueryBuilder,  TranslatorInterface $translator)
+    public function __construct(DBALQueryBuilder $DBALQueryBuilder, TranslatorInterface $translator)
     {
         $this->translator = $translator;
         $this->DBALQueryBuilder = $DBALQueryBuilder;

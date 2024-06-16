@@ -47,7 +47,7 @@ final class MenuGroupSettingsListener
     {
         $this->collection = $collection;
     }
-    
+
     public function onKernelController(ControllerEvent $event): void
     {
         // Инициируем статусы

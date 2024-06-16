@@ -32,53 +32,53 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class MenuAdminPathDTO implements MenuAdminEventInterface
 {
-	
-	/**
+
+    /**
      * Идентификатор события
      */
-	#[Assert\Uuid]
-	private ?MenuAdminEventUid $id = null;
-	
-	/**
+    #[Assert\Uuid]
+    private ?MenuAdminEventUid $id = null;
+
+    /**
      * Секции меню
      */
-	#[Assert\Valid]
-	private ArrayCollection $section;
-	
-	
-	public function __construct()
-	{
-		$this->section = new ArrayCollection();
-	}
-	
-	
-	/**
+    #[Assert\Valid]
+    private ArrayCollection $section;
+
+
+    public function __construct()
+    {
+        $this->section = new ArrayCollection();
+    }
+
+
+    /**
      * Идентификатор события
      */
-	
-	public function getEvent() : ?MenuAdminEventUid
-	{
-		return $this->id;
-	}
-	
-	
-	/**
+
+    public function getEvent(): ?MenuAdminEventUid
+    {
+        return $this->id;
+    }
+
+
+    /**
      * Секции меню
      */
-	
-	public function getSection() : ArrayCollection
-	{
-		return $this->section;
-	}
-	
-	
-	public function addSection(Section\MenuAdminPathSectionDTO $section) : void
-	{
-      
-		//if(!$this->section->contains($section))
-		//{
-			$this->section->add($section);
-		//}
-	}
-	
+
+    public function getSection(): ArrayCollection
+    {
+        return $this->section;
+    }
+
+
+    public function addSection(Section\MenuAdminPathSectionDTO $section): void
+    {
+
+        //if(!$this->section->contains($section))
+        //{
+        $this->section->add($section);
+        //}
+    }
+
 }

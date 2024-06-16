@@ -30,29 +30,29 @@ use Doctrine\DBAL\Connection;
 
 final class MenuAdminExistPathRepository implements MenuAdminExistPathInterface
 {
-	private Connection $connection;
-	
-	
-	public function __construct(Connection $connection)
-	{
-		$this->connection = $connection;
-	}
-	
-	
-	public function isExist(string $path) : bool
-	{
-		$qb = $this->connection->createQueryBuilder();
-		
-		$qb->select('path.id');
-		$qb->from(MenuAdminSectionPath::TABLE, 'path');
-		$qb->where('path.path = :path');
-		
-		$exist = $this->connection->createQueryBuilder();
-		$exist->select('EXISTS ('.$qb->getSQL().') ');
-		$exist->setParameter('path', $path);
-		
-		return (bool) $exist->fetchOne();
-		
-	}
-	
+    private Connection $connection;
+
+
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
+
+
+    public function isExist(string $path): bool
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('path.id');
+        $qb->from(MenuAdminSectionPath::TABLE, 'path');
+        $qb->where('path.path = :path');
+
+        $exist = $this->connection->createQueryBuilder();
+        $exist->select('EXISTS ('.$qb->getSQL().') ');
+        $exist->setParameter('path', $path);
+
+        return (bool) $exist->fetchOne();
+
+    }
+
 }

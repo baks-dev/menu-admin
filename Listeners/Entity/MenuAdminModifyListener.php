@@ -34,7 +34,7 @@ final class MenuAdminModifyListener
     private RequestStack $request;
 
     private TokenStorageInterface $token;
-	
+
 
     public function __construct(
         RequestStack $request,
@@ -50,7 +50,8 @@ final class MenuAdminModifyListener
     {
         $token = $this->token->getToken();
 
-        if ($token) {
+        if($token)
+        {
 
             $data->setUsr($token->getUser());
 

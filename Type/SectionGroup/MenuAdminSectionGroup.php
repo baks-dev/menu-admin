@@ -141,8 +141,6 @@ final class MenuAdminSectionGroup
     //	}
 
 
-
-
     //	/** Возвращает значение (value) String */
     //	public function getValue(): string
     //	{
@@ -156,10 +154,6 @@ final class MenuAdminSectionGroup
     //		return $this->type->name;
     //	}
     //
-
-
-
-
 
 
 }

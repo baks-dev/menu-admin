@@ -36,72 +36,72 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
 {
 
-	/**
+    /**
      * Локаль
      */
-	#[Assert\NotBlank]
-	private readonly Locale $local;
-	
-	/**
+    #[Assert\NotBlank]
+    private readonly Locale $local;
+
+    /**
      * Название
      */
-	#[Assert\NotBlank]
-	private string $name;
-	
-	/**
+    #[Assert\NotBlank]
+    private string $name;
+
+    /**
      * Описание
      */
-	private ?string $description;
-	
-	
-	/**
+    private ?string $description;
+
+
+    /**
      * Локаль
      */
-	
-	public function setLocal(Locale|string $local) : void
-	{
-		if(!(new ReflectionProperty(self::class, 'local'))->isInitialized($this))
-		{
-			$this->local = $local instanceof Locale ? $local : new Locale($local);
-		}
-	}
-	
-	
-	public function getLocal() : Locale
-	{
-		return $this->local;
-	}
-	
-	
-	/**
+
+    public function setLocal(Locale|string $local): void
+    {
+        if(!(new ReflectionProperty(self::class, 'local'))->isInitialized($this))
+        {
+            $this->local = $local instanceof Locale ? $local : new Locale($local);
+        }
+    }
+
+
+    public function getLocal(): Locale
+    {
+        return $this->local;
+    }
+
+
+    /**
      * Название
      */
-	
-	public function getName(): string
-	{
-		return $this->name;
-	}
-	
-	
-	public function setName(string $name) : void
-	{
-		$this->name = $name;
-	}
-	
-	
-	/**
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+
+    /**
      * Описание
      */
-	
-	public function getDescription() : ?string
-	{
-		return $this->description;
-	}
-	
-	
-	public function setDescription(?string $description) : void
-	{
-		$this->description = $description;
-	}
-	
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
 }

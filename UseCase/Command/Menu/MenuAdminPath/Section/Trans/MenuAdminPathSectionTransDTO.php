@@ -34,46 +34,46 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MenuAdminPathSectionTransDTO implements MenuAdminSectionTransInterface
 {
-	
-	/**
+
+    /**
      * Локаль
      */
-	#[Assert\NotBlank]
-	private readonly Locale $local;
-	
-	/**
+    #[Assert\NotBlank]
+    private readonly Locale $local;
+
+    /**
      * Название
      */
-	#[Assert\NotBlank]
-	private readonly string $name;
-	
-	/**
+    #[Assert\NotBlank]
+    private readonly string $name;
+
+    /**
      * Описание
      */
-	private readonly ?string $description;
-	
-	
-	/** Локаль */
-	
-	public function getLocal() : Locale
-	{
-		return $this->local;
-	}
-	
-	
-	/** Название */
-	
-	public function getName(): string
-	{
-		return $this->name;
-	}
-	
-	
-	/** Описание */
-	
-	public function getDescription() : ?string
-	{
-		return $this->description;
-	}
-	
+    private readonly ?string $description;
+
+
+    /** Локаль */
+
+    public function getLocal(): Locale
+    {
+        return $this->local;
+    }
+
+
+    /** Название */
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+
+    /** Описание */
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
 }

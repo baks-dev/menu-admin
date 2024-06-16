@@ -30,15 +30,15 @@ use Doctrine\DBAL\Types\Types;
 
 final class MenuAdminEventType extends UidType
 {
-	public function getClassType(): string
-	{
-		return MenuAdminEventUid::class;
-	}
-	
-	
-	public function getName(): string
-	{
+    public function getClassType(): string
+    {
+        return MenuAdminEventUid::class;
+    }
+
+
+    public function getName(): string
+    {
         return MenuAdminEventUid::TYPE;
-	}
-	
+    }
+
 }
