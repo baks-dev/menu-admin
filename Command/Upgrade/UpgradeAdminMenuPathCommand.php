@@ -67,8 +67,7 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
         TranslatorInterface $translator,
         MenuAdminExistPathInterface $MenuAdminPath,
         ActiveMenuAdminEventInterface $activeMenuAdminEvent,
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->menu = $menu;
@@ -133,16 +132,12 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
                     {
                         $locale = $MenuAdminSectionPathTransDTO->getLocal()->getLocalValue();
 
-                        dump($localId, $locale);
-
                         // Название пункта меню
                         $MenuName = $this->translator->trans(
                             id: $localId,
                             domain: 'security',
                             locale: $locale
                         );
-
-                        dump($MenuName);
 
                         $MenuAdminSectionPathTransDTO->setName($MenuName);
 
