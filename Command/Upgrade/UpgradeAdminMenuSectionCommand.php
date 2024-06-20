@@ -48,7 +48,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[AutoconfigureTag('baks.project.upgrade')]
 class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeInterface
 {
-
     private MenuAdminHandler $handler;
     private EntityManagerInterface $entityManager;
     private ActiveMenuAdminEventInterface $menuAdminEventRepository;
@@ -59,8 +58,7 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
         EntityManagerInterface $entityManager,
         ActiveMenuAdminEventInterface $menuAdminEventRepository,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->handler = $handler;
