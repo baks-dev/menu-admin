@@ -31,7 +31,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('baks.menu.admin.group')]
 final class MenuGroupSettings implements MenuAdminSectionGroupCollectionInterface
 {
-
     public const GROUP = 'settings';
 
 
