@@ -33,7 +33,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class MenuAdminSectionDTO implements MenuAdminEventInterface
 {
-
     /**
      * Идентификатор события
      */
@@ -87,7 +86,7 @@ final class MenuAdminSectionDTO implements MenuAdminEventInterface
 
     public function addSection(Section\MenuAdminSectionDTO $section): void
     {
-        $filter = $this->section->filter(function(Section\MenuAdminSectionDTO $element) use ($section) {
+        $filter = $this->section->filter(function (Section\MenuAdminSectionDTO $element) use ($section) {
             return $section->getGroup()->getType()::equals($element->getGroup()->getTypeValue());
         });
 
