@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection;
 
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 final class MenuAdminSectionGroupCollection
 {
@@ -34,7 +34,7 @@ final class MenuAdminSectionGroupCollection
 
 
     public function __construct(
-        #[TaggedIterator('baks.menu.admin.group', defaultPriorityMethod: 'sort')] iterable $group,
+        #[AutowireIterator('baks.menu.admin.group', defaultPriorityMethod: 'sort')] iterable $group,
     )
     {
         $this->group = $group;

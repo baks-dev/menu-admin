@@ -40,7 +40,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(
@@ -62,7 +62,7 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
     private ActiveMenuAdminEventInterface $activeMenuAdminEvent;
 
     public function __construct(
-        #[TaggedIterator('baks.menu.admin')] iterable $menu,
+        #[AutowireIterator('baks.menu.admin')] iterable $menu,
         MenuAdminHandler $handler,
         TranslatorInterface $translator,
         MenuAdminExistPathInterface $MenuAdminPath,
