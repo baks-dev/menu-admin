@@ -19,6 +19,15 @@ $ composer require baks-dev/menu-admin
 $ php bin/console baks:assets:install
 ```
 
+Обновите меню
+
+
+``` bash
+$ php bin/console baks:menu-admin:section
+$ php bin/console baks:menu-admin:path
+
+```
+
 Изменения в схеме базы данных с помощью миграции
 
 ``` bash
