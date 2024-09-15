@@ -24,24 +24,12 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use BaksDev\Menu\Admin\BaksDevMenuAdminBundle;
+use Symfony\Config\FrameworkConfig;
 
-return static function(ContainerConfigurator $configurator) {
+return static function (FrameworkConfig $config) {
 
-    $services = $configurator->services()
-        ->defaults()
-        ->autowire()
-        ->autoconfigure();
-
-    $NAMESPACE = BaksDevMenuAdminBundle::NAMESPACE;
-    $PATH = BaksDevMenuAdminBundle::PATH;
-
-    $services->load($NAMESPACE, $PATH)
-        ->exclude([
-            $PATH.'{Entity,Resources,Type}',
-            $PATH.'**/*Message.php',
-            $PATH.'**/*DTO.php',
-        ]);
-
-    $services->load($NAMESPACE.'Type\SectionGroup\Group\\', $PATH.'Type/SectionGroup/Group');
+    $config
+        ->translator()
+        ->paths([BaksDevMenuAdminBundle::PATH.implode(DIRECTORY_SEPARATOR, ['Resources', 'translations', ''])]); // .'Resources/translations/']);
 
 };
