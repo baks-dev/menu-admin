@@ -1,41 +1,55 @@
 <?php
+/*
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is furnished
+ *  to do so, subject to the following conditions:
+ *  
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ *  
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 namespace BaksDev\Menu\Admin\Repository\MenuAdmin;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
-use BaksDev\Core\Type\Locale\Locale;
-use BaksDev\Menu\Admin\Entity as EntityMenuAdmin;
+use BaksDev\Menu\Admin\Entity\MenuAdmin;
+use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
+use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPath;
+use BaksDev\Menu\Admin\Entity\Section\Path\Trans\MenuAdminSectionPathTrans;
+use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTrans;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class MenuAdminRepository implements MenuAdminInterface
+final readonly class MenuAdminRepository implements MenuAdminInterface
 {
-    private TranslatorInterface $translator;
-    private DBALQueryBuilder $DBALQueryBuilder;
-
-    public function __construct(DBALQueryBuilder $DBALQueryBuilder, TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-        $this->DBALQueryBuilder = $DBALQueryBuilder;
-    }
+    public function __construct(private DBALQueryBuilder $DBALQueryBuilder) {}
 
     /**
      * Метод возвращает массив меню администратора с группировкой.
      */
     public function fetchAllAssociativeIndexed(): array
     {
-        $qb = $this->DBALQueryBuilder->createQueryBuilder(self::class);
+        $dbal = $this->DBALQueryBuilder
+            ->createQueryBuilder(self::class)
+            ->bindLocal();
 
-        /** ЛОКАЛЬ */
-        $locale = new Locale($this->translator->getLocale());
-        $qb->setParameter('local', $locale, Locale::TYPE);
+        $dbal
+            ->addSelect('section.groups')
+            ->addSelect('section.sort')
+            ->addSelect('section_trans.name');
 
-        $qb->addSelect('section.groups');
-        $qb->addSelect('section.sort')->addGroupBy('section.sort');
-        $qb->addSelect('section_trans.name')->addGroupBy('section_trans.name');
-
-
-        $qb->addSelect(
+        $dbal->addSelect(
             "JSON_AGG
 			( 
 		
@@ -53,47 +67,46 @@ final class MenuAdminRepository implements MenuAdminInterface
 			AS path"
         );
 
-        $qb->from(EntityMenuAdmin\MenuAdmin::TABLE, 'menu');
+        $dbal
+            ->from(MenuAdmin::class, 'menu')
+            ->where('menu.id = :menu')
+            ->setParameter('menu', MenuAdminIdentificator::TYPE);
 
-        $qb->join(
+        $dbal->join(
             'menu',
-            EntityMenuAdmin\Section\MenuAdminSection::TABLE,
+            MenuAdminSection::class,
             'section',
             'section.event = menu.event'
         );
 
-        $qb->leftJoin(
+        $dbal->leftJoin(
             'section',
-            EntityMenuAdmin\Section\Trans\MenuAdminSectionTrans::TABLE,
+            MenuAdminSectionTrans::class,
             'section_trans',
             'section_trans.section = section.id AND section_trans.local = :local'
         );
 
-        $qb->join(
+        $dbal->join(
             'section',
-            EntityMenuAdmin\Section\Path\MenuAdminSectionPath::TABLE,
+            MenuAdminSectionPath::class,
             'path',
             'path.section = section.id'
         );
 
-        $qb->leftJoin(
+        $dbal->leftJoin(
             'path',
-            EntityMenuAdmin\Section\Path\Trans\MenuAdminSectionPathTrans::TABLE,
+            MenuAdminSectionPathTrans::class,
             'path_trans',
             'path_trans.path = path.id AND path_trans.local = :local'
         );
 
-        $qb->addGroupBy('section.groups');
 
-        $qb->where('menu.id = :menu');
+        $dbal->allGroupByExclude();
 
-        $qb->setParameter('menu', MenuAdminIdentificator::TYPE);
-
-        $qb->orderBy('section.sort', 'ASC');
-
+        $dbal->orderBy('section.sort', 'ASC');
 
         /* Кешируем результат DBAL */
-        return $qb->enableCache('menu-admin', 3600)->fetchAllAssociativeIndexed();
+        return $dbal->enableCache('menu-admin', 3600)->fetchAllAssociativeIndexed();
 
     }
 }
