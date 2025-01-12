@@ -52,13 +52,18 @@ final class MenuAdminExtension extends AbstractExtension
 
     public function renderMenuAdmin(Environment $twig): string
     {
-        $user = $this->userProfileTokenStorage->getUserCurrent();
+        if(false === $this->userProfileTokenStorage->isUser())
+        {
+            return '';
+        }
+
+        //$user = $this->userProfileTokenStorage->getUserCurrent();
 
         /** Меню навигации */
         $menu = $this->MenuAdmin->fetchAllAssociativeIndexed();
 
         // доверенные профили для быстрой смены
-        $authority = $user ? $this->menuAuthority->findAll($this->userProfileTokenStorage->getProfileCurrent()) : null;
+        $authority = $this->menuAuthority->findAll($this->userProfileTokenStorage->getProfileCurrent());
 
         $path = $this->template->extends('@menu-admin:render_menu_admin/template.html.twig');
 
