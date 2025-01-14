@@ -31,7 +31,7 @@ return static function (FrameworkConfig $framework) {
 
     $messenger
         ->transport('menu-admin')
-        ->dsn('redis://%env(REDIS_PASSWORD)%@%env(REDIS_HOST)%:%env(REDIS_PORT)%?auto_setup=true')
+        ->dsn('redis://%env(REDIS_PASSWORD)%@%env(REDIS_HOST)%:%env(REDIS_PORT)%?dbindex=%env(REDIS_TABLE)&auto_setup=true')
         ->options(['stream' => 'menu-admin'])
         ->failureTransport('failed-menu-admin')
         ->retryStrategy()
