@@ -156,15 +156,6 @@ return $('.select_box').html();
 
                         <ul class="leader list-group list-group-flush w-100">
 
-                            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                                <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
-                                    <a class="text-decoration-none text-dark w-100"
-                                       href="{{ app.request.pathInfo }}?authority=_exit">
-                                        Выйти из пользователя
-                                    </a>
-                                </li>
-                            {% endif %}
-
                             <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
                                 <a href="{{ path('auth-email:user.logout') }}"
                                    class="text-decoration-none text-dark w-100"
