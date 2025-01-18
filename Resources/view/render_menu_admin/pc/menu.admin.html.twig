@@ -41,7 +41,7 @@
 
                         <ul class="dropdown-menu p-2 dropdown-menu-center">
                             {% for path in arr_path_filter %}
-                                {% if exist_path(path.href) %}
+                                {% if exist_path(path.href) != '#' %}
                                     <li>
                                         <a class="nav-link rounded-3 px-2 text-nowrap mb-1 {{ route == path.href ? ' active' }} {{ path.modal ? 'modal-link' }}"
                                            href="{{ path(path.href) }}"
@@ -56,6 +56,7 @@
                                 {% elseif path.href is null %}
                                     <li><h6 class="dropdown-header">{{ path.name }}</h6></li>
                                 {% endif %}
+
                             {% endfor %}
                         </ul>
 
@@ -187,33 +188,35 @@ return $('.select_box').html();
                                 {% set separator = false %}
 
                                 {# Личные профили пользователя #}
-                                {# Личные профили пользователя #}
-                                {% if baks_profile.user_profile_profiles is defined %}
-
-                                    {% for profil in baks_profile.user_profile_profiles|sort((a, b) => a.user_profile_username <=> b.user_profile_username) %}
-
-                                        {# {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %} #}
-                                        {% if baks_profile.id is defined and baks_profile.id != profil.user_profile_id %}
-
-                                            <li class="p-1 w-100 list-group-item rounded-5">
-                                                <a class="d-block text-decoration-none w-100 px-1 text-nowrap"
-                                                   href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
-                                                    {{ profil.user_profile_username }}
-                                                </a>
-                                            </li>
-
-                                            {% set separator = true %}
 
 
-                                            {# {% else %} #}
-                                            {# <li class="p-1 w-100 rounded-5">
+                                {% for profil in baks_profile.user_profile_profiles|sort((a, b) => a.user_profile_username <=> b.user_profile_username) %}
+
+                                    {# {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %} #}
+                                    {% if baks_profile.id is defined and baks_profile.id != profil.user_profile_id %}
+
+                                        <li class="p-1 w-100 list-group-item rounded-5">
+                                            <a class="d-block text-decoration-none w-100 px-1 text-nowrap"
+                                               href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
+                                                {{ profil.user_profile_username }}
+                                            </a>
+                                        </li>
+
+                                        {% set separator = true %}
+
+
+                                        {# {% else %} #}
+                                        {# <li class="p-1 w-100 rounded-5">
                                                 <span class="d-block text-muted small w-100 px-1 text-nowrap">
                                                     {{ profil.user_profile_username }}
                                                 </span>
                                             </li> #}
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+
+
+
 
                                 {% for link in authority %}
 
@@ -254,12 +257,22 @@ return $('.select_box').html();
                                 {% endif %} #}
 
                                 {% else %}
-
+                                    <li class="p-1 w-100 list-group-item rounded-3">
+                                        <a href='{{ path('users-profile-user:user.index') }}'
+                                           class="d-block text-decoration-none w-100 px-2 text-nowrap">
+                                            Добавить профиль
+                                        </a>
+                                    </li>
                                 {% endfor %}
 
 
                             </ul>
+                        {% else %}
+
+
                         {% endif %}
+
+
                     </div>
                 {% endif %}
 
