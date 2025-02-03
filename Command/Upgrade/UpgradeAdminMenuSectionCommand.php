@@ -1,17 +1,17 @@
 <?php
 /*
- *  Copyright 2023.  Baks.dev <admin@baks.dev>
- *
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
  *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *  copies of the Software, and to permit persons to whom the Software is furnished
  *  to do so, subject to the following conditions:
- *
+ *  
  *  The above copyright notice and this permission notice shall be included in all
  *  copies or substantial portions of the Software.
- *
+ *  
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,8 +24,10 @@
 namespace BaksDev\Menu\Admin\Command\Upgrade;
 
 use BaksDev\Core\Command\Update\ProjectUpgradeInterface;
+use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
+use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin\ActiveMenuAdminEventInterface;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminHandler;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminSection\MenuAdminSectionDTO;
@@ -48,29 +50,27 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[AutoconfigureTag('baks.project.upgrade')]
 class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeInterface
 {
-    private MenuAdminHandler $handler;
-    private EntityManagerInterface $entityManager;
-    private ActiveMenuAdminEventInterface $menuAdminEventRepository;
-    private TranslatorInterface $translator;
-
     public function __construct(
-        MenuAdminHandler $handler,
-        EntityManagerInterface $entityManager,
-        ActiveMenuAdminEventInterface $menuAdminEventRepository,
-        TranslatorInterface $translator
-    ) {
+        private readonly MenuAdminHandler $handler,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ActiveMenuAdminEventInterface $menuAdminEventRepository,
+        private readonly TranslatorInterface $translator,
+        private readonly DBALQueryBuilder $DBALQueryBuilder,
+    )
+    {
         parent::__construct();
-
-        $this->handler = $handler;
-        $this->entityManager = $entityManager;
-        $this->menuAdminEventRepository = $menuAdminEventRepository;
-        $this->translator = $translator;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->text('Обновляем меню секций администратора');
+
+        /** Сбрасываем ссылки */
+        $table = $this->DBALQueryBuilder->table(MenuAdminSection::class);
+        $this->DBALQueryBuilder
+            ->prepare(sprintf('TRUNCATE TABLE %s CASCADE', $table))
+            ->executeQuery();
 
         /** @var MenuAdminEvent $Event */
         $Event = $this->menuAdminEventRepository->getEventOrNullResult();
