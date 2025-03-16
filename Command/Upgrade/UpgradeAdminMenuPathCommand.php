@@ -148,7 +148,7 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
         $MenuAdminSectionPathDTO = new MenuAdminPathSectionPathDTO();
         $MenuAdminSectionPathDTO->setRole(new GroupRolePrefix($menu->getRole()));
         $MenuAdminSectionPathDTO->setPath($menu->getPath());
-        $MenuAdminSectionPathDTO->setSort($menu->getSortMenu());
+        $MenuAdminSectionPathDTO->setSort($menu::getSortMenu());
         $MenuAdminSectionPathDTO->setDropdown($menu->getDropdownMenu());
         $MenuAdminSectionPathDTO->setModal($menu->getModal());
         $MenuAdminSectionDTO->addPath($MenuAdminSectionPathDTO);

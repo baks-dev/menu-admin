@@ -189,18 +189,32 @@ return $('.select_box').html();
 
                                 {# Личные профили пользователя #}
 
-
                                 {% for profil in baks_profile.user_profile_profiles|sort((a, b) => a.user_profile_username <=> b.user_profile_username) %}
 
                                     {# {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %} #}
-                                    {% if baks_profile.id is defined and baks_profile.id != profil.user_profile_id %}
+                                    {% if baks_profile.id is defined %}
 
-                                        <li class="p-1 w-100 list-group-item rounded-5">
+                                        {# <li class="p-1 w-100 list-group-item rounded-5">
                                             <a class="d-block text-decoration-none w-100 px-1 text-nowrap"
                                                href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
                                                 {{ profil.user_profile_username }}
                                             </a>
-                                        </li>
+                                        </li> #}
+
+                                        {% if baks_profile.id != profil.user_profile_id %}
+                                            <li class="p-1 w-100 list-group-item rounded-5">
+                                                <a class="d-block text-decoration-none w-100 px-1 text-nowrap"
+                                                   href="{{ path('core:user.homepage', {'authority' : profil.user_profile_id }) }}">
+                                                    {{ profil.user_profile_username }}
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="p-1 w-100 disabled">
+                                                <div class="px-1 text-nowrap text-muted fw-normal">
+                                                    &bull; &nbsp; {{ profil.user_profile_username }}
+                                                </div>
+                                            </li>
+                                        {% endif %}
 
                                         {% set separator = true %}
 
