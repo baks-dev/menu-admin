@@ -49,7 +49,7 @@ class MenuAdminModify extends EntityEvent
     #[Assert\NotBlank]
     #[Assert\Uuid]
     #[ORM\Id]
-    #[ORM\OneToOne(inversedBy: 'modify', targetEntity: MenuAdminEvent::class)]
+    #[ORM\OneToOne(targetEntity: MenuAdminEvent::class, inversedBy: 'modify')]
     #[ORM\JoinColumn(name: 'event', referencedColumnName: 'id')]
     private MenuAdminEvent $event;
 

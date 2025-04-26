@@ -70,14 +70,14 @@ class MenuAdminSection extends EntityReadonly
      * Перевод cекции
      */
     #[Assert\Valid]
-    #[ORM\OneToMany(targetEntity: MenuAdminSectionTrans::class, mappedBy: 'section', cascade: ['all'])]
+    #[ORM\OneToMany(targetEntity: MenuAdminSectionTrans::class, mappedBy: 'section', cascade: ['all'], fetch: 'EAGER')]
     private Collection $translate;
 
     /**
      * Разделы
      */
     #[Assert\Valid]
-    #[ORM\OneToMany(targetEntity: MenuAdminSectionPath::class, mappedBy: 'section', cascade: ['all'])]
+    #[ORM\OneToMany(targetEntity: MenuAdminSectionPath::class, mappedBy: 'section', cascade: ['all'], fetch: 'EAGER')]
     #[ORM\OrderBy(['sort' => 'ASC'])]
     private Collection $path;
 
