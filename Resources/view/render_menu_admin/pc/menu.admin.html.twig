@@ -6,9 +6,9 @@
 
         <div class="navbar-nav justify-content-between align-items-center flex-grow-1 ">
 
-            {% if exist_path('core:user.homepage') %}
-                <a class="nav-link p-3 text-uppercase text-white{{ route == 'core:user.homepage' ? ' active' }}"
-                   href="{{ path('core:user.homepage') }}">
+            {% if exist_path('core:public.homepage') %}
+                <a class="nav-link p-3 text-uppercase text-white{{ route == 'core:public.homepage' ? ' active' }}"
+                   href="{{ path('core:public.homepage') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-house-fill" viewBox="0 0 16 16">
                         <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
@@ -204,7 +204,7 @@ return $('.select_box').html();
                                         {% if baks_profile.id != profil.user_profile_id %}
                                             <li class="p-1 w-100 list-group-item rounded-5">
                                                 <a class="d-block text-decoration-none w-100 px-1 text-nowrap"
-                                                   href="{{ path('core:user.homepage', {'authority' : profil.user_profile_id }) }}">
+                                                   href="{{ path('core:public.homepage', {'authority' : profil.user_profile_id }) }}">
                                                     {{ profil.user_profile_username }}
                                                 </a>
                                             </li>
@@ -242,7 +242,7 @@ return $('.select_box').html();
                                 {% for link in authority %}
 
                                     {% if baks_profile.id is defined and baks_profile.id == link.authority %}
-                                        {# <a href='{{ path('core:user.homepage', {'authority' : '_exit' }) }}'
+                                        {# <a href='{{ path('core:public.homepage', {'authority' : '_exit' }) }}'
                                        class="text-decoration-none text-muted small">
                                         <div class="w-100">{{ link.profile_username }}</div>
                                     </a> #}
@@ -257,9 +257,9 @@ return $('.select_box').html();
                                             </li>
                                         {% endif %}
 
-                                        {% if exist_path('core:user.homepage') %}
+                                        {% if exist_path('core:public.homepage') %}
                                             <li class="p-1 w-100 list-group-item rounded-5">
-                                                <a href='{{ path('core:user.homepage', {'authority' : link.authority }) }}'
+                                                <a href='{{ path('core:public.homepage', {'authority' : link.authority }) }}'
                                                    class="d-block text-decoration-none w-100 px-1 text-nowrap">
                                                     {{ link.authority_username }}
                                                 </a>
@@ -271,7 +271,7 @@ return $('.select_box').html();
                                     {# {% if link.authority %} #}
 
                                     {# {% else %}
-                                    <a href='{{ path('core:user.homepage', {'authority' : link.profile }) }}'
+                                    <a href='{{ path('core:public.homepage', {'authority' : link.profile }) }}'
                                        class="text-decoration-none {{   link.active ? '' : 'text-muted small' }}">
                                         {{  link.profile_username }}
                                     </a>
