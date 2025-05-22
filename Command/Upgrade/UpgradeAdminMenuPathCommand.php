@@ -25,9 +25,10 @@ namespace BaksDev\Menu\Admin\Command\Upgrade;
 
 use BaksDev\Core\Command\Update\ProjectUpgradeInterface;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
+use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
-use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPath;
 use BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin\ActiveMenuAdminEventInterface;
+use BaksDev\Menu\Admin\Repository\TruncatePath\TruncatePathInterface;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminHandler;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\MenuAdminPathDTO;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\Section\MenuAdminPathSectionDTO;
@@ -57,7 +58,7 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
         private readonly MenuAdminHandler $handler,
         private readonly TranslatorInterface $translator,
         private readonly ActiveMenuAdminEventInterface $activeMenuAdminEvent,
-        private readonly DBALQueryBuilder $DBALQueryBuilder,
+        private readonly TruncatePathInterface $TruncatePath
     )
     {
         parent::__construct();
@@ -68,12 +69,8 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
         $io = new SymfonyStyle($input, $output);
         $io->text('Обновляем ссылки меню администратора');
 
-        /** Сбрасываем ссылки */
-        $table = $this->DBALQueryBuilder->table(MenuAdminSectionPath::class);
-        $this->DBALQueryBuilder
-            ->prepare(sprintf('TRUNCATE TABLE %s CASCADE', $table))
-            ->executeQuery();
-
+        /** Сбрасываем ссылки разделов */
+        $this->TruncatePath->execute();
 
         /** @var MenuAdminInterface $menu */
         foreach($this->menu as $menu)
@@ -90,16 +87,15 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
             //                continue;
             //            }
 
-            $Event = $this->activeMenuAdminEvent->getEventOrNullResult();
+            $MenuAdminEvent = $this->activeMenuAdminEvent->find();
 
-
-            if(!$Event)
+            if(false === ($MenuAdminEvent instanceof MenuAdminEvent))
             {
                 return Command::SUCCESS;
             }
 
             $MenuAdminDTO = new MenuAdminPathDTO();
-            $Event->getDto($MenuAdminDTO);
+            $MenuAdminEvent->getDto($MenuAdminDTO);
 
             /** @var MenuAdminPathSectionDTO $MenuAdminSectionDTO */
             foreach($MenuAdminDTO->getSection() as $MenuAdminSectionDTO)
@@ -130,7 +126,7 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
 
             $MenuAdmin = $this->handler->handle($MenuAdminDTO);
 
-            if(!$MenuAdmin instanceof MenuAdmin)
+            if(false === ($MenuAdmin instanceof MenuAdmin))
             {
                 throw new InvalidArgumentException(
                     sprintf('Ошибка %s при обновлении пункта меню администратора', $MenuAdmin)
@@ -138,23 +134,25 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
             }
         }
 
-
         return Command::SUCCESS;
     }
 
 
     public function add(MenuAdminPathSectionDTO $MenuAdminSectionDTO, MenuAdminInterface $menu): void
     {
-        $MenuAdminSectionPathDTO = new MenuAdminPathSectionPathDTO();
-        $MenuAdminSectionPathDTO->setRole(new GroupRolePrefix($menu->getRole()));
-        $MenuAdminSectionPathDTO->setPath($menu->getPath());
-        $MenuAdminSectionPathDTO->setSort($menu::getSortMenu());
-        $MenuAdminSectionPathDTO->setDropdown($menu->getDropdownMenu());
-        $MenuAdminSectionPathDTO->setModal($menu->getModal());
+        $MenuAdminSectionPathDTO = new MenuAdminPathSectionPathDTO()
+            ->setRole(new GroupRolePrefix($menu->getRole()))
+            ->setPath($menu->getPath())
+            ->setSort($menu::getSortMenu())
+            ->setDropdown($menu->getDropdownMenu())
+            ->setModal($menu->getModal());
+
+        $MenuAdminSectionPathDTO->getKey()->setValue($menu->getPathKey());
+
+
         $MenuAdminSectionDTO->addPath($MenuAdminSectionPathDTO);
 
         $localId = $menu->getRole().($menu->getPath() ? '.name' : '.header');
-
 
         // Настройки локали пункта меню
         $MenuAdminSectionPathTrans = $MenuAdminSectionPathDTO->getTranslate();
@@ -200,7 +198,6 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
             }
         }
     }
-
 
     /** Чам выше число - тем первым в итерации будет значение */
     public static function priority(): int

@@ -21,12 +21,27 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin;
+declare(strict_types=1);
 
-use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
+namespace BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\Section\Path\Key;
 
-interface ActiveMenuAdminEventInterface
+use BaksDev\Menu\Admin\Entity\Section\Path\Key\MenuAdminSectionPathKeyInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/** @see MenuAdminSectionPathKey */
+final class MenuAdminSectionPathKeyDTO implements MenuAdminSectionPathKeyInterface
 {
-    /** Метод возвращает активное событие MenuAdminEvent  */
-    public function find(): MenuAdminEvent|false;
+    /** Значение свойства */
+    private ?string $value = null;
+
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
+
+    public function setValue(?string $value): self
+    {
+        $this->value = $value;
+        return $this;
+    }
 }

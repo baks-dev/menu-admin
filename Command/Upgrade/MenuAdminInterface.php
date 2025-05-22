@@ -29,6 +29,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('baks.menu.admin')]
 interface MenuAdminInterface
 {
+    const string KEY = '';
+
     /**
      * Метод возвращает префикс роли доступа.
      */
@@ -42,6 +44,11 @@ interface MenuAdminInterface
      * false - скрывает в меню
      */
     public function getPath(): string|false|null;
+
+    /**
+     * Метод возвращает ключ раздела (для меню телеграм)
+     */
+    public function getPathKey(): string|false;
 
     /**
      * Метод возвращает секцию, в которую помещается ссылка на раздел.

@@ -21,12 +21,28 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin;
+declare(strict_types=1);
 
-use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
+namespace BaksDev\Menu\Admin\Repository\TruncatePath;
 
-interface ActiveMenuAdminEventInterface
+use BaksDev\Core\Doctrine\DBALQueryBuilder;
+use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPath;
+
+
+final readonly class TruncatePathRepository implements TruncatePathInterface
 {
-    /** Метод возвращает активное событие MenuAdminEvent  */
-    public function find(): MenuAdminEvent|false;
+    public function __construct(private DBALQueryBuilder $DBALQueryBuilder) {}
+
+    /**
+     * Сбрасываем ссылки админки
+     */
+    public function execute(): void
+    {
+        $table = $this->DBALQueryBuilder->table(MenuAdminSectionPath::class);
+
+        $this->DBALQueryBuilder
+            ->prepare(sprintf('TRUNCATE TABLE %s CASCADE', $table))
+            ->executeQuery();
+
+    }
 }

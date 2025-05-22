@@ -21,12 +21,12 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin;
+namespace BaksDev\Menu\Admin\Repository\TruncatePath;
 
-use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
-
-interface ActiveMenuAdminEventInterface
+interface TruncatePathInterface
 {
-    /** Метод возвращает активное событие MenuAdminEvent  */
-    public function find(): MenuAdminEvent|false;
+    /**
+     * Сбрасываем ссылки админки
+     */
+    public function execute(): void;
 }

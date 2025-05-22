@@ -25,6 +25,7 @@ namespace BaksDev\Menu\Admin\Entity\Section\Path;
 
 use BaksDev\Core\Entity\EntityReadonly;
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
+use BaksDev\Menu\Admin\Entity\Section\Path\Key\MenuAdminSectionPathKey;
 use BaksDev\Menu\Admin\Type\Path\MenuAdminSectionPathUid;
 use BaksDev\Users\Profile\Group\Type\Prefix\Role\GroupRolePrefix;
 use Doctrine\Common\Collections\Collection;
@@ -91,6 +92,12 @@ class MenuAdminSectionPath extends EntityReadonly
      */
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
     private bool $modal = false;
+
+    /**
+     * Уникальный ключ пункта меню
+     */
+    #[ORM\OneToOne(targetEntity: MenuAdminSectionPathKey::class, mappedBy: 'event', cascade: ['all'])]
+    private ?MenuAdminSectionPathKey $key = null;
 
 
     public function __construct(MenuAdminSection $section)

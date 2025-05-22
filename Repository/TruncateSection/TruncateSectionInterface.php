@@ -21,12 +21,12 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin;
+namespace BaksDev\Menu\Admin\Repository\TruncateSection;
 
-use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
-
-interface ActiveMenuAdminEventInterface
+interface TruncateSectionInterface
 {
-    /** Метод возвращает активное событие MenuAdminEvent  */
-    public function find(): MenuAdminEvent|false;
+    /**
+     * Сбрасывает секции меню
+     */
+    public function execute(): void;
 }

@@ -25,6 +25,7 @@ namespace BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\Section\Path;
 
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPathInterface;
+use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\Section\Path\Key\MenuAdminSectionPathKeyDTO;
 use BaksDev\Users\Profile\Group\Type\Prefix\Role\GroupRolePrefix;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -65,9 +66,14 @@ final class MenuAdminPathSectionPathDTO implements MenuAdminSectionPathInterface
     #[Assert\Range(min: 1, max: 999)]
     private int $sort = 500;
 
+    #[Assert\Valid]
+    private MenuAdminSectionPathKeyDTO $key;
+
+
     public function __construct()
     {
         $this->translate = new ArrayCollection();
+        $this->key = new MenuAdminSectionPathKeyDTO();
     }
 
     public function getTranslate(): ArrayCollection
@@ -107,9 +113,11 @@ final class MenuAdminPathSectionPathDTO implements MenuAdminSectionPathInterface
         return $this->role;
     }
 
-    public function setRole(GroupRolePrefix $role): void
+    public function setRole(GroupRolePrefix $role): self
     {
         $this->role = $role;
+
+        return $this;
     }
 
     /** Path вида User:admin.index  */
@@ -131,9 +139,11 @@ final class MenuAdminPathSectionPathDTO implements MenuAdminSectionPathInterface
         return $this->sort;
     }
 
-    public function setSort(int $sort): void
+    public function setSort(int $sort): self
     {
         $this->sort = $sort;
+
+        return $this;
     }
 
     /** Показать в выпадающем меню */
@@ -142,9 +152,11 @@ final class MenuAdminPathSectionPathDTO implements MenuAdminSectionPathInterface
         return $this->dropdown;
     }
 
-    public function setDropdown(bool $dropdown): void
+    public function setDropdown(bool $dropdown): self
     {
         $this->dropdown = $dropdown;
+
+        return $this;
     }
 
     /**
@@ -156,8 +168,15 @@ final class MenuAdminPathSectionPathDTO implements MenuAdminSectionPathInterface
         return $this->modal;
     }
 
-    public function setModal(bool $modal): void
+    public function setModal(bool $modal): self
     {
         $this->modal = $modal;
+
+        return $this;
+    }
+
+    public function getKey(): MenuAdminSectionPathKeyDTO
+    {
+        return $this->key;
     }
 }

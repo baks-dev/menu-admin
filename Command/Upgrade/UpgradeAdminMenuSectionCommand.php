@@ -27,8 +27,8 @@ use BaksDev\Core\Command\Update\ProjectUpgradeInterface;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
-use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin\ActiveMenuAdminEventInterface;
+use BaksDev\Menu\Admin\Repository\TruncateSection\TruncateSectionInterface;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminHandler;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminSection\MenuAdminSectionDTO;
 use BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminSection\Section\Trans\MenuAdminSectionTransDTO;
@@ -52,10 +52,9 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
 {
     public function __construct(
         private readonly MenuAdminHandler $handler,
-        private readonly EntityManagerInterface $entityManager,
         private readonly ActiveMenuAdminEventInterface $menuAdminEventRepository,
         private readonly TranslatorInterface $translator,
-        private readonly DBALQueryBuilder $DBALQueryBuilder,
+        private readonly TruncateSectionInterface $TruncateSection
     )
     {
         parent::__construct();
@@ -66,24 +65,18 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
         $io = new SymfonyStyle($input, $output);
         $io->text('Обновляем меню секций администратора');
 
-        /** Сбрасываем ссылки */
-        $table = $this->DBALQueryBuilder->table(MenuAdminSection::class);
-        $this->DBALQueryBuilder
-            ->prepare(sprintf('TRUNCATE TABLE %s CASCADE', $table))
-            ->executeQuery();
+        /** Сбрасываем секции меню */
+        $this->TruncateSection->execute();
 
         /** @var MenuAdminEvent $Event */
-        $Event = $this->menuAdminEventRepository->getEventOrNullResult();
-        $this->entityManager->clear();
+        $Event = $this->menuAdminEventRepository->find();
 
         $MenuAdminDTO = new MenuAdminSectionDTO();
 
-
-        if($Event)
+        if($Event instanceof MenuAdminEvent)
         {
             $Event->getDto($MenuAdminDTO);
         }
-
 
         $MenuAdminSectionDTO = $MenuAdminDTO->getSection();
 
@@ -103,7 +96,6 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
             /** @var MenuAdminSectionTransDTO $MenuAdminSectionTrans */
             foreach($MenuAdminSectionTransDTO as $MenuAdminSectionTrans)
             {
-
                 // trans(?string $id, array $parameters = [], string $domain = null, string $locale = null)
                 $name = $this->translator->trans(
                     id: $MenuAdminSection->getGroup()->getTypeValue().'.name',
@@ -134,7 +126,6 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
                 }
             }
         }
-
 
         $MenuAdmin = $this->handler->handle($MenuAdminDTO);
 

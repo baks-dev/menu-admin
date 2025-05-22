@@ -21,12 +21,15 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin;
+namespace BaksDev\Menu\Admin\Entity\Section\Path\Key;
 
-use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
-
-interface ActiveMenuAdminEventInterface
+interface MenuAdminSectionPathKeyInterface
 {
-    /** Метод возвращает активное событие MenuAdminEvent  */
-    public function find(): MenuAdminEvent|false;
+    /**
+     * Значение свойства
+     *
+     * @see MenuAdminSectionPathKey
+     */
+    public function getValue(): ?string;
+
 }

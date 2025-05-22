@@ -21,12 +21,30 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Menu\Admin\Repository\ActiveEventMenuAdmin;
+declare(strict_types=1);
 
-use BaksDev\Menu\Admin\Entity\Event\MenuAdminEvent;
+namespace BaksDev\Menu\Admin\UseCase\Command\Menu\MenuAdminPath\Section\Path\Key;
 
-interface ActiveMenuAdminEventInterface
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+final class MenuAdminSectionPathKeyForm extends AbstractType
 {
-    /** Метод возвращает активное событие MenuAdminEvent  */
-    public function find(): MenuAdminEvent|false;
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add('value', TextType::class, ['required' => false]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => MenuAdminSectionPathKeyDTO::class,
+            'method' => 'POST',
+            'attr' => ['class' => 'w-100'],
+        ]);
+    }
 }
