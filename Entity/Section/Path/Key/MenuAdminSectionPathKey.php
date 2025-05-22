@@ -42,7 +42,7 @@ class MenuAdminSectionPathKey extends EntityEvent
     #[Assert\NotBlank]
     #[ORM\Id]
     #[ORM\OneToOne(targetEntity: MenuAdminSectionPath::class, inversedBy: 'key')]
-    #[ORM\JoinColumn(name: 'event', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'path', referencedColumnName: 'id')]
     private MenuAdminSectionPath $path;
 
     /** Значение свойства */

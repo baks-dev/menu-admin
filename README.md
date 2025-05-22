@@ -1,6 +1,6 @@
 # BaksDev Menu Admin
 
-[![Version](https://img.shields.io/badge/version-7.2.11-blue)](https://github.com/baks-dev/menu-admin/releases)
+[![Version](https://img.shields.io/badge/version-7.2.12-blue)](https://github.com/baks-dev/menu-admin/releases)
 ![php 8.4+](https://img.shields.io/badge/php-min%208.4-red.svg)
 [![packagist](https://img.shields.io/badge/packagist-green)](https://packagist.org/packages/baks-dev/menu-admin)
 
@@ -21,7 +21,6 @@ $ php bin/console baks:assets:install
 ```
 
 Обновите меню
-
 
 ``` bash
 $ php bin/console baks:menu-admin:section

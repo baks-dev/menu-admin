@@ -96,7 +96,7 @@ class MenuAdminSectionPath extends EntityReadonly
     /**
      * Уникальный ключ пункта меню
      */
-    #[ORM\OneToOne(targetEntity: MenuAdminSectionPathKey::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: MenuAdminSectionPathKey::class, mappedBy: 'path', cascade: ['all'])]
     private ?MenuAdminSectionPathKey $key = null;
 
 
