@@ -26,6 +26,7 @@ namespace BaksDev\Menu\Admin\Repository\MenuAdmin;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
+use BaksDev\Menu\Admin\Entity\Section\Path\Key\MenuAdminSectionPathKey;
 use BaksDev\Menu\Admin\Entity\Section\Path\MenuAdminSectionPath;
 use BaksDev\Menu\Admin\Entity\Section\Path\Trans\MenuAdminSectionPathTrans;
 use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTrans;
@@ -45,32 +46,15 @@ final readonly class MenuAdminRepository implements MenuAdminInterface
             ->bindLocal();
 
         $dbal
-            ->addSelect('section.groups')
-            ->addSelect('section.sort')
-            ->addSelect('section_trans.name');
-
-        $dbal->addSelect(
-            "JSON_AGG
-			( 
-		
-					JSONB_BUILD_OBJECT
-					(
-						'0', path.sort,
-						'role', path.role,
-						'href', path.path,
-						'name', path_trans.name,
-						'dropdown', path.dropdown,
-						'modal', path.modal
-					)
-		
-			)
-			AS path"
-        );
-
-        $dbal
             ->from(MenuAdmin::class, 'menu')
             ->where('menu.id = :menu')
             ->setParameter('menu', MenuAdminIdentificator::TYPE);
+
+        $dbal
+            ->addSelect('section.id')
+            ->addSelect('section.groups')
+            ->addSelect('section.sort')
+            ->addSelect('section_trans.name');
 
         $dbal->join(
             'menu',
@@ -86,12 +70,40 @@ final readonly class MenuAdminRepository implements MenuAdminInterface
             'section_trans.section = section.id AND section_trans.local = :local'
         );
 
+
         $dbal->join(
             'section',
             MenuAdminSectionPath::class,
             'path',
             'path.section = section.id'
         );
+
+        $dbal->leftJoin(
+            'path',
+            MenuAdminSectionPathKey::class,
+            'path_key',
+            'path_key.path = path.id',
+        );
+
+        $dbal->addSelect(
+            "JSON_AGG
+			( 
+		
+					JSONB_BUILD_OBJECT
+					(
+						'0', path.sort,
+						'role', path.role,
+						'href', path.path,
+						'key', path_key.value,
+						'name', path_trans.name,
+						'dropdown', path.dropdown,
+						'modal', path.modal
+					)
+		
+			)
+			AS path",
+        );
+
 
         $dbal->leftJoin(
             'path',
