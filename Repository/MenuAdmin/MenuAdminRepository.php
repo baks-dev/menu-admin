@@ -51,8 +51,9 @@ final readonly class MenuAdminRepository implements MenuAdminInterface
             ->setParameter('menu', MenuAdminIdentificator::TYPE);
 
         $dbal
-            ->addSelect('section.id')
+
             ->addSelect('section.groups')
+            ->addSelect('section.id AS section_id')
             ->addSelect('section.sort')
             ->addSelect('section_trans.name');
 
