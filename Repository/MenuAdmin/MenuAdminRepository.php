@@ -19,6 +19,7 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
+ *
  */
 
 namespace BaksDev\Menu\Admin\Repository\MenuAdmin;
@@ -32,14 +33,38 @@ use BaksDev\Menu\Admin\Entity\Section\Path\Trans\MenuAdminSectionPathTrans;
 use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTrans;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 
+/** @see MenuAdminResult */
 final readonly class MenuAdminRepository implements MenuAdminInterface
 {
-    public function __construct(private DBALQueryBuilder $DBALQueryBuilder) {}
+    public function __construct(
+        private DBALQueryBuilder $DBALQueryBuilder,
+    ) {}
+
+    /**
+     * Метод возвращает массив MenuAdminResult меню администратора с группировкой.
+     *
+     * @return array<string, MenuAdminResult>|array<empty>
+     */
+    public function find(): array
+    {
+        $builder = $this->builder();
+        $builder->enableCache('menu-admin', '1 day');
+
+        return $builder->fetchAllIndexHydrate(MenuAdminResult::class);
+    }
 
     /**
      * Метод возвращает массив меню администратора с группировкой.
      */
     public function fetchAllAssociativeIndexed(): array
+    {
+        $builder = $this->builder();
+        $builder->enableCache('menu-admin', '1 day');
+
+        return $builder->fetchAllAssociativeIndexed();
+    }
+
+    private function builder(): DBALQueryBuilder
     {
         $dbal = $this->DBALQueryBuilder
             ->createQueryBuilder(self::class)
@@ -51,18 +76,18 @@ final readonly class MenuAdminRepository implements MenuAdminInterface
             ->setParameter('menu', MenuAdminIdentificator::TYPE);
 
         $dbal
-
             ->addSelect('section.groups')
             ->addSelect('section.id AS section_id')
             ->addSelect('section.sort')
             ->addSelect('section_trans.name');
 
-        $dbal->join(
-            'menu',
-            MenuAdminSection::class,
-            'section',
-            'section.event = menu.event'
-        );
+        $dbal
+            ->join(
+                'menu',
+                MenuAdminSection::class,
+                'section',
+                'section.event = menu.event'
+            );
 
         $dbal->leftJoin(
             'section',
@@ -105,7 +130,6 @@ final readonly class MenuAdminRepository implements MenuAdminInterface
 			AS path",
         );
 
-
         $dbal->leftJoin(
             'path',
             MenuAdminSectionPathTrans::class,
@@ -113,12 +137,10 @@ final readonly class MenuAdminRepository implements MenuAdminInterface
             'path_trans.path = path.id AND path_trans.local = :local'
         );
 
-
         $dbal->allGroupByExclude();
 
         $dbal->orderBy('section.sort', 'ASC');
 
-        /* Кешируем результат DBAL */
-        return $dbal->enableCache('menu-admin', '1 day')->fetchAllAssociativeIndexed();
+        return $dbal;
     }
 }
