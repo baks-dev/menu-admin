@@ -24,62 +24,56 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Menu\Admin\Repository\MenuAdmin;
+namespace BaksDev\Menu\Admin\Repository\MenuAdminBySectionId;
 
+use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminPathResult;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
-/**
- * @see MenuAdminResult
- * @see MenuAdminRepository
- */
+/** @see MenuAdminBySectionIdRepository */
 #[Exclude]
-final readonly class MenuAdminPathResult
+final readonly class MenuAdminBySectionsResult
 {
 
     public function __construct(
-        private string|null $key,
-        private string|null $href,
-        private string $name,
-        private string $role,
-        private bool $modal,
-        private bool $dropdown,
+        private string $section_name,
+        private string $path,
     ) {}
 
-    public function getKey(): ?string
+    public function getSectionName(): string
     {
-        return $this->key;
+        return $this->section_name;
     }
 
-    public function getHref(): ?string
+    /** @return  array<int,MenuAdminPathResult>|null */
+    public function getPath(): array|null
     {
-        return $this->href;
+        if(is_null($this->path))
+        {
+            return null;
+        }
+
+        if(false === json_validate($this->path))
+        {
+            return null;
+        }
+
+        $path = json_decode($this->path, true, 512, JSON_THROW_ON_ERROR);
+
+        if(null === current($path))
+        {
+            return null;
+        }
+
+        $menuAdminPathResults = [];
+        foreach($path as $section)
+        {
+            // первый ключ в массиве - ключ для сортировки при сортировке в JSON_BUILD - удаляем его
+            unset($section[0]);
+
+            $menuAdminPathResults[] = new MenuAdminPathResult(...$section);
+        }
+
+        return $menuAdminPathResults;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    public function getModal(): bool
-    {
-        return $this->modal;
-    }
-
-    public function getDropdown(): bool
-    {
-        return $this->dropdown;
-    }
-
-    /** Helpers */
-
-    /** Если нет ссылки - это заголовок секции */
-    public function isNotSectionHeader(): bool
-    {
-        return ($this->getHref() !== null);
-    }
 }
