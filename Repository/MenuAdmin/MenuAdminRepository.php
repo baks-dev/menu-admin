@@ -48,6 +48,12 @@ final class MenuAdminRepository implements MenuAdminInterface
      */
     public function onSectionId(MenuAdminSection|MenuAdminSectionUid|string $sectionId): self
     {
+        if(empty($sectionId))
+        {
+            $this->sectionId = false;
+            return $this;
+        }
+
         if(is_string($sectionId))
         {
             $sectionId = new MenuAdminSectionUid($sectionId);

@@ -27,9 +27,15 @@ namespace BaksDev\Menu\Admin\Repository\MenuAdminBySectionId;
 use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use BaksDev\Menu\Admin\Type\Section\MenuAdminSectionUid;
 
-/** @see */
 interface MenuAdminBySectionIdInterface
 {
-    /** Найти раздел меню по его идентификатору */
-    public function findOneBy(MenuAdminSection|MenuAdminSectionUid|string $sectionId): MenuAdminBySectionsResult|false;
+    /**
+     * Фильтр по идентификатору секции
+     */
+    public function onSectionId(MenuAdminSection|MenuAdminSectionUid|string $sectionId): self;
+
+    /**
+     * Найти раздел меню по его идентификатору
+     */
+    public function findOne(): MenuAdminBySectionsResult|false;
 }

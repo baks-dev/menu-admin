@@ -37,7 +37,7 @@ use BaksDev\Menu\Admin\Type\Section\MenuAdminSectionUid;
 /** @see MenuAdminBySectionsResult */
 final class MenuAdminBySectionIdRepository implements MenuAdminBySectionIdInterface
 {
-    private MenuAdminSectionUid $sectionId;
+    private MenuAdminSectionUid|false $sectionId = false;
 
     public function __construct(
         private readonly DBALQueryBuilder $DBALQueryBuilder,
@@ -46,8 +46,14 @@ final class MenuAdminBySectionIdRepository implements MenuAdminBySectionIdInterf
     /**
      * Фильтр по идентификатору секции
      */
-    private function onSectionId(MenuAdminSection|MenuAdminSectionUid|string $sectionId): void
+    public function onSectionId(MenuAdminSection|MenuAdminSectionUid|string $sectionId): self
     {
+        if(empty($sectionId))
+        {
+            $this->sectionId = false;
+            return $this;
+        }
+
         if(is_string($sectionId))
         {
             $sectionId = new MenuAdminSectionUid($sectionId);
@@ -59,13 +65,22 @@ final class MenuAdminBySectionIdRepository implements MenuAdminBySectionIdInterf
         }
 
         $this->sectionId = $sectionId;
+        return $this;
     }
 
     /**
      * Найти раздел меню по его идентификатору
      */
-    public function findOneBy(MenuAdminSection|MenuAdminSectionUid|string $sectionId): MenuAdminBySectionsResult|false
+    public function findOne(): MenuAdminBySectionsResult|false
     {
+        if(false === ($this->sectionId instanceof MenuAdminSectionUid))
+        {
+            throw new \InvalidArgumentException(sprintf(
+                'Некорректной тип для параметра $this->sectionId: `%s`. Ожидаемый тип %s',
+                $this->sectionId, MenuAdminSectionUid::class
+            ));
+        }
+
         $dbal = $this->DBALQueryBuilder
             ->createQueryBuilder(self::class)
             ->bindLocal();
@@ -74,8 +89,6 @@ final class MenuAdminBySectionIdRepository implements MenuAdminBySectionIdInterf
             ->from(MenuAdmin::class, 'menu')
             ->where('menu.id = :menu')
             ->setParameter('menu', MenuAdminIdentificator::TYPE);
-
-        $this->onSectionId($sectionId);
 
         $dbal
             ->addSelect('section_trans.name AS section_name')

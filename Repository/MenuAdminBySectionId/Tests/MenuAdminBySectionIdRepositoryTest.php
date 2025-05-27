@@ -51,7 +51,7 @@ class MenuAdminBySectionIdRepositoryTest extends KernelTestCase
         foreach($menuAdmin as $menu)
         {
             $menuAdminSections = $menuAdminSectionRepository
-                ->findOneBy($menu->getSectionId());
+                ->findOne($menu->getSectionId());
 
             self::assertNotFalse($menuAdminSections);
 
