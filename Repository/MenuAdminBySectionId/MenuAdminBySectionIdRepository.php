@@ -22,7 +22,7 @@
  *
  */
 
-namespace BaksDev\Menu\Admin\Repository\MenuAdmin;
+namespace BaksDev\Menu\Admin\Repository\MenuAdminBySectionId;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Menu\Admin\Entity\MenuAdmin;
@@ -34,8 +34,8 @@ use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTrans;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use BaksDev\Menu\Admin\Type\Section\MenuAdminSectionUid;
 
-/** @see MenuAdminResult */
-final class MenuAdminRepository implements MenuAdminInterface
+/** @see MenuAdminBySectionsResult */
+final class MenuAdminBySectionIdRepository implements MenuAdminBySectionIdInterface
 {
     private MenuAdminSectionUid|false $sectionId = false;
 
@@ -69,31 +69,18 @@ final class MenuAdminRepository implements MenuAdminInterface
     }
 
     /**
-     * Метод возвращает массив MenuAdminResult меню администратора с группировкой.
-     *
-     * @return array<string, MenuAdminResult>|array<empty>
+     * Найти раздел меню по его идентификатору
      */
-    public function findAll(): array
+    public function findOne(): MenuAdminBySectionsResult|false
     {
-        $builder = $this->builder();
-        $builder->enableCache('menu-admin', '1 day');
+        if(false === ($this->sectionId instanceof MenuAdminSectionUid))
+        {
+            throw new \InvalidArgumentException(sprintf(
+                'Некорректной тип для параметра $this->sectionId: `%s`. Ожидаемый тип %s',
+                $this->sectionId, MenuAdminSectionUid::class
+            ));
+        }
 
-        return $builder->fetchAllIndexHydrate(MenuAdminResult::class);
-    }
-
-    /**
-     * Метод возвращает массив меню администратора с группировкой.
-     */
-    public function fetchAllAssociativeIndexed(): array
-    {
-        $builder = $this->builder();
-        $builder->enableCache('menu-admin', '1 day');
-
-        return $builder->fetchAllAssociativeIndexed();
-    }
-
-    private function builder(): DBALQueryBuilder
-    {
         $dbal = $this->DBALQueryBuilder
             ->createQueryBuilder(self::class)
             ->bindLocal();
@@ -104,36 +91,16 @@ final class MenuAdminRepository implements MenuAdminInterface
             ->setParameter('menu', MenuAdminIdentificator::TYPE);
 
         $dbal
-            ->addSelect('section.groups')
-            ->addSelect('section.id AS section_id')
-            ->addSelect('section.sort')
-            ->addSelect('section_trans.name');
-
-        /** Если передан фильтр по идентификатору секции */
-        if($this->sectionId instanceof MenuAdminSectionUid)
-        {
-            $dbal
-                ->join(
-                    'menu',
-                    MenuAdminSection::class,
-                    'section',
-                    '
+            ->addSelect('section_trans.name AS section_name')
+            ->join(
+                'menu',
+                MenuAdminSection::class,
+                'section',
+                '
                         section.event = menu.event AND 
                         section.id = :section'
-                )
-                ->setParameter('section', $this->sectionId, MenuAdminSectionUid::TYPE);
-        }
-        else
-        {
-            $dbal
-                ->join(
-                    'menu',
-                    MenuAdminSection::class,
-                    'section',
-                    'section.event = menu.event'
-                );
-        }
-
+            )
+            ->setParameter('section', $this->sectionId, MenuAdminSectionUid::TYPE);
 
         $dbal->leftJoin(
             'section',
@@ -141,7 +108,6 @@ final class MenuAdminRepository implements MenuAdminInterface
             'section_trans',
             'section_trans.section = section.id AND section_trans.local = :local'
         );
-
 
         $dbal->join(
             'section',
@@ -155,6 +121,13 @@ final class MenuAdminRepository implements MenuAdminInterface
             MenuAdminSectionPathKey::class,
             'path_key',
             'path_key.path = path.id',
+        );
+
+        $dbal->leftJoin(
+            'path',
+            MenuAdminSectionPathTrans::class,
+            'path_trans',
+            'path_trans.path = path.id AND path_trans.local = :local'
         );
 
         $dbal->addSelect(
@@ -176,17 +149,8 @@ final class MenuAdminRepository implements MenuAdminInterface
 			AS path",
         );
 
-        $dbal->leftJoin(
-            'path',
-            MenuAdminSectionPathTrans::class,
-            'path_trans',
-            'path_trans.path = path.id AND path_trans.local = :local'
-        );
-
         $dbal->allGroupByExclude();
 
-        $dbal->orderBy('section.sort', 'ASC');
-
-        return $dbal;
+        return $dbal->fetchHydrate(MenuAdminBySectionsResult::class);
     }
 }

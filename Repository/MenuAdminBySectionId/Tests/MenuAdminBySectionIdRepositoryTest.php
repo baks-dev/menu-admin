@@ -24,12 +24,11 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Menu\Admin\Repository\MenuAdmin\Tests;
+namespace BaksDev\Menu\Admin\Repository\MenuAdminBySectionId\Tests;
 
 use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminInterface;
 use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminPathResult;
-use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminResult;
-use BaksDev\Menu\Admin\Type\Section\MenuAdminSectionUid;
+use BaksDev\Menu\Admin\Repository\MenuAdminBySectionId\MenuAdminBySectionIdInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
@@ -37,38 +36,42 @@ use Symfony\Component\DependencyInjection\Attribute\When;
  * @group menu-admin
  */
 #[When(env: 'test')]
-class MenuAdminRepositoryTest extends KernelTestCase
+class MenuAdminBySectionIdRepositoryTest extends KernelTestCase
 {
-    public function testFind(): void
+    public function testFindOne(): void
     {
-        /** @var MenuAdminInterface $repository */
-        $repository = self::getContainer()->get(MenuAdminInterface::class);
 
-        $results = $repository->findAll();
+        /** @var MenuAdminInterface $menuAdminRepository */
+        $menuAdminRepository = self::getContainer()->get(MenuAdminInterface::class);
+        $menuAdmin = $menuAdminRepository->findAll();
 
-        /** @var MenuAdminResult $result */
-        foreach($results as $result)
+        /** @var MenuAdminBySectionIdInterface $menuAdminSectionRepository */
+        $menuAdminSectionRepository = self::getContainer()->get(MenuAdminBySectionIdInterface::class);
+
+        foreach($menuAdmin as $menu)
         {
-            self::assertInstanceOf(MenuAdminResult::class, $result);
+            $menuAdminSections = $menuAdminSectionRepository
+                ->findOne($menu->getSectionId());
 
-            self::assertIsInt($result->getSort());
-            self::assertIsString($result->getName());
-            self::assertInstanceOf(MenuAdminSectionUid::class, $result->getSectionId());
+            self::assertNotFalse($menuAdminSections);
 
-            $sections = $result->getPath();
+            self::assertIsString($menuAdminSections->getSectionName());
+            $path = $menuAdminSections->getPath();
 
-            if(false === (is_null($sections)))
+            if(is_null($path))
             {
-                /** @var MenuAdminPathResult $section */
-                foreach($sections as $section)
-                {
-                    is_string($section->getKey()) ?: self::assertNull($section->getKey());
-                    is_string($section->getHref()) ?: self::assertNull($section->getHref());
-                    self::assertIsString($section->getName());
-                    self::assertIsString($section->getRole());
-                    self::assertIsBool($section->getModal());
-                    self::assertIsBool($section->getDropdown());
-                }
+                continue;
+            }
+
+            /** @var MenuAdminPathResult $path */
+            foreach($path as $section)
+            {
+                is_string($section->getKey()) ?: self::assertNull($section->getKey());
+                is_string($section->getHref()) ?: self::assertNull($section->getHref());
+                self::assertIsString($section->getName());
+                self::assertIsString($section->getRole());
+                self::assertIsBool($section->getModal());
+                self::assertIsBool($section->getDropdown());
             }
         }
 
