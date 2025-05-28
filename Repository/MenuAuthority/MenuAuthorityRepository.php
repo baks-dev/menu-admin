@@ -19,6 +19,7 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
+ *
  */
 
 declare(strict_types=1);
@@ -30,18 +31,90 @@ use BaksDev\Users\Profile\Group\Entity\Users\ProfileGroupUsers;
 use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use Generator;
 
 final class MenuAuthorityRepository implements MenuAuthorityInterface
 {
+    private UserProfileUid|false $profile = false;
 
-    public function __construct(private readonly DBALQueryBuilder $DBALQueryBuilder) {}
+    public function __construct(
+        private readonly DBALQueryBuilder $DBALQueryBuilder
+    ) {}
+
+    /**
+     * Фильтр по профилю пользователя
+     */
+    public function onProfile(UserProfile|UserProfileUid|string $profile): self
+    {
+        if(empty($profile))
+        {
+            $this->profile = false;
+            return $this;
+        }
+
+        if(is_string($profile))
+        {
+            $profile = new UserProfileUid($profile);
+        }
+
+        if($profile instanceof UserProfile)
+        {
+            $profile = $profile->getId();
+        }
+
+        $this->profile = $profile;
+        return $this;
+    }
+
+    /**
+     * Возвращает доверенные профили активного профиля пользователя
+     * @return Generator<int, MenuAuthorityResult>|false
+     */
+    public function findAllResults(): Generator|false
+    {
+        if(false === ($this->profile instanceof UserProfileUid))
+        {
+            throw new \InvalidArgumentException(sprintf(
+                'Некорректной тип для параметра $this->profile: `%s`. Ожидаемый тип %s',
+                $this->profile, UserProfileUid::class
+            ));
+        }
+
+        $builder = $this->builder();
+
+        $builder->enableCache('profile-group-users', 86400);
+
+        $result = $builder->fetchAllHydrate(MenuAuthorityResult::class);
+
+        return (true === $result->valid()) ? $result : false;
+    }
 
     /**
      * Возвращает доверенные профили активного профиля пользователя
      */
     public function findAll(?UserProfileUid $profile): ?array
     {
-        if(!class_exists(ProfileGroupUsers::class) || $profile === null)
+        $this->onProfile($profile);
+
+        $builder = $this->builder();
+
+        if(is_null($builder))
+        {
+            return null;
+        }
+
+        $builder->enableCache('profile-group-users', 86400);
+
+        return $builder->fetchAllAssociative();
+    }
+
+    private function builder(): DBALQueryBuilder|null
+    {
+        if(
+            false === class_exists(ProfileGroupUsers::class) ||
+            false === $this->profile ||
+            null === $this->profile
+        )
         {
             return null;
         }
@@ -52,10 +125,6 @@ final class MenuAuthorityRepository implements MenuAuthorityInterface
         $dbal->addSelect('usr.profile');
         $dbal->addSelect('usr.profile = :profile AS active ');
         $dbal->from(ProfileGroupUsers::class, 'usr');
-
-        $dbal
-            ->where('usr.profile = :profile')
-            ->setParameter('profile', $profile, UserProfileUid::TYPE);
 
         $dbal->join(
             'usr',
@@ -83,10 +152,10 @@ final class MenuAuthorityRepository implements MenuAuthorityInterface
             'profile_personal.event = profile.event'
         );
 
-        return $dbal
-            ->enableCache('profile-group-users', 86400)
-            ->fetchAllAssociative();
+        $dbal
+            ->where('usr.profile = :profile')
+            ->setParameter('profile', $this->profile, UserProfileUid::TYPE);
+
+        return $dbal;
     }
-
-
 }
