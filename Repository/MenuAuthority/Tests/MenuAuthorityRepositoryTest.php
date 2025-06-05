@@ -24,9 +24,11 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Menu\Admin\Repository\MenuAuthority;
+namespace BaksDev\Menu\Admin\Repository\MenuAuthority\Tests;
 
 use BaksDev\Core\Doctrine\ORMQueryBuilder;
+use BaksDev\Menu\Admin\Repository\MenuAuthority\MenuAuthorityInterface;
+use BaksDev\Menu\Admin\Repository\MenuAuthority\MenuAuthorityResult;
 use BaksDev\Users\Profile\UserProfile\Entity\Event\UserProfileEvent;
 use BaksDev\Users\Profile\UserProfile\Entity\Info\UserProfileInfo;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;

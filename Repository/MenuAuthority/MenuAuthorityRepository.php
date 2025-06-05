@@ -76,7 +76,7 @@ final class MenuAuthorityRepository implements MenuAuthorityInterface
         {
             throw new \InvalidArgumentException(sprintf(
                 'Некорректной тип для параметра $this->profile: `%s`. Ожидаемый тип %s',
-                $this->profile, UserProfileUid::class
+                var_export($this->profile, true), UserProfileUid::class
             ));
         }
 
