@@ -1,17 +1,17 @@
 <?php
 /*
  *  Copyright 2025.  Baks.dev <admin@baks.dev>
- *
+ *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
  *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *  copies of the Software, and to permit persons to whom the Software is furnished
  *  to do so, subject to the following conditions:
- *
+ *  
  *  The above copyright notice and this permission notice shall be included in all
  *  copies or substantial portions of the Software.
- *
+ *  
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,27 +22,48 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace BaksDev\Menu\Admin\Repository\MenuAuthority;
 
-use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
-use Generator;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
-interface MenuAuthorityInterface
+/** @see MenuAuthorityRepository */
+#[Exclude]
+final readonly class MenuAuthorityResult
 {
-    /**
-     * Фильтр по профилю пользователя
-     */
-    public function onProfile(UserProfile|UserProfileUid|string $profile): self;
 
-    /**
-     * Возвращает доверенные профили активного профиля пользователя
-     * @return Generator<int, MenuAuthorityResult>|false
-     */
-    public function findAllResults(): Generator|false;
+    public function __construct(
+        private string $authority,
+        private string $profile,
+        private bool $active,
+        private string $authority_username,
+        private string $profile_username,
+    ) {}
 
-    /**
-     * Возвращает доверенные профили активного профиля пользователя
-     */
-    public function findAll(?UserProfileUid $profile): ?array;
+    public function getAuthority(): UserProfileUid
+    {
+        return new UserProfileUid($this->authority);
+    }
+
+    public function getProfile(): UserProfileUid
+    {
+        return new UserProfileUid($this->profile);
+    }
+
+    public function getActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function getAuthorityUsername(): string
+    {
+        return $this->authority_username;
+    }
+
+    public function getProfileUsername(): string
+    {
+        return $this->profile_username;
+    }
 }
