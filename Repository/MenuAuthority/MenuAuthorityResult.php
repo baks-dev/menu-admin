@@ -19,7 +19,6 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
- *
  */
 
 declare(strict_types=1);
@@ -54,7 +53,7 @@ final readonly class MenuAuthorityResult
 
     public function getActive(): bool
     {
-        return $this->active;
+        return $this->active === true;
     }
 
     public function getAuthorityUsername(): string

@@ -19,7 +19,6 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
- *
  */
 
 declare(strict_types=1);
@@ -32,6 +31,7 @@ use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Generator;
+use InvalidArgumentException;
 
 final class MenuAuthorityRepository implements MenuAuthorityInterface
 {
@@ -74,7 +74,7 @@ final class MenuAuthorityRepository implements MenuAuthorityInterface
     {
         if(false === ($this->profile instanceof UserProfileUid))
         {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Некорректной тип для параметра $this->profile: `%s`. Ожидаемый тип %s',
                 var_export($this->profile, true), UserProfileUid::class
             ));
@@ -112,8 +112,7 @@ final class MenuAuthorityRepository implements MenuAuthorityInterface
     {
         if(
             false === class_exists(ProfileGroupUsers::class) ||
-            false === $this->profile ||
-            null === $this->profile
+            false === ($this->profile instanceof UserProfileUid)
         )
         {
             return null;
