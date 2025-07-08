@@ -1,283 +1,280 @@
 {% set route = app.request.get('_route') %}
+{% set login = false %}
 
+{# Проверка авторизации #}
+{% if app.user %}
+    {% set login = true %}
+{% endif %}
 
-<nav class="navbar navbar-expand navbar-dark bg-primary fw-bold  py-0">
-    <div class="collapse navbar-collapse">
+<button class="btn btn-primary rounded-circle p-1 position-fixed"
+        style="z-index: 1044; right: 16px !important;top: 13px !important;"
+        aria-label="Кнопка открытия каталога" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasAdminMenu" aria-controls="offcanvasAdminMenu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#fff" class="bi bi-list d-block"
+         viewBox="0 0 16 16">
+        <path fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+    </svg>
+</button>
 
-        <div class="navbar-nav justify-content-between align-items-center flex-grow-1 ">
+{% if baks_profile is defined %}
 
-            {% if exist_path('core:public.homepage') %}
-                <a class="nav-link p-3 text-uppercase text-white{{ route == 'core:public.homepage' ? ' active' }}"
-                   href="{{ path('core:public.homepage') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                         class="bi bi-house-fill" viewBox="0 0 16 16">
-                        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
-                        <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
-                    </svg>
-                </a>
-            {% endif %}
+    <button
 
-            {# <a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.catalog.category' ? ' active'  }}" href="{{ path('pages:user.catalog.category') }}">Продукция</a>
-				<a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.about' ? ' active'  }}" href="{{ path('pages:user.about') }}">О компании</a>
-				<a class="nav-link rounded-3 px-3 text-white{{ route == 'delivery:public.delivery' ? ' active' }}" href="{{ path('delivery:public.delivery') }}">доставка</a>
-				<a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.wholesale' ? ' active' }}" href="{{ path('pages:user.wholesale') }}">Опт</a>
-				<a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.guaranty' ? ' active' }}" href="{{ path('pages:user.guaranty') }}">Гарантия</a>
-				<a class="nav-link rounded-3 px-3 text-white{{ route == 'pages:user.calc' ? ' active'  }}" href="{{ path('pages:user.calc') }}">Шинный калькулятор</a> #}
+            class="btn btn-link btn-sm text-decoration-none position-fixed"
+            style="z-index: 1044; right: 8px !important;top: 50px !important;"
+            id="user-menu"
 
-            {% for item in data %}
-
-                <div class="dropdown">
-
-                    {% set arr_path = item.path|json_decode|sort %}
-                    {% set arr_path_filter = arr_path|filter(v => v.dropdown == true and (is_granted(v.role) or is_granted('ROLE_ADMIN'))) %}
-
-                    {% if arr_path_filter|length %}
-
-                        <div class="nav-link p-3 text-white dropdown-toggle" type="button"
-                             data-bs-toggle="dropdown"
-                             aria-expanded="false">
-                            {{ item.name }}
-                        </div>
-
-                        <ul class="dropdown-menu p-2 dropdown-menu-center">
-                            {% for path in arr_path_filter %}
-                                {% if exist_path(path.href) != '#' %}
-                                    <li>
-                                        <a class="nav-link rounded-3 px-2 text-nowrap mb-1 {{ route == path.href ? ' active' }} {{ path.modal ? 'modal-link' }}"
-                                           href="{{ path(path.href) }}"
-                                                {% if path.modal %}
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal"
-                                                {% endif %}
-                                        >
-                                            {{ path.name }}
-                                        </a>
-                                    </li>
-                                {% elseif path.href is null %}
-                                    <li><h6 class="dropdown-header">{{ path.name }}</h6></li>
-                                {% endif %}
-
-                            {% endfor %}
-                        </ul>
-
-                    {% endif %}
-
-                </div>
-
-            {% endfor %}
-
-            <div class="flex-grow-1 d-flex justify-content-end align-items-center">
-
-                {% if baks_profile is defined %}
-
-                    <button
-
-                            class="btn btn-link btn-sm text-decoration-none"
-                            id="user-menu"
-
-                            data-bs-container="body"
-                            data-bs-toggle="popover"
-                            data-bs-placement="bottom"
-                            data-bs-trigger_="onfocus"
-                            data-bs-trigger="click"
-                            {# data-bs-content="Bottom popover" #}
-                            style="width: 50px;"
-                    >
+            data-bs-container="body"
+            data-bs-toggle="popover"
+            data-bs-placement="bottom"
+            data-bs-trigger_="onfocus"
+            data-bs-trigger="click"
+            {# data-bs-content="Bottom popover" #}
+            style="width: 50px;"
+    >
 
                     <span class="icon rounded-circle bg-contain lazy p-1"
-                          style="width: 30px; height: 30px;"
+                          style="width: 36px; height: 36px;"
                           data-bg="{{ baks_profile.user_profile_avatar is defined ? baks_profile.user_profile_avatar : '/assets/img/blank.svg' }}"
                     ></span>
 
-                        {# <span class="small text-dark" style="width: 100px;">Личный кабинет</span> #}
+    </button>
 
-                    </button>
+    <div id="user-menu-title" class="d-none">
 
+        <div class="dropdown">
 
-                    {# title: function() {
-return $('.select_box').html();
-}, #}
+            <a class="btn w-100 text-dark text-decoration-none text-start"
+               href="{{ path('users-profile-user:user.index') }}"
+               role="button" data-bs-toggle="dropdown"
+               aria-expanded="false"
+            >
+                <div class="w-100 float-start d-flex align-items-center gap-3 text-nowrap">
+                    {{ baks_profile.user_profile_username is defined ? baks_profile.user_profile_username }}
 
-
-
-
-
-
-                    <div id="user-menu-title" class="d-none">
-
-                        <div class="dropdown">
-
-                            <a class="btn w-100 text-dark text-decoration-none text-start"
-                               href="{{ path('users-profile-user:user.index') }}"
-                               role="button" data-bs-toggle="dropdown"
-                               aria-expanded="false"
-                            >
-                                <div class="w-100 float-start d-flex align-items-center gap-3 text-nowrap">
-                                    {{ baks_profile.user_profile_username is defined ? baks_profile.user_profile_username }}
-
-                                    {# Тип профиля пользователя #}
-                                    {% if baks_profile.user_profile_type is defined %}
-                                        <span class="badge bg-light text-dark fw-bolder px-1 py-1">
+                    {# Тип профиля пользователя #}
+                    {% if baks_profile.user_profile_type is defined %}
+                        <span class="badge bg-light text-dark fw-bolder px-1 py-1">
                                             <small>{{ baks_profile.user_profile_type }}</small>
                                         </span>
-                                    {% endif %}
-                                </div>
-                                <div>
-                                    {% if baks_profile.user_profile_contact is defined %}
-                                        <div class="text-muted small">
-                                            {{ baks_profile.user_profile_contact }}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </a>
+                    {% endif %}
+                </div>
+                <div>
+                    {% if baks_profile.user_profile_contact is defined %}
+                        <div class="text-muted small">
+                            {{ baks_profile.user_profile_contact }}
                         </div>
-                    </div>
-
-                    <div id="user-menu-content" class="d-none">
-                        {% if app.user.administration %}
-                            <ul class="leader list-group list-group-flush w-100 px-0">
-                                <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 text-truncate rounded-5">
-                                    <a href="{{ path('auth-email:user.edit') }}"
-                                       class="text-decoration-none text-dark w-100"
-                                       title="{{ 'user.page.edit'|trans({}, 'user.account') }}">
-                                        {{ 'user.page.edit'|trans({}, 'user.account') }}
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 text-truncate rounded-5">
-                                    <a class="text-decoration-none text-dark w-100"
-                                       href="{{ path('users-profile-user:user.index') }}">
-                                        Профили
-                                    </a>
-                                </li>
-                            </ul>
-                        {% endif %}
-
-                        <li class="list-group">
-                            <hr>
-                        </li>
-
-                        <ul class="leader list-group list-group-flush w-100">
-
-                            <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
-                                <a href="{{ path('auth-email:public.logout') }}"
-                                   class="text-decoration-none text-dark w-100"
-                                   title="Выход">
-                                    Выход</a>
-                            </li>
-
-                        </ul>
-                    </div>
-
-                {% endif %}
-
-
-                {% if baks_profile is defined %}
-
-                    <div class="dropdown" style="min-width: 150px;">
-
-                        <div class="nav-link p-3 text-white {{ baks_profile.user_profile_profiles is defined ? 'dropdown-toggle' }}"
-                             type="button"
-                             data-bs-toggle="dropdown"
-                             aria-expanded="false">
-                            {{ baks_profile.user_profile_username ?? null }}
-                        </div>
-
-                        {% if baks_profile.user_profile_profiles is defined %}
-
-                            <ul class="dropdown-menu p-2 dropdown-menu-center leader">
-
-                                {% set separator = false %}
-
-                                {# Личные профили пользователя #}
-
-
-                                {% for profil in baks_profile.user_profile_profiles|sort((a, b) => a.user_profile_username <=> b.user_profile_username) %}
-
-                                    {# {% if baks_profile and baks_profile.user_profile_username != profil.user_profile_username %} #}
-                                    {% if baks_profile.id is defined and baks_profile.id != profil.user_profile_id %}
-
-                                        <li class="p-1 w-100 list-group-item rounded-5">
-                                            <a class="d-block text-decoration-none w-100 px-1 text-nowrap"
-                                               href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
-                                                {{ profil.user_profile_username }}
-                                            </a>
-                                        </li>
-
-                                        {% set separator = true %}
-
-
-                                        {# {% else %} #}
-                                        {# <li class="p-1 w-100 rounded-5">
-                                                <span class="d-block text-muted small w-100 px-1 text-nowrap">
-                                                    {{ profil.user_profile_username }}
-                                                </span>
-                                            </li> #}
-                                    {% endif %}
-                                {% endfor %}
-
-
-
-
-
-                                {% for link in authority %}
-
-                                    {% if baks_profile.id is defined and baks_profile.id == link.authority %}
-                                        {# <a href='{{ path('core:public.homepage', {'authority' : '_exit' }) }}'
-                                       class="text-decoration-none text-muted small">
-                                        <div class="w-100">{{ link.profile_username }}</div>
-                                    </a> #}
-                                    {% else %}
-
-                                        {% if separator %}
-
-                                            {% set separator = false %}
-
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                        {% endif %}
-
-                                        {% if exist_path('core:public.homepage') %}
-                                            <li class="p-1 w-100 list-group-item rounded-5">
-                                                <a href='{{ path('core:public.homepage', {'authority' : link.authority }) }}'
-                                                   class="d-block text-decoration-none w-100 px-1 text-nowrap">
-                                                    {{ link.authority_username }}
-                                                </a>
-                                            </li>
-                                        {% endif %}
-
-                                    {% endif %}
-
-                                    {# {% if link.authority %} #}
-
-                                    {# {% else %}
-                                    <a href='{{ path('core:public.homepage', {'authority' : link.profile }) }}'
-                                       class="text-decoration-none {{   link.active ? '' : 'text-muted small' }}">
-                                        {{  link.profile_username }}
-                                    </a>
-                                {% endif %} #}
-
-                                {% else %}
-                                    <li class="p-1 w-100 list-group-item rounded-3">
-                                        <a href='{{ path('users-profile-user:user.index') }}'
-                                           class="d-block text-decoration-none w-100 px-2 text-nowrap">
-                                            Добавить профиль
-                                        </a>
-                                    </li>
-                                {% endfor %}
-
-
-                            </ul>
-                        {% else %}
-
-
-                        {% endif %}
-
-
-                    </div>
-                {% endif %}
-
-            </div>
+                    {% endif %}
+                </div>
+            </a>
         </div>
     </div>
-</nav>
 
+    <div id="user-menu-content" class="d-none">
+        {% if app.user.administration %}
+            <ul class="leader list-group list-group-flush w-100 px-0">
+                <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 text-truncate rounded-5">
+                    <a href="{{ path('auth-email:user.edit') }}"
+                       class="text-decoration-none text-dark w-100"
+                       title="{{ 'user.page.edit'|trans({}, 'user.account') }}">
+                        {{ 'user.page.edit'|trans({}, 'user.account') }}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 text-truncate rounded-5">
+                    <a class="text-decoration-none text-dark w-100"
+                       href="{{ path('users-profile-user:user.index') }}">
+                        Профили
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+
+        <li class="list-group">
+            <hr>
+        </li>
+
+        <ul class="leader list-group list-group-flush w-100">
+
+            <li class="list-group-item d-flex justify-content-between bg-transparent border-0 text-truncate rounded-5">
+                <a href="{{ path('auth-email:public.logout') }}"
+                   class="text-decoration-none text-dark w-100"
+                   title="Выход">
+                    Выход</a>
+            </li>
+
+        </ul>
+    </div>
+
+{% endif %}
+
+<div id="offcanvasAdminMenu"
+     tabindex="-1"
+     aria-labelledby="offcanvasAdminMenu"
+     class="offcanvas offcanvas-end bg-primary pb-3"
+     style="--bs-offcanvas-width: 300px; height: max-content;border-bottom-left-radius: 20px;">
+
+    <div class="offcanvas-header align-items-start justify-content-between">
+        {% if exist_path('core:public.homepage') %}
+            <a href="{{ path('core:public.homepage') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="white"
+                     class="bi bi-house-fill" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+                    <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+                </svg>
+            </a>
+        {% endif %}
+
+        <div class="d-flex align-items-center gap-3">
+
+
+            <button class="btn btn-light rounded-circle p-2" aria-label="Закрыть меню" type="button"
+                    data-bs-dismiss="offcanvas">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black"
+                     class="bi bi-x-lg d-block" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    {# Меню - первая вложенность #}
+    <div class="offcanvas-body">
+        <h5 class="offcanvas-title text-uppercase fs-10 ps-5" style="color:#b3d9ff" id="offcanvasAdminLabel">
+            меню
+        </h5>
+
+        {# Навигация #}
+        <nav class="nav fs-12 justify-content-center mb-4">
+            <ul class="list-unstyled text-uppercase fw-medium">
+                {% for item in data %}
+                    {% set arr_path = item.path|json_decode|sort %}
+                    {% set arr_path_filter = arr_path|filter(v => v.dropdown == true and (is_granted(v.role) or is_granted('ROLE_ADMIN'))) %}
+
+                    <li class="nav-item">
+                        {% if arr_path_filter|length %}
+                            <a href="#"
+                               class="nav-link rounded-5 px-3 text-white"
+                               aria-controls="AdminSubmenu{{ loop.index }}"
+                               data-bs-target="#AdminSubmenu{{ loop.index }}"
+                               data-bs-toggle="offcanvas">
+                                {{ item.name }}
+                            </a>
+                        {% else %}
+                            <span class="nav-link rounded-5 px-3 text-white-50">
+                                {{ item.name }}
+                            </span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <div class="d-flex align-items-center justify-content-start gap-3 fs-11 ps-3">
+            {% if login == false %}
+                <a href="{{ path('auth-email:public.login') }}" class="m-0 fw-bold text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                         class="bi bi-lock-fill me-2" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+                    </svg>
+                    <span>Войти</span>
+                </a>
+            {% else %}
+                <a href="{{ path('auth-email:public.logout') }}" class="m-0 fw-bold text-white">
+                    <span>Выйти</span>
+                </a>
+            {% endif %}
+
+            {# Переключение профилей #}
+            {% if baks_profile is defined and baks_profile.user_profile_profiles is defined %}
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        Профили
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for profil in baks_profile.user_profile_profiles|sort((a, b) => a.user_profile_username <=> b.user_profile_username) %}
+                            {% if baks_profile.id is defined and baks_profile.id != profil.user_profile_id %}
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ path('users-profile-user:user.activate', { id: profil.user_profile_event }) }}">
+                                        {{ profil.user_profile_username }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% for link in authority %}
+                            {% if baks_profile.id is defined and baks_profile.id != link.authority %}
+                                {% if exist_path('core:public.homepage') %}
+                                    <li>
+                                        <a class="dropdown-item"
+                                           href="{{ path('core:public.homepage', {'authority' : link.authority }) }}">
+                                            {{ link.authority_username }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <li>
+                                <a class="dropdown-item"
+                                   href="{{ path('users-profile-user:user.index') }}">
+                                    Добавить профиль
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{# Подменю - вторая вложенность #}
+{% for item in data %}
+    {% set arr_path = item.path|json_decode|sort %}
+    {% set arr_path_filter = arr_path|filter(v => v.dropdown == true and (is_granted(v.role) or is_granted('ROLE_ADMIN'))) %}
+
+    {% if arr_path_filter|length %}
+        <div id="AdminSubmenu{{ loop.index }}"
+             aria-labelledby="AdminSubmenu{{ loop.index }}"
+             tabindex="-1"
+             class="offcanvas offcanvas-end bg-primary pb-3"
+             style="--bs-offcanvas-width: 300px; height: max-content; border-bottom-left-radius: 20px;">
+
+            <div class="offcanvas-body">
+                <button class="btn d-flex text-white align-items-center gap-1"
+                        data-bs-target="#offcanvasAdminMenu"
+                        data-bs-toggle="offcanvas"
+                        aria-controls="offcanvasAdminMenu" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"
+                         class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                        <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"></path>
+                    </svg>
+                    <strong>{{ item.name }}</strong>
+                </button>
+
+                <div class="pe-3 overflow-y-auto" style="height: 350px;">
+                    {% for path in arr_path_filter %}
+                        {% if exist_path(path.href) != '#' %}
+                            <div class="d-flex border-top p-3">
+                                <a href="{{ path(path.href) }}"
+                                   class="btn btn-primary text-nowrap d-flex align-items-center w-100 {{ route == path.href ? 'active btn-light ' : '' }} {{ path.modal ? 'modal-link' }}"
+                                   style="font-size: 14px;"
+                                        {% if path.modal %}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modal"
+                                        {% endif %}>
+                                    {{ path.name }}
+                                </a>
+                            </div>
+                        {% elseif path.href is null %}
+                            <div class="d-flex border-top p-3">
+                                <h6 class="text-white mb-0">{{ path.name }}</h6>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
