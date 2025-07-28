@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ use Symfony\Component\Uid\AbstractUid;
 
 final class MenuAdminSectionPathUid extends Uid
 {
-    public const string TEST = '0188a998-fb9c-776c-b7c2-4ce685d629f3';
+    public const string TEST = '1bf64ffd-21b0-7f48-93f1-f8c2451a6ecd';
 
     public const string TYPE = 'menu_admin_section_path';
 
