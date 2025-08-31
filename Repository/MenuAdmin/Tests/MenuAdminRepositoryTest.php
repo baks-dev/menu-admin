@@ -19,7 +19,6 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
- *
  */
 
 declare(strict_types=1);
@@ -30,13 +29,12 @@ use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminInterface;
 use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminPathResult;
 use BaksDev\Menu\Admin\Repository\MenuAdmin\MenuAdminResult;
 use BaksDev\Menu\Admin\Type\Section\MenuAdminSectionUid;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group menu-admin
- */
 #[When(env: 'test')]
+#[Group('menu-admin')]
 class MenuAdminRepositoryTest extends KernelTestCase
 {
     public function testFind(): void
