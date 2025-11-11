@@ -1,5 +1,6 @@
 {% set route = app.request.get('_route') %}
 
+{# @var link \BaksDev\Menu\Admin\Repository\MenuAuthority\MenuAuthorityResult #}
 
 <nav class="navbar navbar-expand navbar-dark bg-primary fw-bold  py-0">
     <div class="collapse navbar-collapse">
@@ -183,7 +184,15 @@ return $('.select_box').html();
 
                         {% if baks_profile.user_profile_profiles is defined %}
 
-                            {% set authProfiles = baks_profile.user_profile_profiles|sort((a, b) => a.user_profile_username <=> b.user_profile_username) %}
+
+
+
+
+                            {% set authProfiles = baks_profile.user_profile_profiles|sort((a, b) => a.params.username <=> b.params.username) %}
+
+
+
+
 
 
                             <ul class="dropdown-menu p-2 dropdown-menu-center leader">
@@ -196,17 +205,22 @@ return $('.select_box').html();
 
                                     {% if baks_profile.id is defined %}
 
-                                        {% if baks_profile.id != profil.user_profile_id %}
+                                        {% if profil.params %}
+
+                                        {% endif %}
+
+
+                                        {% if baks_profile.id != profil %}
                                             <li class="p-1 w-100 list-group-item rounded-5">
                                                 <a class="d-block text-decoration-none w-100 px-1 text-nowrap"
-                                                   href="{{ path('core:public.homepage', {'authority' : profil.user_profile_id }) }}">
-                                                    {{ profil.user_profile_username }}
+                                                   href="{{ (profil.params.domain ? 'https://'~profil.params.domain : '') ~ path('core:public.homepage', { authority : profil }) }}">
+                                                    {{ profil.params.username }}
                                                 </a>
                                             </li>
                                         {% else %}
                                             <li class="p-1 w-100 disabled">
                                                 <div class="px-1 text-nowrap text-muted fw-normal">
-                                                    &bull; &nbsp; {{ profil.user_profile_username }}
+                                                    &bull; &nbsp; {{ profil.params.username }}
                                                 </div>
                                             </li>
                                         {% endif %}
@@ -226,12 +240,11 @@ return $('.select_box').html();
 
                                 {% endfor %}
 
-
-
                                 {% for link in authority %}
 
+
                                     {% if baks_profile.id is defined and baks_profile.id == link.authority %}
-                                        {# <a href='{{ path('core:public.homepage', {'authority' : '_exit' }) }}'
+                                        {# <a href='{{ path('core:public.homepage', { 'authority' : '_exit' }) }}'
                                        class="text-decoration-none text-muted small">
                                         <div class="w-100">{{ link.profile_username }}</div>
                                     </a> #}
@@ -248,9 +261,10 @@ return $('.select_box').html();
 
                                         {% if exist_path('core:public.homepage') %}
                                             <li class="p-1 w-100 list-group-item rounded-5">
-                                                <a href='{{ path('core:public.homepage', {'authority' : link.authority }) }}'
-                                                   class="d-block text-decoration-none w-100 px-1 text-nowrap">
-                                                    {{ link.authority_username }}
+                                                <a href='{{ link.authorityDomain ?: '' ~ path('core:public.homepage', { authority : link.authority }) }}'
+                                                   class="d-block text-decoration-none w-100 px-1 text-nowrap"
+                                                >
+                                                    {{ link.authorityUsername }}
                                                 </a>
                                             </li>
                                         {% endif %}

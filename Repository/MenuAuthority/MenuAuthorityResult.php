@@ -34,11 +34,13 @@ final readonly class MenuAuthorityResult
 {
 
     public function __construct(
-        private string $authority,
         private string $profile,
         private bool $active,
-        private string $authority_username,
         private string $profile_username,
+        private string $authority,
+        private string $authority_username,
+        private string $authority_domain,
+
     ) {}
 
     public function getAuthority(): UserProfileUid
@@ -64,5 +66,10 @@ final readonly class MenuAuthorityResult
     public function getProfileUsername(): string
     {
         return $this->profile_username;
+    }
+
+    public function getAuthorityDomain(): string|false
+    {
+        return empty($this->authority_domain) ? false : 'https://'.str_replace('https://', '', $this->authority_domain);
     }
 }

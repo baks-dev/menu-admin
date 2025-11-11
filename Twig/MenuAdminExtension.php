@@ -45,7 +45,7 @@ final class MenuAdminExtension extends AbstractExtension
         return [
             new TwigFunction('render_menu_admin',
                 [$this, 'renderMenuAdmin'],
-                ['needs_environment' => true, 'is_safe' => ['html']]
+                ['needs_environment' => true, 'is_safe' => ['html']],
             ),
         ];
     }
@@ -57,13 +57,13 @@ final class MenuAdminExtension extends AbstractExtension
             return '';
         }
 
-        //$user = $this->userProfileTokenStorage->getUserCurrent();
-
         /** Меню навигации */
         $menu = $this->MenuAdmin->fetchAllAssociativeIndexed();
 
         // доверенные профили для быстрой смены
-        $authority = $this->menuAuthority->findAll($this->userProfileTokenStorage->getProfileCurrent());
+        $authority = $this->menuAuthority
+            ->onProfile($this->userProfileTokenStorage->getProfileCurrent())
+            ->findAllResults();
 
         $path = $this->template->extends('@menu-admin:render_menu_admin/template.html.twig');
 

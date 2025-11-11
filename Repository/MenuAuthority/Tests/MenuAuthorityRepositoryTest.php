@@ -95,9 +95,11 @@ class MenuAuthorityRepositoryTest extends KernelTestCase
         {
 
             $results = $menuAuthority
-                ->findAll($profile['profile']);
+                ->onProfile($profile['profile'])
+                ->findAllResults();
+            // ->findAll($profile['profile']);
 
-            if(false === $results)
+            if(false === $results || false === $results->valid())
             {
                 continue;
             }
@@ -167,7 +169,7 @@ class MenuAuthorityRepositoryTest extends KernelTestCase
                 ->onProfile($profile['profile'])
                 ->findAllResults();
 
-            if(false === $results)
+            if(false === $results || false === $results->valid())
             {
                 continue;
             }
