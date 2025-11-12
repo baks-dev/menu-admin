@@ -39,7 +39,7 @@ final readonly class MenuAuthorityResult
         private string $profile_username,
         private string $authority,
         private string $authority_username,
-        private string $authority_domain,
+        private ?string $authority_domain,
 
     ) {}
 
