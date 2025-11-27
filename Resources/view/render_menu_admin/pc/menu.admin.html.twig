@@ -184,16 +184,7 @@ return $('.select_box').html();
 
                         {% if baks_profile.user_profile_profiles is defined %}
 
-
-
-
-
                             {% set authProfiles = baks_profile.user_profile_profiles|sort((a, b) => a.params.username <=> b.params.username) %}
-
-
-
-
-
 
                             <ul class="dropdown-menu p-2 dropdown-menu-center leader">
 
