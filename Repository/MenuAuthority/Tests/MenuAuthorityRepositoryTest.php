@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  Copyright 2026.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +35,8 @@ use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\Profile\UserProfile\Type\UserProfileStatus\Status\UserProfileStatusActive;
 use BaksDev\Users\Profile\UserProfile\Type\UserProfileStatus\UserProfileStatus;
 use PHPUnit\Framework\Attributes\Group;
+use ReflectionClass;
+use ReflectionMethod;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
@@ -42,19 +44,6 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 #[Group('menu-admin')]
 class MenuAuthorityRepositoryTest extends KernelTestCase
 {
-
-    /** Набор ключей для сравнения алиасов в основном запросе */
-    public static function getAllQueryKeys(): array
-    {
-        return [
-            "authority",
-            "profile",
-            "active",
-            "authority_username",
-            "profile_username",
-        ];
-    }
-
     public function testFindAll(): void
     {
         /** @var ORMQueryBuilder $ormQueryBuilder */
@@ -104,19 +93,22 @@ class MenuAuthorityRepositoryTest extends KernelTestCase
                 continue;
             }
 
-            $queryKeys = self::getAllQueryKeys();
-
             /** @var MenuAuthorityResult $result */
-            foreach($results as $result)
+            foreach($results as $MenuAuthorityResult)
             {
-                foreach($queryKeys as $key)
-                {
-                    self::assertArrayHasKey($key, $result, sprintf('Найдено несоответствие с ключами из массива getAllQueryKeys: %s', $key));
-                }
+                // Вызываем все геттеры
+                $reflectionClass = new ReflectionClass(MenuAuthorityResult::class);
+                $methods = $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC);
 
-                foreach($result as $key => $value)
+                foreach($methods as $method)
                 {
-                    self::assertTrue(in_array($key, $queryKeys), sprintf('Новый ключ в массиве с результатом запроса: %s', $key));
+                    // Методы без аргументов
+                    if($method->getNumberOfParameters() === 0)
+                    {
+                        // Вызываем метод
+                        $data = $method->invoke($MenuAuthorityResult);
+                        // dump($data);
+                    }
                 }
             }
 
