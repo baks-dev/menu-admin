@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  Copyright 2026.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -94,19 +94,33 @@ final class MenuAuthorityRepository implements MenuAuthorityInterface
                 type: UserProfileUid::TYPE,
             );
 
+
         $dbal->join(
             'usr',
-            UserProfile::class, 'authority_profile',
+            UserProfile::class,
+            'authority_profile',
             'authority_profile.id = usr.authority',
         );
+
+        $dbal
+            ->addSelect('domain.value AS authority_domain')
+            ->leftJoin(
+                'authority_profile',
+                UserProfileDomain::class,
+                'domain',
+                'domain.main = authority_profile.id',
+            );
+
 
         $dbal
             ->addSelect('authority_personal.username AS authority_username')
             ->leftJoin(
                 'authority_profile',
-                UserProfilePersonal::class, 'authority_personal',
+                UserProfilePersonal::class,
+                'authority_personal',
                 'authority_personal.event = authority_profile.event',
             );
+
 
         $dbal->leftJoin(
             'usr',
@@ -115,15 +129,6 @@ final class MenuAuthorityRepository implements MenuAuthorityInterface
             'profile.id = usr.profile',
         );
 
-
-        $dbal
-            ->addSelect('domain.value AS authority_domain')
-            ->leftJoin(
-                'usr',
-                UserProfileDomain::class,
-                'domain',
-                'domain.main = usr.profile',
-            );
 
         $dbal
             ->addSelect('profile_personal.username AS profile_username')
