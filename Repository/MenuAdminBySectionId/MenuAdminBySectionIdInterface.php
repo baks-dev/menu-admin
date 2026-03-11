@@ -27,7 +27,7 @@ use BaksDev\Menu\Admin\Entity\Section\MenuAdminSection;
 use BaksDev\Menu\Admin\Type\Section\MenuAdminSectionUid;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
-#[Autoconfigure(public: true)]
+// #[Autoconfigure(public: true)]
 interface MenuAdminBySectionIdInterface
 {
     /**
