@@ -64,21 +64,19 @@ class MenuAdmin
         return (string) $this->id;
     }
 
-    public function getId(): MenuAdminIdentificator
-    {
-        return $this->id;
-    }
-
-
     public function getEvent(): MenuAdminEventUid
     {
         return $this->event;
     }
 
-
     public function setEvent(MenuAdminEventUid|MenuAdminEvent $event): void
     {
         $this->event = $event instanceof MenuAdminEvent ? $event->getId() : $event;
+    }
+
+    public function getId(): MenuAdminIdentificator
+    {
+        return $this->id;
     }
 
 }

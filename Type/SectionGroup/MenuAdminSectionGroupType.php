@@ -28,7 +28,6 @@ namespace BaksDev\Menu\Admin\Type\SectionGroup;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
-use InvalidArgumentException;
 
 final class MenuAdminSectionGroupType extends Type
 {

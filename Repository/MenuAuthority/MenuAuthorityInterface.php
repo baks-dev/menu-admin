@@ -36,6 +36,7 @@ interface MenuAuthorityInterface
 
     /**
      * Возвращает доверенные профили активного профиля пользователя
+     *
      * @return Generator<int, MenuAuthorityResult>|false
      */
     public function findAllResults(): Generator|false;

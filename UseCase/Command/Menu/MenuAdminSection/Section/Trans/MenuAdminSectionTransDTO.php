@@ -53,6 +53,10 @@ class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
      */
     private ?string $description;
 
+    public function getLocal(): Locale
+    {
+        return $this->local;
+    }
 
     /**
      * Локаль
@@ -65,13 +69,6 @@ class MenuAdminSectionTransDTO implements MenuAdminSectionTransInterface
             $this->local = $local instanceof Locale ? $local : new Locale($local);
         }
     }
-
-
-    public function getLocal(): Locale
-    {
-        return $this->local;
-    }
-
 
     /**
      * Название

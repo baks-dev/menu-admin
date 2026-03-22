@@ -57,7 +57,7 @@ class MenuAuthorityRepositoryTest extends KernelTestCase
                 UserProfileEvent::class,
                 'users_profile_event',
                 'WITH',
-                'users_profile_event.id = user_profile.event'
+                'users_profile_event.id = user_profile.event',
             )
             ->join(
                 UserProfileInfo::class,
@@ -65,7 +65,7 @@ class MenuAuthorityRepositoryTest extends KernelTestCase
                 'WITH',
                 "
                     users_profile_info.event = users_profile_event.id AND
-                    users_profile_info.status = :status"
+                    users_profile_info.status = :status",
             )
             ->setParameter('status', UserProfileStatusActive::STATUS, UserProfileStatus::TYPE);
 
@@ -131,7 +131,7 @@ class MenuAuthorityRepositoryTest extends KernelTestCase
                 UserProfileEvent::class,
                 'users_profile_event',
                 'WITH',
-                'users_profile_event.id = user_profile.event'
+                'users_profile_event.id = user_profile.event',
             )
             ->join(
                 UserProfileInfo::class,
@@ -139,7 +139,7 @@ class MenuAuthorityRepositoryTest extends KernelTestCase
                 'WITH',
                 "
                     users_profile_info.event = users_profile_event.id AND
-                    users_profile_info.status = :status"
+                    users_profile_info.status = :status",
             )
             ->setParameter('status', UserProfileStatusActive::STATUS, UserProfileStatus::TYPE);
 

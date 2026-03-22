@@ -50,7 +50,7 @@ final class MenuAdminHandler extends AbstractHandler
         /* Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
             message: new MenuAdminMessage($this->main->getEvent(), $command->getEvent()),
-            transport: 'menu-admin'
+            transport: 'menu-admin',
         );
 
         return $this->main;

@@ -81,17 +81,6 @@ final class MenuAdminRepository implements MenuAdminInterface
         return $builder->fetchAllIndexHydrate(MenuAdminResult::class);
     }
 
-    /**
-     * Метод возвращает массив меню администратора с группировкой.
-     */
-    public function fetchAllAssociativeIndexed(): array
-    {
-        $builder = $this->builder();
-        $builder->enableCache('menu-admin', '1 day');
-
-        return $builder->fetchAllAssociativeIndexed();
-    }
-
     private function builder(): DBALQueryBuilder
     {
         $dbal = $this->DBALQueryBuilder
@@ -119,7 +108,7 @@ final class MenuAdminRepository implements MenuAdminInterface
                     'section',
                     '
                         section.event = menu.event AND 
-                        section.id = :section'
+                        section.id = :section',
                 )
                 ->setParameter('section', $this->sectionId, MenuAdminSectionUid::TYPE);
         }
@@ -130,7 +119,7 @@ final class MenuAdminRepository implements MenuAdminInterface
                     'menu',
                     MenuAdminSection::class,
                     'section',
-                    'section.event = menu.event'
+                    'section.event = menu.event',
                 );
         }
 
@@ -139,7 +128,7 @@ final class MenuAdminRepository implements MenuAdminInterface
             'section',
             MenuAdminSectionTrans::class,
             'section_trans',
-            'section_trans.section = section.id AND section_trans.local = :local'
+            'section_trans.section = section.id AND section_trans.local = :local',
         );
 
 
@@ -147,7 +136,7 @@ final class MenuAdminRepository implements MenuAdminInterface
             'section',
             MenuAdminSectionPath::class,
             'path',
-            'path.section = section.id'
+            'path.section = section.id',
         );
 
         $dbal->leftJoin(
@@ -180,7 +169,7 @@ final class MenuAdminRepository implements MenuAdminInterface
             'path',
             MenuAdminSectionPathTrans::class,
             'path_trans',
-            'path_trans.path = path.id AND path_trans.local = :local'
+            'path_trans.path = path.id AND path_trans.local = :local',
         );
 
         $dbal->allGroupByExclude();
@@ -188,5 +177,16 @@ final class MenuAdminRepository implements MenuAdminInterface
         $dbal->orderBy('section.sort', 'ASC');
 
         return $dbal;
+    }
+
+    /**
+     * Метод возвращает массив меню администратора с группировкой.
+     */
+    public function fetchAllAssociativeIndexed(): array
+    {
+        $builder = $this->builder();
+        $builder->enableCache('menu-admin', '1 day');
+
+        return $builder->fetchAllAssociativeIndexed();
     }
 }

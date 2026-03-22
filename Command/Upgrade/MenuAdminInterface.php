@@ -32,6 +32,11 @@ interface MenuAdminInterface
     const string KEY = '';
 
     /**
+     * Метод возвращает позицию, в которую располагается ссылка в секции меню.
+     */
+    public static function getSortMenu(): int;
+
+    /**
      * Метод возвращает префикс роли доступа.
      */
     public function getRole(): string;
@@ -54,11 +59,6 @@ interface MenuAdminInterface
      * Метод возвращает секцию, в которую помещается ссылка на раздел.
      */
     public function getGroupMenu(): MenuAdminSectionGroupCollectionInterface|array|bool;
-
-    /**
-     * Метод возвращает позицию, в которую располагается ссылка в секции меню.
-     */
-    public static function getSortMenu(): int;
 
     /**
      * Метод возвращает флаг "Показать в выпадающем меню".

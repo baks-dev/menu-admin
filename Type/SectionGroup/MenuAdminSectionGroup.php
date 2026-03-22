@@ -68,26 +68,31 @@ final class MenuAdminSectionGroup
 
     }
 
-
-    public function __toString(): string
-    {
-        return $this->type ? $this->type->getvalue() : '';
-    }
-
-
     /** Возвращает значение ColorsInterface */
     public function getType(): MenuAdminSectionGroupCollectionInterface
     {
         return $this->type;
     }
 
-
-    /** Возвращает значение ColorsInterface */
-    public function getTypeValue(): string
+    public static function getDeclaredSectionGroupType(): array
     {
-        return $this->type->getValue();
+        return array_filter(get_declared_classes(), static function($className) {
+            return in_array(MenuAdminSectionGroupCollectionInterface::class, class_implements($className), true);
+        });
     }
 
+    public static function diffType(ArrayCollection|array $diffArray)
+    {
+        $search = [];
+
+        foreach($diffArray as $item)
+        {
+            $search[] = $item->getGroup();
+        }
+
+        /* Вычисляем расхождение массивов */
+        return array_diff(self::cases(), $search);
+    }
 
     public static function cases(): array
     {
@@ -105,26 +110,15 @@ final class MenuAdminSectionGroup
         return $case;
     }
 
-
-    public static function getDeclaredSectionGroupType(): array
+    public function __toString(): string
     {
-        return array_filter(get_declared_classes(), static function($className) {
-            return in_array(MenuAdminSectionGroupCollectionInterface::class, class_implements($className), true);
-        });
+        return $this->type ? $this->type->getvalue() : '';
     }
 
-
-    public static function diffType(ArrayCollection|array $diffArray)
+    /** Возвращает значение ColorsInterface */
+    public function getTypeValue(): string
     {
-        $search = [];
-
-        foreach($diffArray as $item)
-        {
-            $search[] = $item->getGroup();
-        }
-
-        /* Вычисляем расхождение массивов */
-        return array_diff(self::cases(), $search);
+        return $this->type->getValue();
     }
 
 

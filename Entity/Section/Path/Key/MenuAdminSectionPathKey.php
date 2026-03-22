@@ -61,11 +61,6 @@ class MenuAdminSectionPathKey extends EntityEvent
         return (string) $this->path;
     }
 
-    public function getValue(): ?string
-    {
-        return $this->value;
-    }
-
     /** @return MenuAdminSectionPathKeyInterface */
     public function getDto($dto): mixed
     {
@@ -96,5 +91,10 @@ class MenuAdminSectionPathKey extends EntityEvent
         }
 
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
     }
 }

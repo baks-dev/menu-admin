@@ -33,6 +33,7 @@ use BaksDev\Menu\Admin\Entity\Section\Path\Trans\MenuAdminSectionPathTrans;
 use BaksDev\Menu\Admin\Entity\Section\Trans\MenuAdminSectionTrans;
 use BaksDev\Menu\Admin\Type\Id\MenuAdminIdentificator;
 use BaksDev\Menu\Admin\Type\Section\MenuAdminSectionUid;
+use InvalidArgumentException;
 
 /** @see MenuAdminBySectionsResult */
 final class MenuAdminBySectionIdRepository implements MenuAdminBySectionIdInterface
@@ -75,9 +76,9 @@ final class MenuAdminBySectionIdRepository implements MenuAdminBySectionIdInterf
     {
         if(false === ($this->sectionId instanceof MenuAdminSectionUid))
         {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Некорректной тип для параметра $this->sectionId: `%s`. Ожидаемый тип %s',
-                $this->sectionId, MenuAdminSectionUid::class
+                $this->sectionId, MenuAdminSectionUid::class,
             ));
         }
 
@@ -98,7 +99,7 @@ final class MenuAdminBySectionIdRepository implements MenuAdminBySectionIdInterf
                 'section',
                 '
                         section.event = menu.event AND 
-                        section.id = :section'
+                        section.id = :section',
             )
             ->setParameter('section', $this->sectionId, MenuAdminSectionUid::TYPE);
 
@@ -106,14 +107,14 @@ final class MenuAdminBySectionIdRepository implements MenuAdminBySectionIdInterf
             'section',
             MenuAdminSectionTrans::class,
             'section_trans',
-            'section_trans.section = section.id AND section_trans.local = :local'
+            'section_trans.section = section.id AND section_trans.local = :local',
         );
 
         $dbal->join(
             'section',
             MenuAdminSectionPath::class,
             'path',
-            'path.section = section.id'
+            'path.section = section.id',
         );
 
         $dbal->leftJoin(
@@ -127,7 +128,7 @@ final class MenuAdminBySectionIdRepository implements MenuAdminBySectionIdInterf
             'path',
             MenuAdminSectionPathTrans::class,
             'path_trans',
-            'path_trans.path = path.id AND path_trans.local = :local'
+            'path_trans.path = path.id AND path_trans.local = :local',
         );
 
         $dbal->addSelect(

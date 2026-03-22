@@ -50,11 +50,6 @@ final readonly class MenuAdminPathResult
         return $this->key;
     }
 
-    public function getHref(): ?string
-    {
-        return $this->href;
-    }
-
     public function getName(): string
     {
         return $this->name;
@@ -75,11 +70,16 @@ final readonly class MenuAdminPathResult
         return $this->dropdown;
     }
 
-    /** Helpers */
-
     /** Если нет ссылки - это заголовок секции */
     public function isNotSectionHeader(): bool
     {
         return ($this->getHref() !== null);
+    }
+
+    /** Helpers */
+
+    public function getHref(): ?string
+    {
+        return $this->href;
     }
 }

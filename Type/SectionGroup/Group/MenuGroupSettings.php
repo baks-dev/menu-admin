@@ -33,16 +33,6 @@ final class MenuGroupSettings implements MenuAdminSectionGroupCollectionInterfac
 {
     public const string GROUP = 'settings';
 
-
-    /**
-     * Возвращает значение (value)
-     */
-    public function getValue(): string
-    {
-        return self::GROUP;
-    }
-
-
     /**
      * Сортировка (чем меньше число - тем первым в итерации будет значение)
      */
@@ -51,12 +41,19 @@ final class MenuGroupSettings implements MenuAdminSectionGroupCollectionInterfac
         return 100;
     }
 
-
     /**
      * Проверяет, относится ли статус к данному объекту
      */
     public static function equals(string $group): bool
     {
         return self::GROUP === mb_strtolower($group);
+    }
+
+    /**
+     * Возвращает значение (value)
+     */
+    public function getValue(): string
+    {
+        return self::GROUP;
     }
 }

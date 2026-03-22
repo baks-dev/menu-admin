@@ -64,6 +64,12 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
         parent::__construct();
     }
 
+    /** Чам выше число - тем первым в итерации будет значение */
+    public static function priority(): int
+    {
+        return 99;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -129,14 +135,13 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
             if(false === ($MenuAdmin instanceof MenuAdmin))
             {
                 throw new InvalidArgumentException(
-                    sprintf('Ошибка %s при обновлении пункта меню администратора', $MenuAdmin)
+                    sprintf('Ошибка %s при обновлении пункта меню администратора', $MenuAdmin),
                 );
             }
         }
 
         return Command::SUCCESS;
     }
-
 
     public function add(MenuAdminPathSectionDTO $MenuAdminSectionDTO, MenuAdminInterface $menu): void
     {
@@ -166,7 +171,7 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
             $MenuName = $this->translator->trans(
                 id: $localId,
                 domain: 'security',
-                locale: $locale
+                locale: $locale,
             );
 
             $MenuAdminSectionPathTransDTO->setName($MenuName);
@@ -177,8 +182,8 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
                     sprintf(
                         'Для префикса роли %s не добавлено название в файл переводов домена security локали %s',
                         $menu->getRole(),
-                        $locale
-                    )
+                        $locale,
+                    ),
                 );
             }
 
@@ -192,16 +197,10 @@ class UpgradeAdminMenuPathCommand extends Command implements ProjectUpgradeInter
                     sprintf(
                         'Для префикса роли %s не добавлено краткое описание в файл переводов домена security локали %s',
                         $menu->getRole(),
-                        $locale
-                    )
+                        $locale,
+                    ),
                 );
             }
         }
-    }
-
-    /** Чам выше число - тем первым в итерации будет значение */
-    public static function priority(): int
-    {
-        return 99;
     }
 }

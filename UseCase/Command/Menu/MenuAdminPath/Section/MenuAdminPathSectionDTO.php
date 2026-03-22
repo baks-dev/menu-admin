@@ -94,17 +94,6 @@ class MenuAdminPathSectionDTO implements MenuAdminSectionInterface
         }
     }
 
-
-    /**
-     * Разделы
-     */
-
-    public function getPath(): ArrayCollection
-    {
-        return $this->path;
-    }
-
-
     public function addPath(Path\MenuAdminPathSectionPathDTO $path): void
     {
 
@@ -119,6 +108,14 @@ class MenuAdminPathSectionDTO implements MenuAdminSectionInterface
 
     }
 
+    /**
+     * Разделы
+     */
+
+    public function getPath(): ArrayCollection
+    {
+        return $this->path;
+    }
 
     public function getSort()
     {

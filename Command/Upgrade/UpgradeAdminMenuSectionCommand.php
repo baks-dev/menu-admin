@@ -60,6 +60,12 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
         parent::__construct();
     }
 
+    /** Чам выше число - тем первым в итерации будет значение */
+    public static function priority(): int
+    {
+        return 100;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -100,7 +106,7 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
                 $name = $this->translator->trans(
                     id: $MenuAdminSection->getGroup()->getTypeValue().'.name',
                     domain: 'menu-admin.section',
-                    locale: $MenuAdminSectionTrans->getLocal()->getLocalValue()
+                    locale: $MenuAdminSectionTrans->getLocal()->getLocalValue(),
                 );
 
                 if($MenuAdminSection->getGroup()->getTypeValue().'.name' === $name)
@@ -108,7 +114,7 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
                     throw new InvalidArgumentException(sprintf(
                         'Отсутствует файл переводов для секции "%s" в домене %s',
                         $MenuAdminSection->getGroup()->getTypeValue(),
-                        'menu-admin.section.'.$MenuAdminSectionTrans->getLocal()->getLocalValue().'.yaml'
+                        'menu-admin.section.'.$MenuAdminSectionTrans->getLocal()->getLocalValue().'.yaml',
                     ));
                 }
 
@@ -117,7 +123,7 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
                 $desc = $this->translator->trans(
                     id: $MenuAdminSection->getGroup()->getTypeValue().'.desc',
                     domain: 'menu-admin.section',
-                    locale: $MenuAdminSectionTrans->getLocal()->getLocalValue()
+                    locale: $MenuAdminSectionTrans->getLocal()->getLocalValue(),
                 );
 
                 if($MenuAdminSection->getGroup()->getTypeValue().'.desc' !== $desc)
@@ -132,17 +138,11 @@ class UpgradeAdminMenuSectionCommand extends Command implements ProjectUpgradeIn
         if(!$MenuAdmin instanceof MenuAdmin)
         {
             throw new InvalidArgumentException(
-                sprintf('Ошибка %s при обновлении разделов меню администратора', $MenuAdmin)
+                sprintf('Ошибка %s при обновлении разделов меню администратора', $MenuAdmin),
             );
         }
 
 
         return Command::SUCCESS;
-    }
-
-    /** Чам выше число - тем первым в итерации будет значение */
-    public static function priority(): int
-    {
-        return 100;
     }
 }

@@ -30,19 +30,17 @@ interface MenuAdminSectionGroupCollectionInterface
 {
 
     /**
-     * Возвращает значение (value)
-     */
-    public function getValue(): string;
-
-
-    /**
      * Сортировка (чем меньше число - тем первым в итерации будет значение)
      */
     public static function sort(): int;
-
 
     /**
      * Проверяет, относится ли секция к данному объекту
      */
     public static function equals(string $group): bool;
+
+    /**
+     * Возвращает значение (value)
+     */
+    public function getValue(): string;
 }

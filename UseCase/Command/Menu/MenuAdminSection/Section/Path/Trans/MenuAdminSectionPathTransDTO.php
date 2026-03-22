@@ -52,6 +52,10 @@ class MenuAdminSectionPathTransDTO implements MenuAdminSectionPathTransInterface
      */
     private ?string $description;
 
+    public function getLocal(): Locale
+    {
+        return $this->local;
+    }
 
     /**
      * Локаль
@@ -64,13 +68,6 @@ class MenuAdminSectionPathTransDTO implements MenuAdminSectionPathTransInterface
             $this->local = $local instanceof Locale ? $local : new Locale($local);
         }
     }
-
-
-    public function getLocal(): Locale
-    {
-        return $this->local;
-    }
-
 
     /**
      * Название

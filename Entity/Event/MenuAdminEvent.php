@@ -80,9 +80,9 @@ class MenuAdminEvent extends EntityEvent
         return (string) $this->id;
     }
 
-    public function getId(): MenuAdminEventUid
+    public function getMain(): ?MenuAdminIdentificator
     {
-        return $this->id;
+        return $this->main;
     }
 
     public function setMain(MenuAdminIdentificator|MenuAdmin $main): void
@@ -90,9 +90,9 @@ class MenuAdminEvent extends EntityEvent
         $this->main = $main instanceof MenuAdmin ? $main->getId() : $main;
     }
 
-    public function getMain(): ?MenuAdminIdentificator
+    public function getId(): MenuAdminEventUid
     {
-        return $this->main;
+        return $this->id;
     }
 
     public function getDto($dto): mixed

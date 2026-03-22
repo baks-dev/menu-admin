@@ -25,7 +25,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use BaksDev\Menu\Admin\BaksDevMenuAdminBundle;
 
-return static function (ContainerConfigurator $configurator) {
+return static function(ContainerConfigurator $configurator) {
 
     $services = $configurator->services()
         ->defaults()
@@ -46,7 +46,7 @@ return static function (ContainerConfigurator $configurator) {
 
     $services->load(
         $NAMESPACE.'Type\SectionGroup\Group\\',
-        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'SectionGroup', 'Group'])
+        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'SectionGroup', 'Group']),
     );
 
 };

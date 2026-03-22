@@ -34,16 +34,6 @@ final class MenuGroupUser implements MenuAdminSectionGroupCollectionInterface
 
     public const string GROUP = 'user';
 
-
-    /**
-     * Возвращает значение (value)
-     */
-    public function getValue(): string
-    {
-        return self::GROUP;
-    }
-
-
     /**
      * Сортировка (чем меньше число - тем первым в итерации будет значение)
      */
@@ -52,12 +42,19 @@ final class MenuGroupUser implements MenuAdminSectionGroupCollectionInterface
         return 50;
     }
 
-
     /**
      * Проверяет, относится ли секция к данному объекту
      */
     public static function equals(string $group): bool
     {
         return self::GROUP === mb_strtolower($group);
+    }
+
+    /**
+     * Возвращает значение (value)
+     */
+    public function getValue(): string
+    {
+        return self::GROUP;
     }
 }
